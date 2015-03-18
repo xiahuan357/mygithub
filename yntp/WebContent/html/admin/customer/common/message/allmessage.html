@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>消息中心</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript"
+	src="/computersocietyportal/js/core/seajs2/dist/sea.js"
+	data-config="/computersocietyportal/js/global.js"
+	data-main="/computersocietyportal/js/main.js"></script>
+<body>
+	<div class='span12' style='margin-left: 0'>
+		<div class='row-fluid'>
+			<div class='span12' style="height: 37px">
+				<div class=''>
+					<h6 class='pull-left'>
+						<span>系统消息</span>
+					</h6>
+				</div>
+			</div>
+		</div>
+		<hr class=" " style="margin:5px 0;margin-left:-20px;margin-right:-20px">
+		<div class='row-fluid'>
+			<div class='span6'>
+				<div class='row-fluid'>
+					<div id='messagelist_wrapper'></div>
+				</div>
+			</div>
+			<div class='span6 box'>
+				<div class='box-content'>
+					<div class='row-fluid' id="optForm">
+						<div class='pull-right'>
+							<div class="btn-group">
+								<a class="btn contrast " id="delete_btn" href="#"><i
+									class=""></i>删除</a>
+							</div>
+						</div>
+					</div>
+
+					<hr class="hr-normal">
+
+					<div class='row-fluid'>
+						<div id='messagedetail_wrapper'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		seajs.use([ "$", 'message_table' ], function($, MessageDoc) {
+			MessageDoc.init({
+				attrs : {
+					tableWrapperId : "messagelist_wrapper",
+					detailWrapperId : "messagedetail_wrapper"
+				}
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+package com.yn.yntp.common.web.controller;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+
+import com.yn.yntp.common.entity.BaseImageEntity;
+import com.yn.yntp.common.entity.response.ServiceResponse;
+import com.yn.yntp.common.web.controller.upload.UEditorUploadController;
+
+/**
+ * 
+ * @Title: BaseCRUDWIthImageController.java 
+ * @Package com.yn.yntp.common.web.controller 
+ * @Description: 用在只有一个imagekey的实体，里面保存所有图片，例如新闻，民族特色等
+ *
+ * @author liucc    
+ * @date 2015年1月2日 上午10:42:43 
+ * @version V1.0 
+ */
+
+public abstract class BaseCRUDWithImageController<M extends BaseImageEntity, ID extends Serializable>
+    extends BaseCRUDController<M, ID> {
+
+  @Autowired
+  protected UEditorUploadController imageUploader;
+  
+  //------------------------------ createWithImage ----------------------------------
+  /**
+   * 新增一个资源。带图片，因为是get方式，所以少量图片可以用此方法
+   * 
+   * @param resource
+   */
+  public Object createWithImage(Model model, @Validated M resource,
+      BindingResult result, List<String> imagelist, HttpServletRequest request) {
+    ServiceResponse<Object> ret;
+    ret = (ServiceResponse<Object>) super.create(model, resource, result);
+    if (ret.getRetcode() != "000000") {
+      return ret;
+    }
+
+    // 处理上传的图片，因为有上传，但是删除的，那么需要将删除的图片从服务器删除
+    List<String> avilabelImageList = imagelist;
+    ServletContext sc = request.getSession().getServletContext();
+    String serverBase = sc.getRealPath("/");
+
+    imageUploader.clearUnUsedImage(serverBase,avilabelImageList,resource.getImagekey());
+    return ret;
+  }
+
+  // ------------------------------ updateWithImage ----------------------------------
+  /**
+   * 更新资源。带图片，因为是get方式，所以少量图片可以用此方法
+   * 
+   * @param id
+   * @param resource
+   */
+  public Object updateWithImage(Model model, final ID id,
+      @Validated M resource, BindingResult result, List<String> imagelist,
+      HttpServletRequest request) {
+    ServiceResponse<Object> ret =  (ServiceResponse<Object>) super.update(model, id, resource, result);
+    if (ret.getRetcode() != "000000") {
+      return ret;
+    }
+    
+    // 处理上传的图片，因为有上传，但是删除的，那么需要将删除的图片从服务器删除
+    List<String> avilabelImageList = imagelist;
+    ServletContext sc = request.getSession().getServletContext();
+    String serverBase = sc.getRealPath("/");
+    imageUploader.clearUnUsedImage(serverBase,avilabelImageList,resource.getImagekey());
+    return ret;
+  }
+
+  // ------------------------------ deleteWithImage ----------------------------------
+  /**
+   * 删除资源。
+   * 
+   * @param id
+   */
+  public Object deleteWithImage(Model model,final ID id, final M resource,
+      HttpServletRequest request) {
+    ServiceResponse<Object> ret = (ServiceResponse<Object>) super.delete(model, id);
+    
+    if (ret.getRetcode() != "000000") {
+      return ret;
+    }
+    
+    // 删除图片
+    ServletContext sc = request.getSession().getServletContext();
+    String serverBase = sc.getRealPath("/");
+
+    imageUploader.clearFolderImage(serverBase, resource.getImagekey());
+    return ret;
+  }
+}

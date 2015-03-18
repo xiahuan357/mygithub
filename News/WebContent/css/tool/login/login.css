@@ -1,0 +1,126 @@
+/**
+* 	登录界面css
+**/
+@CHARSET "UTF-8";
+
+.dialog, .row .dialog, .row-fluid .dialog, .row-fluid [class*="span"].dialog:first-child
+	{
+	margin: 0px auto;
+	margin-top: 15em;
+	float: none;
+}
+
+.dialog input[type="checkbox"], .row .dialog input[type="checkbox"],
+	.row-fluid .dialog input[type="checkbox"], .row-fluid [class*="span"].dialog:first-child input[type="checkbox"]
+	{
+	margin: 0px;
+}
+
+.dialog .alert, .row .dialog .alert, .row-fluid .dialog .alert,
+	.row-fluid [class*="span"].dialog:first-child .alert {
+	margin-bottom: 1em;
+}
+
+.dialog form, .row .dialog form, .row-fluid .dialog form, .row-fluid [class*="span"].dialog:first-child form
+	{
+	margin-bottom: 0px;
+}
+
+.dialog .remember-me, .row .dialog .remember-me, .row-fluid .dialog .remember-me,
+	.row-fluid [class*="span"].dialog:first-child .remember-me {
+	padding: .5em 0em 0em 0em;
+}
+
+/*Blocks*/
+.block {
+	margin-bottom: 1em;
+	border: 1px solid #ccc;
+	background: white;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	-webkit-box-shadow: 0px 1px 0px #ffffff;
+	-moz-box-shadow: 0px 1px 0px #ffffff;
+	box-shadow: 0px 1px 0px #ffffff;
+}
+
+.block-heading[data-toggle="collapse"] {
+	cursor: pointer;
+}
+
+.block-heading[data-toggle="collapse"]:hover {
+	background: #d0d0d0;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #d0d0d0),
+		color-stop(1, #ffffff));
+	background: -ms-linear-gradient(bottom, #d0d0d0, #ffffff);
+	background: -moz-linear-gradient(center bottom, #d0d0d0 0%, #ffffff 100%);
+	background: -o-linear-gradient(bottom, #d0d0d0, #ffffff);
+	filter: none;
+	filter: progid:dximagetransform.microsoft.gradient(startColorStr='#444444',
+		EndColorStr='#555555');
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff',EndColorStr='#d0d0d0')";
+}
+
+.block-heading {
+	display: block;
+	font-weight: bold;
+	color: #333;
+	text-shadow: 1px 1px 1px #fff;
+	background: #dddddd;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #dddddd),
+		color-stop(1, #ffffff));
+	background: -ms-linear-gradient(bottom, #dddddd, #ffffff);
+	background: -moz-linear-gradient(center bottom, #dddddd 0%, #ffffff 100%);
+	background: -o-linear-gradient(bottom, #dddddd, #ffffff);
+	filter: none;
+	filter: progid:dximagetransform.microsoft.gradient(startColorStr='#444444',
+		EndColorStr='#555555');
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff',EndColorStr='#dddddd')";
+	-webkit-border-top-right-radius: 3px;
+	-webkit-border-bottom-right-radius: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	-webkit-border-top-left-radius: 3px;
+	-moz-border-radius-topright: 3px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	-moz-border-radius-topleft: 3px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	border-bottom: 1px solid #aaa;
+	font-size: 1em;
+	line-height: 3em;
+	text-transform: none;
+	padding: 0em .75em;
+	margin-bottom: 0px;
+}
+
+.block-heading .label {
+	float: right;
+	margin-top: 1em;
+	line-height: 1.5em;
+}
+
+.block-body {
+	margin: 1em;
+	min-height: .25em;
+}
+
+.block-body h1, .block-body h2, .block-body h3, .block-body h4,
+	.block-body h5, .block-body h6, .block-body table {
+	margin-top: 12px;
+}
+
+.block-body.collapse {
+	margin-top: 0em;
+	margin-bottom: 0em;
+}

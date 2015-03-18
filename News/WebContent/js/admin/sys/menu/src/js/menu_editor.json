@@ -1,0 +1,10 @@
+ [
+ 	{"url":"/admin/sys/console/console.html","icon":"icon-dashboard","name":"工作台","id":"menu_console"},
+	{"url":"","icon":"icon-globe","name":"新闻管理","id":"menu_news_p","children":[
+	    {"url":"admin/sys/news/sys_news_publish_table.html","icon":"icon-globe","name":"新闻发布","id":"menu_news_type_table"},
+	    {"url":"admin/sys/news/sys_news_approvestatus.html","icon":"icon-globe","name":"新闻审核状态","id":"menu_news_approvestatus"},
+	    {"url":"admin/sys/news/sys_news_approve.html","icon":"icon-globe","name":"新闻审核","id":"menu_news_approve"},
+	    
+	]},
+	
+]

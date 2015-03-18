@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta content='Flat administration template for Twitter Bootstrap.'
+	name='description'>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="shortcut icon" href="/News/images/portal/logo/logo.png" />
+<title>新闻发布系统后台首页</title>
+<script type="text/javascript" src="/News/js/core/seajs2/dist/sea.js"
+	data-config="/News/js/global.js" data-main="/News/js/main.js"></script>
+<!-- <script type="text/javascript" src="/News/js/admin/sys/header/src/js/sec-header.js"></script> -->
+
+<!--[if lt IE 9]>
+        <script src="js/tool/html5/html5.js" type="text/javascript"></script>
+        <![endif]-->
+</head>
+<body class="wysihtml5-supported ">
+	<header id="header"></header>	
+	<div id='wrapper'>
+		<div id='main-nav-bg' ></div>
+		<nav id='main-nav'>
+		</nav>
+		<section id="content">
+			<div class="container-fluid">
+				<div class="row-fluid" id="content-wrapper"></div>
+			</div>
+		</section>
+	</div>
+	<script type="text/javascript">
+            seajs.use('sysindex', function(Index)
+            {
+                Index.init(
+                {
+                    headerId : "header",
+                    menuId : "main-nav",
+                    contentId : "content-wrapper"
+                });
+            });
+    </script>
+</body>
+</html>

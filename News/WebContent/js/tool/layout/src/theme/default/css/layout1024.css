@@ -1,0 +1,82 @@
+.layout_content{
+	width:960px;
+}
+#banner{
+	width:960px;
+	margin : 0 auto;
+}
+.home_doc_width {
+	width: 960px;
+}
+.subpage_content {
+	width: 770px;
+}
+.doc_content {
+	float: left;
+	width: 614px;
+	margin-left: 10px;
+}
+.top_bar {
+	width: 100%;
+}
+.right_column {
+	float: right;
+	width: 150px;
+	margin-right: 5px;
+}
+.side_column{
+	float: left;
+	width: 176px;
+}
+.subpage_content {
+	float: left;
+}
+.order_box_content ul {
+	margin-left: -30px;
+	list-style-type: none;
+	font-size: 11px;
+}
+
+.loading {
+	width:100px;
+	height:100px;
+	margin: 0 auto;
+	background: url("../img/loading.gif") no-repeat 50% 50% scroll transparent;
+}
+#nav .main_navi_bar{
+	/*margin-left:-40px;*/
+	margin-left:0px;
+}
+.J-portlet-dragable .search_bar input {
+	width: 100%;
+}
+.top_bar .ui-category-btm{
+	width:176px;
+}
+.onlineservice{
+	display:none;
+}
+.mobilenav{
+	display: none;
+}
+@media only screen and (max-width:800px){
+}
+@media only screen and (max-width:640px){
+	.top_bar
+	{
+		display: none;
+	}
+	.subpage_content{
+		width: 320px;
+		margin: 0px;
+	}
+	.layout_content{
+		width: 100%;
+	}
+	.mobilenav{
+		display: block;
+	}
+	.subpage_content iframe{
+		margin-top: -30px;
+	}
+}

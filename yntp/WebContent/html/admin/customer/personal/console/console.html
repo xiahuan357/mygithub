@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>基础设置-工作台</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+			data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+</head>
+
+<body class=' '>
+
+	<div id='consoleHtml'></div>
+    <script type="text/javascript">
+        seajs.use(["$", "console-personal"], function($, Console) {
+        	Console.init({
+        		consoleWrapperDiv : "consoleHtml"
+        	});
+        });
+    </script>
+</body>
+</html>

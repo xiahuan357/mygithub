@@ -1,0 +1,4 @@
+ [
+ 	{"url":"admin/customer/personal/baseinfo/biz_personal_securityinfo_form.html","icon":"icon-edit","name":"安全设置","id":"menu_security"},
+ 	{"url":"admin/customer/personal/baseinfo/biz_personal_userinfo_form.html","icon":"icon-cog","name":"个人资料","id":"menu_userinfo"},
+]

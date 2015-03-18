@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta content='Flat administration template for Twitter Bootstrap.'
+	name='description'>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="shortcut icon" href="/yntp/images/portal/logo/logo.png" />
+<title>云南旅游平台</title>
+<script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+	data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+
+<!--[if lt IE 9]>
+        <script src="js/tool/html5/html5.js" type="text/javascript"></script>
+        <![endif]-->
+</head>
+<body class="wysihtml5-supported " id="body">
+	<div id="fixed-header"></div>
+    <div style="">
+        <div id="center-header">
+        </div>
+        <div id="navicat-header" style="min-width:1200px">
+        </div>
+    </div>
+  	<div class="container" id="bodywrapper" style="width:1170px">
+  		<div class="wrapper" id="wrapper"  style="border-right:1px solid #dddddd; border-left:1px solid #dddddd;">
+  			<div class="row-fluid">
+	  			<div id='left_navicat_menu'></div>
+			  	<section id="content">
+					<div class="container-fluid">
+						<div class="row-fluid" id="content-wrapper"></div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+	<div id="footer" class="container" style="padding-top: 50px;"></div>
+	<script type="text/javascript">
+            seajs.use('baseinfoindex', function(Index)
+            {
+                Index.init(
+                {
+                	fixedheaderId : "fixed-header",
+                	centerheaderId : "center-header",  
+                	navicatheaderId : "navicat-header",
+                	leftnavicatmenuId : "left_navicat_menu",
+                    contentId : "content-wrapper",
+                    footerId : "footer"
+                });
+            });
+    </script>
+</body>
+</html>

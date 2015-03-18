@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta content='Flat administration template for Twitter Bootstrap.'
+	name='description'>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>新闻平台注册</title>
+<script type="text/javascript" src="/News/js/core/seajs2/dist/sea.js"
+	data-config="/News/js/global.js" data-main="/News/js/main.js"></script>
+<!--[if lt IE 9]>
+    	<script src="js/tool/html5/html5.js" type="text/javascript"></script>
+    <![endif]-->
+<link rel="stylesheet" type="text/css"
+	href="/News/css/tool/login/login.css" />
+</head>
+<body class='wysihtml5-supported contrast-sea-blue'>
+	<header>
+		<div class="navbar navbar-fixed-top ">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav pull-right">
+					</ul>
+					<a class="brand" href="" id="indexlink"><span class="second">新闻平台</span></a>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="container">
+		<div class="container-fluid"
+			style="margin-top: 50px; margin-bottom: 100px;">
+			<div class="row-fluid span12" style="margin-left: 0px">
+				<h1>账户注册</h1>
+			</div>
+			<div class="row-fluid">
+				<div id='basearchive_form'></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="footer" class="container">
+		<nav class="navbar navbar-default navbar-fixed-bottom">
+			<div class="navbar-inner navbar-content-center">
+				<div class="container">
+					<div style="text-align: center;">
+						<p>夏氏新闻门户网站. 版权所有.</p>
+						<p>Copyright © 2011-2014</p>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</div>
+		<script type="text/javascript">
+		seajs.use('register', function(ArchiveInstance) {
+			ArchiveInstance.init();
+		});
+	</script>
+</body>
+</html>

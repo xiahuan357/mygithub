@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>线路-线路基本设置</title>
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+       <script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+			   data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+    </head> 
+    
+    <body class=''>
+	   <div class="container-fluid">
+	       <div id="content-wrapper" class="row-fluid">
+	           <div class="span12">
+	               <div class="page-header page-header-with-buttons">
+	                   <h1 class="pull-left">
+	                       <i class="icon-dashboard"></i>
+	                       <span>基本设置</span>
+	                   </h1>
+	               </div>
+	       </div>
+	   </div>
+	</body>  
+	<script type="text/javascript">
+		seajs.use('sys_tourismline_basic', function(ArchiveInstance) {
+			ArchiveInstance.init();
+		});
+	</script>
+</html>
+	            

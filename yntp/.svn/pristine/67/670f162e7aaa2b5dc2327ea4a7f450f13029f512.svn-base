@@ -1,0 +1,207 @@
+package com.yn.yntp.common.persistence.service;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang3.tuple.Triple;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.BasicType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.yn.yntp.common.entity.AbstractEntity;
+import com.yn.yntp.common.entity.BaseEntity;
+import com.yn.yntp.common.entity.pagination.PaginationResult;
+import com.yn.yntp.common.entity.search.ClientOperation;
+import com.yn.yntp.common.persistence.dao.GenericBaseDao;
+import com.yn.yntp.common.tool.Reflections;
+
+/**
+ * 
+ * @Title: BaseServiceImpl.java
+ * @Package com.yn.yntp.common.service
+ * @Description: 常用方法接口的默认实现
+ *
+ * @author liucc
+ * @date 2014年11月21日 下午4:59:21
+ * @version V1.0
+ */
+
+public class BaseServiceImpl<M extends AbstractEntity, ID extends Serializable>
+		implements IBaseService<M, ID> {
+
+	/**
+	 * 日志对象
+	 */
+	protected Logger logger = LoggerFactory.getLogger(getClass());
+
+	protected GenericBaseDao<M, ID> baseDao;
+
+	private Class<?> entityClass;
+
+	public BaseServiceImpl() {
+		entityClass = Reflections.getClassGenricType(getClass());
+	}
+
+	@Autowired
+	public void setBaseDao(GenericBaseDao<M, ID> baseDao) {
+		this.baseDao = baseDao;
+	}
+
+	@Override
+	public List<M> queryAll() {
+		return baseDao.getAllList();
+	}
+
+	@Override
+	public List<M> queryByIds(List<ID> ids) {
+		return baseDao.get(ids);
+	}
+
+	@Override
+	public M queryById(ID id) {
+		return baseDao.get(id);
+	}
+	
+	@Override
+  public Integer queryCount(
+      List<Triple<String, ClientOperation, String>> parsedQuery) {
+	  String tripleHql = baseDao.getTripleHqlWithAllFiled(parsedQuery, true);
+    Query query = baseDao.createQuery(tripleHql);
+
+    List<Object> items = query.list();
+    return (Integer) (items == null ? 0 : ((Long)items.get(0)).intValue());
+  }
+
+  @Override
+	public List<M> query(
+			List<Triple<String, ClientOperation, String>> parsedQuery) {
+		String tripleHql = baseDao.getTripleHqlWithAllFiled(parsedQuery, false);
+		Query query = baseDao.createQuery(tripleHql);
+
+		return query.list();
+	}
+
+	@Override
+	public List<M> query(Map<String, BasicType> filedNameMap,
+			List<Triple<String, ClientOperation, String>> parsedQuery) {
+		String tripleHql = baseDao.getTripleSqlWithSpecialFiled(filedNameMap,
+				parsedQuery);
+
+		SQLQuery query = (SQLQuery) baseDao.createSQLQuery(tripleHql);
+		for (Entry<String, BasicType> entry : filedNameMap.entrySet()) {
+			query.addScalar(entry.getKey(), entry.getValue());
+		}
+		query.setResultTransformer(Transformers.aliasToBean(entityClass));
+
+		return query.list();
+	}
+
+	@Override
+	public PaginationResult<M> query(int start, int size,
+			List<Triple<String, ClientOperation, String>> parsedQuery) {
+		String tripleHql = baseDao.getTripleHqlWithAllFiled(parsedQuery, false);
+
+		Query query = baseDao.createQuery(tripleHql);
+		query.setFirstResult(start);
+		query.setMaxResults(size);
+		List<M> items = query.list();
+
+		query.setFirstResult(0);
+		query.setMaxResults(PaginationResult.MAX_ITEMNUM);
+		int totalnum = query.list().size();
+
+		return new PaginationResult<M>(items, totalnum, size, start);
+	}
+
+	@Override
+	public PaginationResult<M> query(int start, int size,
+			Map<String, BasicType> filedNameMap,
+			List<Triple<String, ClientOperation, String>> parsedQuery) {
+		String tripleHql = baseDao.getTripleSqlWithSpecialFiled(filedNameMap,
+				parsedQuery);
+
+		SQLQuery query = (SQLQuery) baseDao.createSQLQuery(tripleHql);
+		for (Entry<String, BasicType> entry : filedNameMap.entrySet()) {
+			query.addScalar(entry.getKey(), entry.getValue());
+		}
+		query.setResultTransformer(Transformers.aliasToBean(entityClass));
+
+		query.setFirstResult(start);
+		query.setMaxResults(size);
+		
+		List<M> items = query.list();
+
+		query.setFirstResult(0);
+		query.setMaxResults(PaginationResult.MAX_ITEMNUM);
+		int totalnum = query.list().size();
+
+		return new PaginationResult<M>(items, totalnum, size, start);
+	}
+
+	@Override
+	public void insert(M entity) {
+	  if ((entity instanceof BaseEntity)
+        && ((BaseEntity) entity).getCreatetime() == null) {
+      ((BaseEntity) entity).setCreatetime(new Date());
+    }
+	  
+		baseDao.insert(entity);
+	}
+
+	@Override
+	public void insert(List<M> entityList) {
+		if (entityList == null || entityList.size() == 0)
+			return;
+
+		for (M entity : entityList) {
+			insert(entity);
+		}
+	}
+
+	@Override
+	public void update(M entity) {
+	  if ((entity instanceof BaseEntity)
+        && ((BaseEntity) entity).getUpdatetime() == null) {
+      ((BaseEntity) entity).setUpdatetime(new Date());
+    }
+	  
+		baseDao.update(entity);
+	}
+
+	@Override
+	public void update(Map<String, Object> filedNameMap,
+			List<Triple<String, ClientOperation, String>> parsedQuery) {
+	    String tripleHql = baseDao.getUpdateHql(filedNameMap, parsedQuery);
+
+	    Query query = baseDao.createQuery(tripleHql);
+	    query.executeUpdate();
+	}
+
+	@Override
+	public void update(List<M> entityList) {
+		if (entityList == null || entityList.size() == 0)
+			return;
+
+		for (M entity : entityList) {
+			update(entity);
+		}
+	}
+
+	@Override
+	public void delete(List<ID> ids) {
+		baseDao.delete(ids);
+	}
+
+	@Override
+	public void delete(ID[] ids) {
+		baseDao.delete(ids);
+	}
+
+}

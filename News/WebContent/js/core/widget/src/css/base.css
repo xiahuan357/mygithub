@@ -1,0 +1,81 @@
+/* Common Base Style */
+html { height: 100%; }
+body { height: 100%; font-size: 14px; }
+
+.float_left { float: left; }
+.float_right { float: right; }
+.float_center { float: none !important; margin: 0 auto; }
+
+.clear { float: none !important; clear: both; }
+.hidden { display: none; }
+
+.ft_bold { font-weight: bold; }
+.ft_yahei { font-family: 'Microsoft Yahei', 'Hei', serif; }
+.ft_arial { font-family: 'Arial', serif; }
+
+.align_center { text-align: center; }
+.align_right { text-align: right; }
+.align_justify { text-align: justify; }
+
+.mrg_lft3px {  margin-right: 3px; display: inline; }
+.mrg_lft15 { margin-left: 15px; display: inline; }
+.mrg_top10px { margin-top: 10px;  }
+.mrg_0x25px { margin: 0 25px; display: inline;  }
+.mrg_rit20px { margin-right: 20px; display: inline; }
+.pd_2px { padding: 2px; display: inline;  }
+.pd_5x2px { padding: 5px 2px; display: inline;  }
+.pd_5x0px { padding: 5px 0;  }
+.pd_10x0px { padding: 10px 0; }
+.pd_10x5px { padding: 10px 5px; display: inline; }
+.pd_16x0px { padding: 16px 0; }
+.pd_btm10px { padding-bottom: 10px; }
+.w_33ps { width: 33%; }
+.w_50ps { width: 50%; }
+.w_100ps { width: 100%; }
+.w_34px { width: 34px; }
+.w_50px { width: 50px; }
+.w_66px { width: 66px; }
+.w_74px { width: 74px; }
+.w_80px { width: 80px; }
+.w_94px { width: 94px; }
+.w_110px { width: 110px; }
+.w_120px { width: 120px; }
+.w_126px { width: 126px; }
+.w_150px { width: 150px; }
+.w_172px { width: 172px; }
+.w_178px { width: 178px; }
+.w_180px { width: 180px; }
+.w_216px { width: 216px; }
+.w_230px { width: 230px; }
+.w_290px { width: 290px; }
+.w_330px { width: 330px; }
+.w_400px { width: 400px; }
+.w_430px { width: 430px; }
+.w_485px { width: 485px; }
+.w_600px { width: 600px; }
+.w_640px { width: 640px; }
+.w_690px { width: 690px; }
+.w_740px { width: 740px; }
+.w_750px { width: 750px; }
+.w_764px { width: 764px; }
+
+.h_12px { height: 12px; line-height: 12px; }
+.h_18px { height: 18px; line-height: 18px; }
+.h_22px { height: 22px; line-height: 22px; }
+.h_26px { height: 26px; line-height: 26px; }
+.h_31px { height: 31px; line-height: 31px; }
+.h_100px { height: 100px; }
+.h_142px { height: 142px; }
+.h_165px { height: 165px; }
+.h_690px { height: 690px; }
+
+.color_0062b0 { color: #0062b0; }
+.color_484848 { color: #484848; }
+.color_4f4f4f { color: #4f4f4f; }
+.color_5b5b5b { color: #5b5b5b; }
+.color_f73107 { color: #f73107; }
+.color_fb0000 { color: #fb0000; }
+.color_0069b9 { color: #0069b9; }
+
+.bg_f5 { background: #f5f5f5; }
+.bg_f8 { background-color: #f8f8f8; }

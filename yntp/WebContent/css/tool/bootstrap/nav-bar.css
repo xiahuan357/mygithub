@@ -1,0 +1,89 @@
+.user-inf {
+	width:250px;
+	height: 66px;
+	float: left;
+}
+/* .navbars {
+    border: 0 none;
+    height: 96px;
+    padding: 0;
+    width: 100%;
+} */
+/* .top-bar {
+    background-color: red;
+    float: left;
+    height: 30px;
+    width: 100%;
+    margin-left:-20px;
+} */
+
+.main-nav {
+	background: #1F3A4D; 
+    float: left;
+    height: 66px;
+    width: 100%;
+}
+
+#mhover {
+	
+}
+#mhover >li {
+	width:100px;
+	height:66px;
+	float: left;
+	list-style: none; 
+	text-align: center;
+	text-decoration: none;
+	border-right: 1px solid ;
+	border-left: 1px solid ;
+	display: block;
+}
+
+/* #mhover >li >a{
+	margin-top:10px;
+} */
+
+#mhover li >a:hover{
+	background:black;
+}  
+#mhover >li > a{
+  color: #ffffff;
+  width:100px;
+  heigth:66px;
+  padding-top: 20px;
+  display: block;
+}
+.icon-large {
+    font-size: 1.888888em;
+    vertical-align: middle;
+}
+
+#dropmenus {
+	margin:0;
+	padding:0;
+	display:none;
+	position:relative;
+	z-index:1000;
+}
+
+#dropmenus >li{
+	width:100px;
+	list-style: none;
+	text-align: left;
+	background: #1F3A4D;
+	display:table;
+	
+}
+#dropmenus li >a{	
+    margin-left:20px;
+    text-decoration: none;
+	color: white;
+	display: block;
+}
+
+#dropmenus li:hover
+{	background: black;
+}
+
+
+

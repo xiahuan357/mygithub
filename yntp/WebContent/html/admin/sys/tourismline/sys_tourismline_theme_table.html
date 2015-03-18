@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>线路-线路主题列表</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+			data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+</head>
+
+<body class=' '>
+
+	<div class='span12' style="margin-left: 0">
+		
+		<div class='row-fluid'>
+			<div class='span12' style="height:37px">
+				<div class=''>
+					<h6 class='pull-left'>
+						<a href="#" id="linkconsole">工作台</a><span> >线路主题列表</span>
+					</h6>
+				</div>
+				 
+			</div>
+		</div>
+		
+		<hr class=" " style="margin:5px 0;margin-left:-20px;margin-right:-20px">
+		
+		<div class='row-fluid' id="optForm">
+			<div class='span12 ' style="height:33px">
+				<button id="form_btn_create"
+					class=" btn contrast icon-plus"
+					style="width: 150px; height: 30px">新建</button>
+			</div>
+		</div>
+		
+		<hr class=" " style="margin:2px 0;margin-left:-20px;margin-right:-20px">
+		
+		<div style="padding: 5px"></div>
+
+		<div class='box bordered-box ' style='margin-bottom: 0;' id="dataForm">
+			<div class='box-content box-no-padding'>
+				<div class='responsive-table'>
+					<div id='basearchive_table'></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		seajs.use('sys_tourismline_theme_table', function(ArchiveInstance) {
+			ArchiveInstance.init();
+		});
+	</script>
+</body>
+</html>

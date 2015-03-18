@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>新闻预览</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+			data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+</head>
+<style>
+.blockquote {
+	padding: 15px 20px;
+	margin: 20px 0;
+	border: 1px dashed #eaeaea;
+	background: #fbfbfb;
+	font-size: 12px;
+	text-indent: 24px;
+	color: #999;
+	line-height: 22px
+}
+</style>
+
+
+<body class=' '>
+
+	<div class='span12' style="margin-left: 0">
+		
+		<div class='row-fluid'>
+			<div class='span12' style="height:37px">
+				<div class=''>
+					<h6 class='pull-left'>
+						<a href="#" id="linkconsole">工作台</a><span> >新闻预览</span>
+					</h6>
+				</div>
+				<div class='pull-right'>
+					<button id="form_btn_return" class=" btn btn-primary contrast-background icon-mail-reply (alias)"
+						style="margin-top:5px;width: 100px; height: 30px">返回</button>
+				</div>
+			</div>
+		</div>
+		
+		<hr class=" " style="margin:5px 0;margin-left:-20px;margin-right:-20px">
+		<div id="detailwrapperdiv"></div>
+	</div>
+
+	<script type="text/javascript">
+		seajs.use('sys_news_preview', function(ArchiveInstance) {
+			new ArchiveInstance({
+				renderTo : "detailwrapperdiv",
+			});
+		});
+	</script>
+</body>
+</html>

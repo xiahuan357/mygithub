@@ -1,0 +1,27 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "firstImg",
+            "active": true,
+            "index": "1",
+            "src": "/News/coverimage/1426036982525_735.jpg",
+            "alt": "国产大飞机“三剑客”进入收获期 两机年内总装",
+            "caption": "国产大飞机“三剑客”进入收获期 两机年内总装"
+        },
+        {
+        	"id" : "secondImg",
+            "index": "2",
+            "src": "/News/coverimage/1426036960559_141.jpg",
+            "alt": "默克尔劝安倍“正视历史” 日本政客尴尬不搭茬",
+            "caption": "默克尔劝安倍“正视历史” 日本政客尴尬不搭茬"
+        },
+        {
+        	"id" : "thirdImg",
+            "index": "3",
+            "src": "/News/coverimage/1426035660606_188.jpg",
+            "alt": "网络大讲堂：聚焦网络文化与创新",
+            "caption": "网络大讲堂：聚焦网络文化与创新"
+        }
+    ]
+}

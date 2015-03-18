@@ -1,0 +1,45 @@
+/**
+ * 表单显示
+ * @author liuchchc
+ * @date 2014-12-9 20:20:44
+ */
+define(function(require, exports, module) {
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	
+	var form_tpl = require("./form_display.tpl");
+	var Widget = require("widget");
+	var example = Widget.extend({
+		// 初始化参数
+		template : form_tpl,
+		initCustAttr : function(){
+			var items = this.get("items");
+			for(var i=0;i<items.length;i++){
+				// 如果没有图片，默认显示
+				var item = items[i];
+				if(item.labelclass == null || typeof(item.labelclass) == "undefined"){
+					item.labelclass = "span2";
+				}
+				if(item.valueclass == null || typeof(item.valueclass) == "undefined"){
+					item.valueclass = "span10";
+				}
+				if(item.ispicture){
+					if(item.src == null || item.src == "undefind"){
+						item.src = GLOBAL.BASE + "img/common/default-1.png";
+					}
+				}
+			}
+		},
+		afterRender:function(){
+			var items = this.get("items");
+			for(var i=0;i<items.length;i++){
+				// 如果是图片，添加入片地址
+				var item = items[i];
+				if(item.ispicture){
+					$("#"+item.id).attr("src",item.src);
+				}
+			}
+		},
+	});
+	module.exports = example;
+});

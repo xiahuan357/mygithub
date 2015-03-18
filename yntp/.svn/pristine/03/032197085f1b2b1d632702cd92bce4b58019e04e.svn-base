@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+ 
+#main-nav-bg1 {
+	  width: 250px;
+	  float: left;
+	  border-left: 1px solid transparent;
+	  border-right: 1px solid transparent;
+	  background: #f4f4f4;
+	  display: block;
+	  z-index: -1;
+	  top: 0;
+	  bottom: 0; 
+}
+@media (max-width: 768px) {
+  #main-nav-bg {
+    width: 45px; 
+  } 
+}
+@media print {
+  #main-nav-bg {
+    display: none; 
+  } 
+}

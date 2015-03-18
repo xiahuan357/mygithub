@@ -1,0 +1,172 @@
+package com.yn.yntp.module.nationalspecial.web.front;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.tuple.Triple;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yn.yntp.common.entity.pagination.PaginationResult;
+import com.yn.yntp.common.entity.response.ServiceResponse;
+import com.yn.yntp.common.entity.search.ClientOperation;
+import com.yn.yntp.common.entity.search.QueryConstants;
+import com.yn.yntp.common.persistence.search.SearchCommonUtil;
+import com.yn.yntp.common.tool.Reflections;
+import com.yn.yntp.common.web.controller.BaseQueryController;
+import com.yn.yntp.common.web.controller.upload.BaseImageUploadController;
+import com.yn.yntp.module.nationalspecial.entity.NationalSpecialDirectorEntity;
+import com.yn.yntp.module.nationalspecial.entity.NationalSpecialEntity;
+import com.yn.yntp.module.nationalspecial.service.NationalSpecialOrderService;
+import com.yn.yntp.module.region.entity.RegionEntity;
+import com.yn.yntp.module.region.service.RegionService;
+
+/**
+ * 
+ * @Title: ScenicController.java 
+ * @Package com.yn.yntp.module.nationalspecial.web.front 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author liucc    
+ * @date 2015年1月25日 下午9:05:40 
+ * @version V1.0 
+ */
+
+@Controller
+@RequestMapping("/front/nationalspecial/nationalspecial")
+public class NationalSpecialFrontController extends BaseQueryController<NationalSpecialEntity,Long>{
+
+  @Autowired
+  private NationalSpecialOrderService nationalSpecialOrderService;
+
+  @Autowired
+  private RegionService regionService;
+  
+  // 地址的缓存
+  private Map<String, String> regionMap = new HashMap<String, String>();
+  
+  //------------------------------ 普通查询 ----------------------------------
+  /**
+   * 查询满足给定查询条件的信息。
+   * 
+   * @param queryString
+   * @return
+   */
+  @RequestMapping(value = "/frontshow/search", params = {QueryConstants.Q_PARAM}, method = RequestMethod.GET)
+  @ResponseBody
+  public Object searchAll(Model model, @RequestParam(QueryConstants.Q_PARAM) final String queryString) {
+
+    ServiceResponse<List<NationalSpecialDirectorEntity>> ret = new ServiceResponse<List<NationalSpecialDirectorEntity>>();
+
+    List<Triple<String, ClientOperation, String>> parsedQuery = null;
+    parsedQuery = SearchCommonUtil.parseQueryString(queryString);
+
+    if (null == parsedQuery) {
+      parsedQuery = new ArrayList<Triple<String, ClientOperation, String>>();
+    }
+    
+    List<NationalSpecialEntity> queryResultList = getBaseService().query(parsedQuery);
+    List<NationalSpecialDirectorEntity> rtnResultList = directorQueryResult(queryResultList);
+    
+    ret.setData(rtnResultList);
+    return ret;
+  }
+
+  //------------------------------ 分页查询 ----------------------------------
+  /**
+   * 按页查询给定查询条件的信息。
+   * 
+   * @param queryString
+   * @param page
+   * @param size
+   * @return
+   */
+  @RequestMapping(value = "/frontshow/pagesearch",params = {QueryConstants.Q_PARAM, QueryConstants.START, QueryConstants.SIZE}, method = RequestMethod.GET)
+  @ResponseBody
+  public Object searchAllPaginated(Model model, 
+      @RequestParam(QueryConstants.Q_PARAM) final String queryString,
+      @RequestParam(value = QueryConstants.START) final int start,
+      @RequestParam(value = QueryConstants.SIZE) final int size,
+      HttpServletRequest request) {
+
+    ServiceResponse<PaginationResult<NationalSpecialDirectorEntity>> ret = new ServiceResponse<PaginationResult<NationalSpecialDirectorEntity>>();
+
+    List<Triple<String, ClientOperation, String>> parsedQuery = null;
+    parsedQuery = SearchCommonUtil.parseQueryString(queryString);
+    if (null == parsedQuery) {
+      parsedQuery = new ArrayList<Triple<String, ClientOperation, String>>();
+    }
+
+    PaginationResult queryResultPagination = getBaseService().query(start, size, parsedQuery);
+    List<NationalSpecialEntity> queryResultList = queryResultPagination.getItems();
+    List<NationalSpecialDirectorEntity> rtnResultList = directorQueryResult(queryResultList);
+    ret.setData(new PaginationResult<NationalSpecialDirectorEntity>(rtnResultList, queryResultPagination.getTotalItemNum(), size, start));
+    return ret;
+  }
+
+  /**
+   * 装饰结果数据，用于前台显示
+   * 
+   * @param queryResultList
+   * @return
+   */
+  private List<NationalSpecialDirectorEntity> directorQueryResult(List<NationalSpecialEntity> queryResultList) {
+    List<NationalSpecialDirectorEntity> rtnResultList = new ArrayList<NationalSpecialDirectorEntity>();
+    if(queryResultList!=null && !queryResultList.isEmpty()){
+      for(NationalSpecialEntity nationalSpecialEntity : queryResultList){
+        NationalSpecialDirectorEntity nationalSpecialDirectorEntity = new NationalSpecialDirectorEntity();
+        try {
+          Reflections.fatherToChild(nationalSpecialEntity, nationalSpecialDirectorEntity);
+        } catch (Exception e) {
+          System.out.print(e);
+        }
+        // 设置封面图片
+        nationalSpecialDirectorEntity.setCoverimagename(
+            BaseImageUploadController.projectBase+BaseImageUploadController.uploadPath+nationalSpecialEntity.getImagelibrarykey()
+            +"/"+nationalSpecialEntity.getCoverimagename());
+        
+        // 设置成交量
+        nationalSpecialDirectorEntity.setSelledCount(nationalSpecialOrderService.getSellCount(nationalSpecialEntity.getId()));
+        
+        // 设置所在地区
+        String regionIds = nationalSpecialEntity.getRegion_id();
+        String[] regionIdArray = regionIds.split("-");
+        String regionName = "";
+        for(String region : regionIdArray){
+          regionName += getRegionById(region);
+        }
+        nationalSpecialDirectorEntity.setRegionName(regionName);
+        rtnResultList.add(nationalSpecialDirectorEntity);
+      }
+    }
+    return rtnResultList;
+  }
+  
+  /**
+   *  根据id查找区域名称
+   * 
+   * @param regionId
+   * @return
+   */
+  private String getRegionById(String regionId){
+    if (regionMap.containsKey(regionId)) {
+      return regionMap.get(regionId);
+    } else {
+      RegionEntity regionEntity = regionService.queryById(Long.valueOf(regionId));
+      if(regionEntity!= null){
+        regionMap.put(regionId, regionEntity.getName());
+        return regionEntity.getName();
+      }
+    }
+    return "";
+  }
+}

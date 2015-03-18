@@ -1,0 +1,37 @@
+/**
+ * Quick navigation 区域
+ */
+define(function(require, exports, module)
+{
+    var $ = require("$");
+    var nav = require("bootstrap_nav");
+    exports.init = function(param)
+    {
+        var template = '<div class="span3 box-quick-link ';
+        if (param.attrs.backgroudclass)
+            template += param.attrs.backgroudclass;
+        template += '">';
+        template += '<a href="#" url="';
+        if (param.attrs.url)
+            template += param.attrs.url;
+        template += '" class="conHeader">';
+        template += '<div class="header"><div class="';
+        if (param.attrs.icon)
+            template += param.attrs.icon;
+        template += '"></div>';
+        template += '</div><div class="content">';
+        if (param.attrs.title)
+            template += param.attrs.title;
+        template += '</div></a></div>';
+        $("#" + param.appendDivId).append(template);
+    };
+
+    exports.initEvent = function()
+    {
+        $(".conHeader").on("click", function(e)
+        {
+            var url = $(this).attr("url");
+            nav.toPageView(url);
+        });
+    };
+});

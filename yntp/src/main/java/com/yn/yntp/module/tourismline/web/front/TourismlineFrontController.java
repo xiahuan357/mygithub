@@ -1,0 +1,168 @@
+package com.yn.yntp.module.tourismline.web.front;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.tuple.Triple;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yn.yntp.common.entity.pagination.PaginationResult;
+import com.yn.yntp.common.entity.response.ServiceResponse;
+import com.yn.yntp.common.entity.search.ClientOperation;
+import com.yn.yntp.common.entity.search.QueryConstants;
+import com.yn.yntp.common.persistence.search.SearchCommonUtil;
+import com.yn.yntp.common.tool.Reflections;
+import com.yn.yntp.common.web.controller.BaseQueryController;
+import com.yn.yntp.common.web.controller.upload.BaseImageUploadController;
+import com.yn.yntp.module.region.entity.RegionEntity;
+import com.yn.yntp.module.region.service.RegionService;
+import com.yn.yntp.module.tourismline.entity.TourismlineDirectorEntity;
+import com.yn.yntp.module.tourismline.entity.TourismlineEntity;
+
+/**
+ * 
+ * @Title: TourismController.java 
+ * @Package com.yn.yntp.module.tourism.web 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author liucc    
+ * @date 2014年11月22日 下午3:40:39 
+ * @version V1.0 
+ */
+
+@Controller
+@RequestMapping("/front/tourismline/tourismline")
+public class TourismlineFrontController extends BaseQueryController<TourismlineEntity,Long>{
+
+  @Autowired
+  private RegionService regionService;
+  
+  // 地址的缓存
+  private Map<String, String> regionMap = new HashMap<String, String>();
+
+  //------------------------------ 普通查询 ----------------------------------
+  /**
+   * 查询满足给定查询条件的信息。
+   * 
+   * @param queryString
+   * @return
+   */
+  @RequestMapping(value = "/frontshow/search", params = {QueryConstants.Q_PARAM}, method = RequestMethod.GET)
+  @ResponseBody
+  public Object searchAll(Model model, @RequestParam(QueryConstants.Q_PARAM) final String queryString) {
+
+    ServiceResponse<List<TourismlineDirectorEntity>> ret = new ServiceResponse<List<TourismlineDirectorEntity>>();
+
+    List<Triple<String, ClientOperation, String>> parsedQuery = null;
+    parsedQuery = SearchCommonUtil.parseQueryString(queryString);
+
+    if (null == parsedQuery) {
+      parsedQuery = new ArrayList<Triple<String, ClientOperation, String>>();
+    }
+    
+    List<TourismlineEntity> queryResultList = getBaseService().query(parsedQuery);
+    List<TourismlineDirectorEntity> rtnResultList = directorQueryResult(queryResultList);
+    
+    ret.setData(rtnResultList);
+    return ret;
+  }
+
+  //------------------------------ 分页查询 ----------------------------------
+  /**
+   * 按页查询给定查询条件的信息。
+   * 
+   * @param queryString
+   * @param page
+   * @param size
+   * @return
+   */
+  @RequestMapping(value = "/frontshow/pagesearch",params = {QueryConstants.Q_PARAM, QueryConstants.START, QueryConstants.SIZE}, method = RequestMethod.GET)
+  @ResponseBody
+  public Object searchAllPaginated(Model model, 
+      @RequestParam(QueryConstants.Q_PARAM) final String queryString,
+      @RequestParam(value = QueryConstants.START) final int start,
+      @RequestParam(value = QueryConstants.SIZE) final int size,
+      HttpServletRequest request) {
+
+     ServiceResponse<PaginationResult<TourismlineDirectorEntity>> ret = new ServiceResponse<PaginationResult<TourismlineDirectorEntity>>();
+
+    List<Triple<String, ClientOperation, String>> parsedQuery = null;
+    parsedQuery = SearchCommonUtil.parseQueryString(queryString);
+    if (null == parsedQuery) {
+      parsedQuery = new ArrayList<Triple<String, ClientOperation, String>>();
+    }
+
+    PaginationResult queryResultPagination = getBaseService().query(start, size, parsedQuery);
+    List<TourismlineEntity> queryResultList = queryResultPagination.getItems();
+    List<TourismlineDirectorEntity> rtnResultList = directorQueryResult(queryResultList);
+    ret.setData(new PaginationResult<TourismlineDirectorEntity>(rtnResultList, queryResultPagination.getTotalItemNum(), size, start));
+    return ret;
+  }
+
+  /**
+   * 装饰结果数据，用于前台显示
+   * 
+   * @param queryResultList
+   * @return
+   */
+  private List<TourismlineDirectorEntity> directorQueryResult(List<TourismlineEntity> queryResultList) {
+    List<TourismlineDirectorEntity> rtnResultList = new ArrayList<TourismlineDirectorEntity>();
+    if(queryResultList!=null && !queryResultList.isEmpty()){
+      for(TourismlineEntity tourismlineEntity : queryResultList){
+        TourismlineDirectorEntity tourismlineDirectorEntity = new TourismlineDirectorEntity();
+        try {
+          Reflections.fatherToChild(tourismlineEntity, tourismlineDirectorEntity);
+        } catch (Exception e) {
+          System.out.print(e);
+        }
+        // 设置封面图片
+        tourismlineDirectorEntity.setCoverimagename(
+            BaseImageUploadController.projectBase+BaseImageUploadController.uploadPath+tourismlineEntity.getImagelibrarykey()
+            +"/"+tourismlineEntity.getCoverimagename());
+        
+        // 设置出发城市
+        String startCityIds = tourismlineEntity.getStart_city_id();
+        String[] startCityIdArray = startCityIds.split("-");
+        String startCityName = "";
+        for(String region : startCityIdArray){
+         String regionName = getRegionById(region);
+         startCityName += regionName;
+        }
+        tourismlineDirectorEntity.setStartCityName(startCityName);
+        
+        rtnResultList.add(tourismlineDirectorEntity);
+      }
+    }
+    return rtnResultList;
+  }
+  
+  
+  /**
+   *  根据id查找区域名称
+   * 
+   * @param regionId
+   * @return
+   */
+  private String getRegionById(String regionId){
+    if (regionMap.containsKey(regionId)) {
+      return regionMap.get(regionId);
+    } else {
+      RegionEntity regionEntity = regionService.queryById(Long.valueOf(regionId));
+      if(regionEntity!= null){
+        regionMap.put(regionId, regionEntity.getName());
+        return regionEntity.getName();
+      }
+    }
+    return "";
+  }
+}

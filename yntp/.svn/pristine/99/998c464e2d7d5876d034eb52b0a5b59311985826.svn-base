@@ -1,0 +1,24 @@
+package com.yn.yntp.module.message.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.yn.yntp.common.web.controller.BaseCRUDController;
+import com.yn.yntp.module.message.entity.MessageEntity;
+
+/**
+ * 
+ * @Title: MessageController.java 
+ * @Package com.yn.yntp.module.message.web 
+ * @Description: 系统消息 
+ *
+ * @author liucc    
+ * @date 2015年1月27日 下午8:15:49 
+ * @version V1.0 
+ */
+
+@Controller
+@RequestMapping("/admin/message")
+public class MessageController extends BaseCRUDController<MessageEntity, Long> {
+
+}

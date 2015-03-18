@@ -1,0 +1,144 @@
+.layout_content{
+	width:1088px;
+	margin : 0 auto;
+	min-height: 800px;
+	overflow:hidden;
+}
+#banner{
+	width:1088px;
+	margin : 0 auto;
+}
+.home_doc_width {
+	width: 1088px;
+}
+.subpage_content {
+	width: 850px;
+}
+.center_content{
+	width:600px;
+}
+.top_bar {
+	display: inline;
+	float: left;
+	margin: 15px 0 0 0;
+	width: 100%;
+}
+.right_column {
+	float: right;
+	width: 224px;
+	margin:0 3px -32767px 0;
+	padding-bottom:32767px;
+	
+}
+.subpage_content {
+	display: inline;
+	float: left;
+	margin: 10px 0 0 3px;
+}
+.doc_content {
+	float: left;
+	width: 614px;
+	margin-left: 1.2%;
+	margin-bottom:-32767px;
+	padding-bottom:32767px;
+}
+.floatrelated {
+	position: relative;
+}
+
+.floatcenter {
+	float: none;
+	margin: 0 auto;
+}
+/*内容*/
+.page_content {
+	float: left;
+	width: 100%;
+	z-index: 1;
+}
+
+.idContentPosi {
+	min-height: 750px;
+}
+.w_1024px {
+	float: none;
+	margin: 0 auto;
+}
+.bg_gray_shadow_wide {
+	background: url("../img/bg_gray_shadow.png") no-repeat scroll center
+		84px transparent;
+}
+.center_content {
+	/* border-top: 1px solid #DBDBDB; */
+	display: inline;
+	line-height: 30px;
+	margin-left: 4px;
+	padding-left: 2px;
+	width: 824px;
+}
+
+
+
+.side_column {
+	float: left;
+	margin: 0px 0px 10px 0;
+	width: 223px;
+	margin-bottom:-32767px;
+	padding-bottom:32767px;
+}
+/*导航栏右侧区域*/
+.module_nav {
+	position: absolute;
+	right: 280px;
+	top: 160px;
+	display: none;
+}
+/*商品详细页面 图片展示组件*/
+.product_picturedisplay {
+	margin-left: 10px;
+	/* margin-top: -400px; */
+	position: relative;
+	float: left;
+}
+
+.product_tab {
+	margin-top: 20px;
+}
+
+.loading {
+	width:150px;
+	height:150px;
+	margin: 0 auto;
+	background: url("../img/loading.gif") no-repeat 50% 50% scroll transparent;
+}
+
+.sloading {
+	width:100px;
+	height:100px;
+	margin: 0 auto;
+	background: url("../img/loading.gif") no-repeat 50% 50% scroll transparent;
+}
+.mobilenav{
+	display: none;
+}
+@media only screen and (max-width:800px){
+}
+@media only screen and (max-width:640px){
+	.top_bar
+	{
+		display: none;
+	}
+	.subpage_content{
+		width: 320px;
+		margin: 0px;
+	}
+	.layout_content{
+		width: 100%;
+	}
+	.mobilenav{
+		display: block;
+	}
+	.subpage_content iframe{
+		margin-top: -30px;
+	}
+}

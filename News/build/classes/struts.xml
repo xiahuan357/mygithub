@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">  
+     <struts>  
+    <constant name="struts.action.extension" value="action"/>
+    <constant name="struts.i18n.encoding" value="utf-8"/>
+    <constant name="struts.custom.i18n.resources" value="application"/>
+    <constant name="struts.objectFactory" value="spring"></constant>  
+    <constant name="struts.devMode" value="true"></constant>
+    <package name="news" extends="json-default">
+    <action name="backgroundlogin" class="com.news.web.LoginAction" method="userlogin">
+    <result name="success" type="json">
+    <param name="user">user<!-- result是action中设置的变量名，也是页面需要返回的数据，该变量必须有setter和getter方法 --></param>
+    </result>
+    </action>
+     <action name="backgroundlogininfo" class="com.news.user.struts.action" method="getuserinfo">
+    </action>
+    <action name="addnewstype" class="com.news.web.AddNewsTypeAction" method="addnewstype">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+     <action name="querynewstype" class="com.news.web.QueryNewsTypeAction" method="queryNewsType">
+     <result name="newstype" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+     <action name="deletenewstype" class="com.news.web.DeleteNewsTypeAction" method="deletenewstype">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="deletenews" class="com.news.web.DeleteNewsAction" method="deletenews">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="updatenewstype" class="com.news.web.UpdateNewsTypeAction" method="updatenewstype">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+      <action name="updatenews" class="com.news.web.UpdateNewsAction" method="updatenews">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="gettypeselect" class="com.news.web.GetTypeSelectAction" method="gettypeselect">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="modnewstype" class="com.news.web.ModNewsTypeAction" method="modnewstype">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="updatenewsstatus" class="com.news.web.UpdateNewsStatusAction" method="updatenewsstatus">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+     <action name="updateposition" class="com.news.user.struts.action.UpdatePositionAction" method="updateposition">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="updatedepartment" class="com.news.user.struts.action.UpdateDepartmentAction" method="updatedepartment">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+      <action name="registeruser" class="com.news.user.struts.action.AddUserAction" method="adduser">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+     <action name="querynewstitle" class="com.news.web.QueryNewsTitleAction" method="querynewstitle">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+     <action name="queryindexnewstitle" class="com.news.web.QueryIndexNewsTitleAction" method="queryindexnewstitle">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+      <action name="querynews" class="com.news.web.QueryNewsAction" method="querynews">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="queryuser" class="com.news.user.struts.action.QueryUserAction" method="queryuser">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="getuserinfo" class="com.news.user.struts.action.GetUserInfoAction" method="frontgetuserinfo">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="querynewsstatus" class="com.news.web.QueryNewsStatusAction" method="querynewsstatus">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+     <action name="addnews" class="com.news.web.AddNewsAction" method="addnews">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="getfilekey" class="com.news.image.web.GetFileKeyAction" method="getFileKey">
+    <result name="success" type="json">
+    <param name="attr">ret</param>
+    </result>
+    </action>
+    <action name="ueditorupload" class="com.news.common.util.UeditorUploadAction" method="ueditorupload">
+    <result name="success">
+    <param name="attr">retMap</param>
+    </result>
+    </action>
+    <action name="clearimage" class="com.news.image.web.ClearImageAction" method="clearImageMap"></action>
+    <action name="createcanceldeleteimage" class="com.news.web.CreatCancelDeleteImageAction" method="createCancelDeleteImage">
+    </action>
+     <action name="updatecanceldeleteimage" class="com.news.web.UpdateCancelDeleteImageAction" method="updateCancelDeleteImage">
+    </action>
+     <action name="uploadimage" class="com.news.image.web.CopyOfFileUploadAction" >
+           <result type="json" name="success">
+          <param name="contentType">text/html</param>
+         </result>
+         <result type="json" name="error">
+          <param name="contentType">text/html</param>
+         </result>
+        </action>
+    
+    </package>
+    </struts>  

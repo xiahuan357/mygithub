@@ -1,0 +1,209 @@
+package com.yn.yntp.module.product.web;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yn.yntp.common.entity.response.ServiceResponse;
+import com.yn.yntp.common.entity.search.ClientOperation;
+import com.yn.yntp.common.validate.ReturnInfo;
+import com.yn.yntp.common.web.controller.BaseCRUDController;
+import com.yn.yntp.common.web.vo.TreeTableOptionVO;
+import com.yn.yntp.module.product.entity.ProductTypeEntity;
+import com.yn.yntp.module.product.service.ProductTypeService;
+
+/**
+ * 
+ * @Title: ProductTypeController.java 
+ * @Package com.yn.yntp.module.special.web 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author jiqr    
+ * @date 2014年12月9日 下午2:43:53 
+ * @version V1.0 
+ */
+
+@Controller
+@RequestMapping("/admin/product/producttype")
+public class ProductTypeController extends BaseCRUDController<ProductTypeEntity, Long> {
+
+  // 获取商品分类的最大层数
+  @Value(value = "${module.product.maxlevel}")
+  public Integer typeMaxlevel;
+  
+  private ProductTypeService getProductTypeService() {
+    return (ProductTypeService) getBaseService();
+  }
+
+  /**
+   * 商品分类最大层数
+   * 
+   * @param request
+   * @param response
+   * @return
+   */
+  @RequestMapping(value = "/typemaxlevel", method = RequestMethod.GET)
+  @ResponseBody
+  public Integer typeMaxlevel(HttpServletRequest request, HttpServletResponse response){
+      return typeMaxlevel == null ? 5 : typeMaxlevel;
+  }
+  
+  /**
+   * 根据层数查询商品分类，返回树表所需数据
+   * 
+   * @param model
+   * @param level
+   * @return
+   */
+  @RequestMapping(value = "level/{level}/producttype",method = RequestMethod.GET)
+  @ResponseBody
+  public Object getProductTreeTableVOByLevel(Model model, @PathVariable("level") final Integer level){
+    ServiceResponse<List<TreeTableOptionVO>> ret = new ServiceResponse<List<TreeTableOptionVO>>();
+    // 查询出数据
+    List<Triple<String, ClientOperation, String>> parsedQuery =  new ArrayList<Triple<String, ClientOperation, String>>();
+    parsedQuery.add(new ImmutableTriple<String, ClientOperation, String>("level", ClientOperation.EQ, String.valueOf(level)));
+    
+    List<ProductTypeEntity> resultList = getProductTypeService().query(parsedQuery);
+    if(resultList == null || resultList.isEmpty()){
+      ret.setRetmsg("没有查询到数据");
+      return ret;
+    }
+    // 构建所需的树表数据结构
+    List<TreeTableOptionVO> treeTableVOList = buildTreeTableVOList(resultList);
+    ret.setData(treeTableVOList);
+    return ret;
+  }
+  
+  /**
+   * 根据父亲id查询子商品分类，返回树表所需数据
+   * 
+   * @param model
+   * @param parentid
+   * @return
+   */
+  @RequestMapping(value = "parentid/{parentid}/producttype",method = RequestMethod.GET)
+  @ResponseBody
+  public Object getProductTreeTableVOByParentId(Model model, @PathVariable("parentid") final Integer parentid){
+    ServiceResponse<List<TreeTableOptionVO>> ret = new ServiceResponse<List<TreeTableOptionVO>>();
+    // 查询出数据
+    List<Triple<String, ClientOperation, String>> parsedQuery =  new ArrayList<Triple<String, ClientOperation, String>>();
+    parsedQuery.add(new ImmutableTriple<String, ClientOperation, String>("parent_id", ClientOperation.EQ, String.valueOf(parentid)));
+    
+    List<ProductTypeEntity> resultList = getProductTypeService().query(parsedQuery);
+    if(resultList == null || resultList.isEmpty()){
+      ret.setRetmsg("没有查询到数据");
+      return ret;
+    }
+    
+    // 构建所需的树表数据结构
+    List<TreeTableOptionVO> treeTableVOList = buildTreeTableVOList(resultList);
+    ret.setData(treeTableVOList);
+    return ret;
+  }
+
+  /**
+   * 新增一个资源。
+   * 
+   * @param resource
+   */
+  @RequestMapping(value = "/treetable/create",method = RequestMethod.POST)
+  @ResponseBody
+  public Object create(Model model, @Valid @ModelAttribute final ProductTypeEntity resource,BindingResult result) {
+    ServiceResponse<Object> ret = new ServiceResponse<Object>();
+    ret = (ServiceResponse<Object>) super.create(model, resource, result);
+    // 新增分类后，需要返回id，因为要立马更新
+    ret.setData(buildTreeTableVO(resource));
+    return ret;
+  }
+
+  /**
+   * 更新资源。
+   * 
+   * @param id
+   * @param resource
+   */
+  @RequestMapping(value = "/treetable/update/{id}", method = RequestMethod.POST)
+  @ResponseBody
+  public Object update(Model model, @PathVariable("id") final Long id,
+      @Valid @ModelAttribute final ProductTypeEntity resource) {
+    ServiceResponse<Object> ret = new ServiceResponse<Object>();
+    
+    // 1 更新前校验是否有错
+    getDefaultValidate().setEntity(resource);
+    ReturnInfo validate = getDefaultValidate().validateUpdate();
+    if (validate != null && Boolean.FALSE == validate.getFlag()) {
+      ret.setRetcode("100000");
+      ret.setRetmsg(validate.getMsg());
+      return ret;
+    }
+    
+    List<Triple<String, ClientOperation, String>> parsedQuery = new ArrayList<Triple<String, ClientOperation, String>>();
+    parsedQuery.add(new ImmutableTriple<String, ClientOperation, String>("id", ClientOperation.EQ, String.valueOf(resource.getId())));
+
+    Map<String, Object> filedNameMap = new HashMap<String, Object>();
+    filedNameMap.put("name", resource.getName());
+
+    // 2 保存对象
+    getBaseService().update(filedNameMap,parsedQuery);
+    return ret;
+  }
+  
+  
+  /**
+   * 将数据库数据转化为需要的树表数据列表
+   * 
+   * @param resultList
+   * @return
+   */
+  private List<TreeTableOptionVO> buildTreeTableVOList(
+      List<ProductTypeEntity> resultList) {
+    // 构造TreeTableVO
+    List<TreeTableOptionVO> treeTableVOList = new ArrayList<TreeTableOptionVO>();
+    for(ProductTypeEntity productTypeEntity : resultList ){
+      TreeTableOptionVO treeTableOptionVO = buildTreeTableVO(productTypeEntity);
+      
+      treeTableVOList.add(treeTableOptionVO);
+    }
+    return treeTableVOList;
+  }
+
+  /**
+   * 将数据转化为需要的实体
+   * 
+   * @param productTypeEntity
+   * @return
+   */
+  private TreeTableOptionVO buildTreeTableVO(ProductTypeEntity productTypeEntity) {
+    TreeTableOptionVO treeTableOptionVO = new TreeTableOptionVO();
+    treeTableOptionVO.setId(productTypeEntity.getId());
+    treeTableOptionVO.setPid(productTypeEntity.getParent_id() == 0 ? null : productTypeEntity.getParent_id());
+    treeTableOptionVO.setIsLeaf(false);
+    // 节点数据
+    Map dataObject = new HashMap<String, Object>();
+    dataObject.put("typename", productTypeEntity.getName());
+    treeTableOptionVO.setDataObject(dataObject );
+    // 自定义数据
+    Map userObject = new HashMap<String, Object>();
+    userObject.put("level", productTypeEntity.getLevel());
+    treeTableOptionVO.setUserObject(userObject);
+    return treeTableOptionVO;
+  }
+  
+}

@@ -1,0 +1,87 @@
+/**
+ * Statistics 区域
+ */
+define(function(require, exports, module)
+{
+    var $ = require("$");
+    var nav = require("bootstrap_nav");
+    exports.init = function(param)
+    {
+        var template = ' <div class="span4 box">'+
+                       ' <div class="box-header">'+
+                       ' <div class="title '+ param.attrs.bHeader.colorClass +' ">'+
+                       ' <i class="'+param.attrs.bHeader.bIcon+'"></i>'+
+                       param.attrs.bHeader.bTitle+
+                       ' </div></div>'+
+                       ' <div class="row-fluid">'+
+                       ' <div class="span12">';
+       
+        var bBodys = param.attrs.bBody;
+        for (var i = 0; i < bBodys.length; i++)
+        {
+            template += initBBodyHtml(bBodys[i], param.daterange);
+        }
+
+        template += ' </div></div></div>';
+        $("#" + param.appendDivId).append(template);
+        //$("#" + param.appendDivId).addClass('offset1');
+    };
+    var initBBodyHtml = function(bBody,daterange)
+    {
+        var bBodyHtml = '<div style="cursor:pointer;" class="box-content box-statistic conBody" url="'+bBody.url+
+                        '"><h3 class="title '+bBody.clolorClass+'">'+
+                        getTotal(bBody.dataUrl, bBody.data, daterange) +
+                        '</h3><small>'+bBody.title+'</small>'+
+                        '<div class="'+bBody.clolorClass+' '+bBody.icon+' align-right"></div></div>';
+        return bBodyHtml;
+    };
+
+    var getTotal = function(url, data, daterange)
+    {
+    	var paramutil = require('queryparamutil');
+		var dateparam = paramutil.getDateParam(daterange);
+		var param = data;
+		param = paramutil.addParam(param, dateparam);
+		
+        var total = 0;
+//        $.ajax(
+//        {
+//            url : url,
+//            data : param,
+//            dataType : "json",
+//            async : false,
+//            contentType : "application/json; charset=utf-8",
+//            success : function(res)
+//            {
+//            	if(res && res.flag == '000000'){
+//            		total = res.data;
+//            	}else{
+//            		total = 0;
+//            	}
+//            },
+//            error : function(XMLHttpRequest, textStatus, errorThrown) {
+//				bootbox.alertTimeout(textStatus);
+//			}
+//        });
+        return total;
+    };
+ 
+    exports.initEvent = function()
+    {
+        $(".conBody").on("click", function()
+        {
+        	// 获取所点击的页签名称
+        	var seltext = $(this).find(" small").text();
+        	if('今日新增'== seltext){
+        		seltext =  $(this).parent().parent().prev().first().text();
+        	}
+        	seltext = $.trim(seltext);
+        	
+        	$('#desktop_goto_tab').val(seltext);
+        	
+            var url = $(this).attr("url");
+            nav.toPageView(url);
+        });
+    }; 
+ 
+}); 

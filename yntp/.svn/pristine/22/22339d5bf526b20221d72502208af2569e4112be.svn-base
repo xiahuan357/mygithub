@@ -1,0 +1,147 @@
+/**
+ * 产品分类选择框
+ */
+define(function(require, exports, module)
+{
+    var $ = require("$");
+    var ModalDialog = require('modaldialog');
+	var TreeTableCom = require("treetable");
+    var dialogId = 'dialogform_modal';
+    var productTypeId = 'productTypeComponent';
+    var triggerElementId = "";
+   
+	var querybylevel =  GLOBAL.BASE + "admin/product/producttype/level/1/producttype";
+	var querybyparentid =  GLOBAL.BASE + "admin/product/producttype/parentid/";
+	
+    //触发元素
+    //初始化窗口
+    exports.init = function(param)
+    {
+        var initCustAttr = function()
+        {
+            // 初始化值组件Id
+            dialogId = 'dialogform_modal';
+            productTypeId = 'productTypeComponent';
+
+            // 是否传入对话框id
+            var customdialogId = param.attrs.dialogId;
+            dialogId = typeof (customdialogId) == "undefined" || customdialogId == null ? dialogId : customdialogId;
+            
+            // 是否显示对话框footer,默认不显示
+            var isshowfooter = param.attrs.isshowfooter;
+            param.attrs.isshowfooter = typeof (isshowfooter) == "undefined" || isshowfooter == null ? false : isshowfooter;
+        };
+        initCustAttr();
+        var Component = new ModalDialog(
+        {
+            attrs :
+            {
+                id : dialogId,
+                title : param.attrs.title,
+                isshowfooter : param.attrs.isshowfooter,
+                items : [
+                {
+                    isDiv : true,
+                    id : productTypeId,
+                }]
+            },
+            renderTo : param.attrs.divWrapperId,
+            afterRender : function() {
+				$('#' + dialogId).modal('hide');
+				var productType = $('#' + productTypeId);
+				triggerElementId = param.attrs.triggerElementId;
+				// 初始时的值
+		    	var oldValue = $("#" + triggerElementId).attr("value");
+		    	// 初始时的Val
+		    	var oldVal = $("#" + triggerElementId).attr("val");
+				// 获得展开下级的数据
+				var getExpandNodeData = function(node) {
+					var parentid = node.id;
+					var lastdata = null;
+					$.ajax({
+						async : false,
+						type : "GET",
+						dataType : 'json',
+						contentType : "application/json;charset=UTF-8",
+						url : querybyparentid + parentid + "/producttype",
+						success : function(resultdata) {
+							if ('000000' != resultdata.flag) {
+								bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+								lastdata = null; // 查询出错
+							} else {
+								var receiptList = resultdata.data;
+								lastdata = receiptList;
+							}
+						},
+						error : function(resultdata) {
+							bootbox.alertTimeout('查询数据出现错误，请重试！');
+						}
+					});
+					return lastdata;
+				}
+				
+				var onSelectNodeEvents = function(selectnodes,allSelectnodes,tree){
+					if(selectnodes ==  null || selectnodes.length == 0)
+						return;
+					var currentNodeId = selectnodes[0].id;
+					var currentNodeName = selectnodes[0].dataObject.typename;
+					
+					$("#" + triggerElementId).attr("val", currentNodeId);
+					$("#" + triggerElementId).attr("value", currentNodeName);
+					 // 使控件失去焦点，以进行表单校验（Validate）
+                    $("#" + triggerElementId).blur();
+				}
+
+				var treetable = new TreeTableCom({
+					attrs : {
+						treetableWrapperDiv : productTypeId,
+						treetableid : "treetable_producttype",
+						initnodequeryurl : querybylevel,
+						getExpandNodeData : getExpandNodeData,
+						onSelectNodeEvents : onSelectNodeEvents,
+						// 列名
+						FIFAHeadersColumns : [ {
+							dataIndex : 'typename'
+						} ], 
+						// 数据映射
+						FIFAHeadersDataObject : {
+							typename : '类型名称',
+						},
+						GirdTreeColumns : [ {
+							isNodeClick : true,
+							dataIndex : 'typename',
+							width : '100%'
+						} ],
+					}
+				});
+				$('#btndialogsave').die().on('click', function() {
+					var currentSelectedNode = treetable.getSelectedNode();
+					var currentNodeId = currentSelectedNode.id;
+					var currentNodeName = currentSelectedNode.dataObject.typename;
+					
+					$("#" + triggerElementId).attr("val", currentNodeId);
+					$("#" + triggerElementId).attr("value", currentNodeName);
+					$('#btndialogsave').attr("data-dismiss","modal"); 
+				});
+				
+				$('#btndialogcancel').die().on('click', function() {
+					$("#" + triggerElementId).attr("val", oldVal);
+					$("#" + triggerElementId).attr("value", oldValue);
+					$('#btndialogcancel').attr("data-dismiss","modal"); 
+				});
+			}
+		});
+        return Component;
+    };
+
+    exports.reload = function(e)
+    {
+        $('#' + dialogId).modal('show');
+    };
+
+    //窗口显示
+    exports.show = function(data)
+    {
+        $('#' + dialogId).modal('show');
+    };
+});

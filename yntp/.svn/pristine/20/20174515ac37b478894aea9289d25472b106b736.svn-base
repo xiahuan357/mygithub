@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>商户审核状态</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+	data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+</head>
+
+<body class='contrast-blue'>
+	<div class='span12' style="margin-left: 0">
+
+		<div class='row-fluid'>
+			<div class='span12' style="height: 37px">
+				<div class=''>
+					<h6 class='pull-left'><span>
+							商户审核状态</span>
+					</h6>
+				</div>
+
+			</div>
+		</div>
+
+		<hr class=" " style="margin:5px 0;margin-left:-20px;margin-right:-20px">
+
+		<div style="padding: 5px"></div>
+
+		<div class='box bordered-box ' style='margin-bottom: 0;' id="dataForm">
+			<div class='box-content box-no-padding'>
+				<div class='responsive-table'>
+					<div id='basearchive_table'></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+		seajs.use('biz_business_approvestatus', function(ArchiveInstance) {
+			ArchiveInstance.init();
+		});
+	</script>
+</html>

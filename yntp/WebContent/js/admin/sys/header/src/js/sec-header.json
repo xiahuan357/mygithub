@@ -1,0 +1,23 @@
+[
+  {"liclass":"la", "iclass":"icon-user", "name":"用户中心", "ulclass":"ua", "children":[
+    {"url":"admin/sys/admin/sys_admin_form.html", "name":"修改信息"},
+    {"url":"admin/sys/admin/sys_admin_modifypassword.html", "name":"修改密码"},
+  ]},
+  
+  {"liclass":"lb", "iclass":"icon-keyboard", "name":"文章模块", "ulclass":"ub", "children":[
+    {"url":"admin/sys/nationalfeature/sys_national_feature_table.html", "name":"民族特色"},
+  ]},
+  
+  {"liclass":"lc", "iclass":"icon-cog", "name":"基础模块", "ulclass":"uc", "children":[
+    {"url":"admin/sys/region/sys_region_fir.html", "name":"地区库"},
+    {"url":"admin/sys/product/sys_product_type_treetable.html", "name":"产品类型"},
+  ]},
+  
+  {"liclass":"ld", "iclass":"icon-cogs", "name":"系统管理", "ulclass":"ud", "children":[
+    /*{"url":"admin/sys/resource/sys_resource_table.html", "name":"资源管理"},*/
+    /*{"url":"admin/sys/role/sys_role_table.html", "name":"角色管理"},*/
+    {"url":"admin/sys/admin/sys_admin_table.html", "name":"管理员列表"},
+    {"url":"admin/sys/business/sys_business_approve.html", "name":"商家列表"},
+      {"url":"admin/sys/user/sys_user_table.html", "name":"普通用户"},
+  ]},
+]

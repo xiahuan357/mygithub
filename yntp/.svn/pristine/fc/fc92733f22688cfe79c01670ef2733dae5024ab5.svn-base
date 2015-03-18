@@ -1,0 +1,4 @@
+ [
+ 	{"url":"admin/customer/business/baseinfo/biz_business_securityinfo_form.html","icon":"icon-edit","name":"安全设置","id":"menu_security"},
+ 	{"url":"admin/customer/business/baseinfo/biz_business_approvestatus.html","icon":"icon-retweet","name":"商户审核","id":"menu_approveresult"},
+]

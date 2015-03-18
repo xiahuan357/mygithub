@@ -1,0 +1,146 @@
+package com.yn.yntp.common.persistence.service;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.tuple.Triple;
+import org.hibernate.type.BasicType;
+
+import com.yn.yntp.common.entity.AbstractEntity;
+import com.yn.yntp.common.entity.pagination.PaginationResult;
+import com.yn.yntp.common.entity.search.ClientOperation;
+
+/**
+ * 
+ * @Title: IBaseService.java
+ * @Package com.yn.yntp.common.service
+ * @Description: 常用方法接口
+ *
+ * @author liucc
+ * @date 2014年11月21日 下午4:28:50
+ * @version V1.0
+ */
+
+public interface IBaseService<M extends AbstractEntity, ID extends Serializable> {
+  /**
+   * 查询所有
+   * 
+   * @return
+   */
+  List<M> queryAll();
+
+  /**
+   * 根据id集合查询
+   * 
+   * @param ids
+   * @return
+   */
+  List<M> queryByIds(List<ID> ids);
+
+  /**
+   * 根据id查单个
+   * 
+   * @param id
+   * @return
+   */
+  M queryById(ID id);
+
+  /**
+   * 根据条件三元组查询符合条件的数目
+   * 
+   * @param parsedQuery
+   * @return
+   */
+  Integer queryCount(List<Triple<String, ClientOperation, String>> parsedQuery);
+  
+  /**
+   * 根据条件三元组查询，查询所有字段
+   * 
+   * @param parsedQuery
+   * @return
+   */
+  List<M> query(List<Triple<String, ClientOperation, String>> parsedQuery);
+ 
+  /**
+   * 根据条件三元组查询，查询指定字段
+   * 
+   * @param filedNameList
+   * @param parsedQuery
+   * @return
+   */
+  List<M> query(Map<String, BasicType> filedNameMap,List<Triple<String, ClientOperation, String>> parsedQuery);
+  
+  /**
+   * 分页查询，查询所有字段
+   * 
+   * @param start
+   * @param size
+   * @param parsedQuery
+   * @return
+   */
+  PaginationResult<M> query(int start, int size,
+      List<Triple<String, ClientOperation, String>> parsedQuery);
+  
+  /**
+   * 分页查询，查询所指定字段
+   * 
+   * @param start
+   * @param size
+   * @param filedNameMap
+   * @param parsedQuery
+   * @return
+   */
+  PaginationResult<M> query(int start, int size,
+      Map<String,BasicType> filedNameMap,List<Triple<String, ClientOperation, String>> parsedQuery);
+  
+  /**
+   * 插入单个实体
+   * 
+   * @param entity
+   */
+  void insert(M entity);
+
+  /**
+   * 插入实体集合
+   * 
+   * @param entityList
+   */
+  void insert(List<M> entityList);
+
+  /**
+   * 跟新单个实体
+   * 
+   * @param entity
+   */
+  void update(M entity);
+  
+  /**
+   * 更新实体集合
+   * 
+   * @param entityList
+   */
+  void update(List<M> entityList);
+  
+  /**
+   * 更新单个实体的指定字段
+   * 
+   * @param filedNameMap
+   * @param parsedQuery
+   */
+  void update(Map<String,Object> filedNameMap,List<Triple<String, ClientOperation, String>> parsedQuery);
+
+  /**
+   * 根据id删除
+   * 
+   * @param ids
+   */
+  void delete(List<ID> ids);
+
+  /**
+   * 根据id删除
+   * 
+   * @param ids
+   */
+  void delete(ID[] ids);
+}

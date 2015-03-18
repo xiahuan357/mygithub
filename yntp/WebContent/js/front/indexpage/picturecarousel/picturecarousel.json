@@ -1,0 +1,27 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "firstImg",
+            "active": true,
+            "index": "1",
+            "src": "/yntp/upload/image/carousel/u=282015605,1868230442&fm=23&gp=0.jpg",
+            "alt": "山清水秀",
+            "caption": "山清水秀"
+        },
+        {
+        	"id" : "secondImg",
+            "index": "2",
+            "src": "/yntp/upload/image/carousel/u=1381722317,162468801&fm=21&gp=0.jpg",
+            "alt": "魅力石林",
+            "caption": "魅力石林"
+        },
+        {
+        	"id" : "thirdImg",
+            "index": "3",
+            "src": "/yntp/upload/image/carousel/u=3687694451,3864553300&fm=23&gp=0.jpg",
+            "alt": "山清水秀",
+            "caption": "蓝天白云"
+        }
+    ]
+}
