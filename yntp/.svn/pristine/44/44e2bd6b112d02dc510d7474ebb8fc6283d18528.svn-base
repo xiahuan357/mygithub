@@ -1,0 +1,27 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "firstImg",
+            "active": true,
+            "index": "1",
+            "src": "/yntp/upload/image/carousel/f20141229083751148789-tl.jpg",
+            "alt": "蜜月久久",
+            "caption": "蜜月久久"
+        },
+        {
+        	"id" : "secondImg",
+            "index": "2",
+            "src": "/yntp/upload/image/carousel/f20141229083804175351-tl.jpg",
+            "alt": "温泉之都",
+            "caption": "温泉之都"
+        },
+        {
+        	"id" : "thirdImg",
+            "index": "3",
+            "src": "/yntp/upload/image/carousel/f20141229091357119175-tl.jpg",
+            "alt": "最美三亚",
+            "caption": "蓝天白云"
+        }
+    ]
+}

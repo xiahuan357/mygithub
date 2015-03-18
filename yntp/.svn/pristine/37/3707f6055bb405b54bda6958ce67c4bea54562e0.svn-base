@@ -1,0 +1,22 @@
+package com.yn.yntp.module.equipment.validate;
+
+import org.springframework.stereotype.Component;
+
+import com.yn.yntp.common.validate.DefaultValidate;
+import com.yn.yntp.module.equipment.entity.EquipmentEntity;
+
+/**
+ * 
+ * 
+ * @Title: EquipmentTypeValidate.java 
+ * @Package com.yn.yntp.module.equipment.validate 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author cuilz    
+ * @date 2014年11月24日 下午6:40:24 
+ * @version V1.0
+ */
+@Component
+public class EquipmentValidate extends DefaultValidate<EquipmentEntity,Long> {
+
+}

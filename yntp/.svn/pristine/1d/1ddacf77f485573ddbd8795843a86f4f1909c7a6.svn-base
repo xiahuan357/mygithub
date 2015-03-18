@@ -1,0 +1,27 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "firstImg",
+            "active": true,
+            "index": "1",
+            "src": "/yntp/upload/image/carousel/f20141229085921138507-sc.jpg",
+            "alt": "旅游景点",
+            "caption": "旅游景点"
+        },
+        {
+        	"id" : "secondImg",
+            "index": "2",
+            "src": "/yntp/upload/image/carousel/f20141229085947166664-sc.jpg",
+            "alt": "旅游景点",
+            "caption": "旅游景点"
+        },
+        {
+        	"id" : "thirdImg",
+            "index": "3",
+            "src": "/yntp/upload/image/carousel/f20141229085931124910-sc.jpg",
+            "alt": "旅游景点",
+            "caption": "旅游景点"
+        }
+    ]
+}

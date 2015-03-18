@@ -1,0 +1,22 @@
+package com.yn.yntp.module.hotel.validate;
+
+import org.springframework.stereotype.Component;
+
+import com.yn.yntp.common.validate.DefaultValidate;
+import com.yn.yntp.module.hotel.entity.HotelEntity;
+
+/**
+ * 
+ * @Title: HotelValidate.java
+ * @Package com.yn.yntp.module.hotel.validate
+ * @Description: TODO(用一句话描述该文件做什么)
+ *
+ * @author liucc
+ * @date 2015年1月16日 下午2:44:38
+ * @version V1.0
+ */
+
+@Component
+public class HotelValidate extends DefaultValidate<HotelEntity, Long> {
+
+}

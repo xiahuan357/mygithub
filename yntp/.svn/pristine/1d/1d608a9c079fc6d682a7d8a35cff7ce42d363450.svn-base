@@ -1,0 +1,67 @@
+/**
+ * 热销景点-列表构建
+ */
+define(function(require, exports, module) {
+	var $ = require("$");
+	var handlebars = require("handlebars");
+	
+	/**
+	 * 初始化组件
+	 */
+	var init = function(param) {
+		/** 查询景点，在tabbed内部显示*/
+		var scenic_query = GLOBAL.BASE + "front/scenic/scenic/frontshow/fileds/pagesearch?start=0&size=7&q=";
+        handlebars.registerHelper('sceniclist', function(items, options) {
+    		var dataList;
+    		var listBlockOut = "";
+            $.ajax({
+            	async : false,
+            	dataType : 'json',
+    			contentType : "application/json;charset=UTF-8",
+    			url : scenic_query,
+    			success : function(resultData) {
+    				if('000000' == resultData.flag &&  resultData.data != null && resultData.data.items != null && resultData.data.items.length > 0){
+    					dataList = resultData.data.items;
+						var dataItems = dataList;
+						listBlockOut += '<ul class="unstyled users list-hover list-striped">';
+						for (var i = 0; i < dataItems.length; i++) {
+							var detailUrl = "";
+							var dataItem = dataItems[i];
+							listBlockOut += '<li>';
+							listBlockOut +=     '<div class="avatar pull-left">';
+							listBlockOut +=         '<span class="label label-important">' + (i+1) + '</span>';
+							listBlockOut +=     '</div>';
+							listBlockOut +=     '<div class="action pull-left">';
+							listBlockOut +=         '<a class="text-contrast" href="'+ detailUrl + '">' + dataItem.name + '</a>';
+							listBlockOut +=    '</div>';
+							listBlockOut += '</li>';
+						}
+						listBlockOut += '</ul>'
+    				} else {
+    					listBlockOut = ""
+    				}
+    			},
+    			error : function(XMLHttpRequest, textStatus, errorThrown) {
+    				listBlockOut = "服务器查询出现错误了。。请刷新界面试试吧！"
+    			}
+            });
+            return listBlockOut;
+		});
+	};
+	
+	// 实例化组件-------------------------START
+	var template = require("./topsell.tpl");
+	var Widget = require("widget");
+	var Component = Widget.extend({
+		template : template,
+		beforeRender : function() {
+			init();
+		},
+		afterRender : function() {
+		}
+	});
+	// 实例化组件-------------------------END
+
+	// 组件对外提供使用
+	module.exports = Component;
+});

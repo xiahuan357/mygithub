@@ -1,0 +1,40 @@
+/**
+ *  网站前台左侧菜单
+ */
+define(function(require, exports, module)
+{
+    
+    var $ = require("$");
+    var Widget = require("widget");
+    var template = require("./front-left-menu.tpl");
+    require("bootstrap_commonrequire");
+    
+    var userutil = require("userutil");
+    
+    // 暂用静态JSON资源
+    var menudata_front = require("./front-left-menu.json");
+    
+    var Menu = Widget.extend(
+    {
+        template : template,
+        loadData : function()
+        {
+        	var userInfo = userutil.getUserInfo();
+        	var menudata;
+        	// 用户类型: 0 系统管理员；1 商家；2 用户
+//        	if(userInfo.usertype == 1){
+//        		menudata = menudata_personal;
+//        	} else if(userInfo.usertype == 2){
+//        		menudata =  menudata_front;
+//        	}
+        	menudata = menudata_front;
+        	
+        	this.setModel(menudata);
+        },
+        afterRender : function()
+        {
+        	var nav = require("bootstrap_nav");
+        }
+    });
+    module.exports = Menu;
+}); 

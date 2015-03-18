@@ -103,7 +103,6 @@ define(function(require, exports, module)
 			if(userEntity == null){
 				return;
 			}
-		    MessagePush.onPageLoad(userEntity.id);
 			//-----------------------------用户菜单设置----------------------------------
 			// 用户类型0 系统管理员；1 商家；2 用户
 			if (userEntity.usertype == 0) {

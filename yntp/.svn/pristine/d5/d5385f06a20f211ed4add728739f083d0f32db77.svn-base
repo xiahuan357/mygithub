@@ -1,0 +1,23 @@
+package com.yn.yntp.module.hotel.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.yn.yntp.common.persistence.service.BaseServiceImpl;
+import com.yn.yntp.module.hotel.entity.HotelRoomEntity;
+
+/**
+ * 
+ * @Title: HotelRoomService.java 
+ * @Package com.yn.yntp.module.hotel.service 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author liucc    
+ * @date 2015年1月16日 下午2:34:12 
+ * @version V1.0 
+ */
+
+@Service
+@Transactional
+public class HotelRoomService extends BaseServiceImpl<HotelRoomEntity, Long> {
+}

@@ -26,7 +26,7 @@ public class WelcomeIndexController {
   @RequestMapping("/")
   public void redirectToIndex(ServletRequest request, ServletResponse response){
     try {
-      WebUtils.issueRedirect(request, response, "/html/front/index.html");
+      WebUtils.issueRedirect(request, response, "index.html");
     }
     catch (IOException e) {
        

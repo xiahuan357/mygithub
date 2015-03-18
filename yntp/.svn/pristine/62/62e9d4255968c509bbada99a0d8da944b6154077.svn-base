@@ -1,0 +1,23 @@
+package com.yn.yntp.module.news.validate;
+
+import org.springframework.stereotype.Component;
+
+import com.yn.yntp.common.validate.DefaultValidate;
+import com.yn.yntp.module.news.entity.NewsEntity;
+
+/**
+ * 
+ * 
+ * @Title: NewsTypeValidate.java 
+ * @Package com.yn.yntp.module.news.validate 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author cuilz    
+ * @date 2014年11月25日 上午10:30:36 
+ * @version V1.0
+ */
+
+@Component
+public class NewsValidate extends DefaultValidate<NewsEntity,Long> {
+
+}

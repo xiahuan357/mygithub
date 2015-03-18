@@ -1,0 +1,26 @@
+package com.yn.yntp.module.region.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.yn.yntp.common.web.controller.BaseCRUDController;
+import com.yn.yntp.module.region.entity.RegionEntity;
+
+/**
+ * 
+ * @Title: TourismController.java 
+ * @Package com.yn.yntp.module.tourism.web 
+ * @Description: 线路信息维护，登录用户使用
+ *
+ * @author liucc    
+ * @date 2014年11月22日 下午3:40:39 
+ * @version V1.0 
+ */
+
+@Controller
+@RequestMapping("/admin/region/region")
+public class RegionController extends BaseCRUDController<RegionEntity,Long>{
+
+ 
+  
+}

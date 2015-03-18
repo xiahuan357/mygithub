@@ -1,0 +1,263 @@
+//根据localStorage里的值绑定当前默认样式
+window.GLOBAL = window.G = {};
+var getTheme = function() {
+	var theme = eval(window.localStorage["themecolor"]) || "default";
+	return theme;
+};
+seajs.config({
+	/* 默认路径前缀 */
+	paths : {
+		
+	},
+	base: "/yntp/",
+	alias : {
+		// url配置信息
+		"urlconfig" : "urlcofig/config",
+		// 全局工具, global.js加载的时候同时加载
+		"globalutil" : "js/common/util/src/js/globalutil",
+		//core核心组件
+		'$' : 'js/core/jquery/src/jquerycmd-1.10.1',
+		'jquery' : 'js/core/jquery/src/jquerycmd-1.10.1',
+		'jquery-migrate' : 'js/core/jquery/src/jquery-migratecmd.min',
+		
+		'class' : 'js/core/class/src/class',
+		'aspect' : 'js/core/base/src/aspect',
+		'events' : 'js/core/event/src/events',
+		'base' : 'js/core/base/src/base',
+		'widget' : 'js/core/widget/src/widget',// 组件核心
+		'autoRender' : 'js/core/widget/src/autoRender',// 自动加载组件
+		'handlebars' : 'js/core/handlebars/src/handlebars',// 模板解析
+		
+		/* common组件-start- */
+		"table" : "js/common/table/src/js/table", // 表格公共组件	
+		"datatableutil" : "js/common/table/src/js/datatableutil",
+		"ajaxReloadDataTable" : "js/common/table/src/js/ajaxReloadDataTable",
+		'queryparamutil' : 'js/common/util/src/js/queryparamutil', // 查询参数构造工具
+		'userutil' : 'js/common/util/src/js/userutil', // 用户信息操作工具
+		
+		"form" : "js/common/form/src/js/form",  //常规表单
+		"form_multiblock" : "js/common/form/src/js/form_multiblock",  //分块表单
+		"form_display" : "js/common/form/src/js/form_display",  //表单XS
+		
+		"basearchive-form" : "js/common/basearchive/src/js/basearchive-form", // 基础档案-Form,
+		"basearchive-table" : "js/common/basearchive/src/js/basearchive-table", // 基础档案-Form
+		"basearchive-util" : "js/common/basearchive/src/js/basearchive-util", // 基础档案-Form
+		"login" : "js/common/login/login",// 登录
+		"register_main" : "js/common/register/register_main", // 注册
+		"register_active" : "js/common/register/register_active", // 激活
+		
+		"loader" : "js/common/loader/loader",  // loading对话框
+		'modaldialog' : 'js/common/dialog/src/js/modaldialog',
+		"multiselect2side":"js/common/multiselect2side/multiselect2side",// 下拉框左右选择组件
+		"dialogmultiselect2side":"js/common/multiselect2side/dialogmultiselect2side",// 下拉框左右选择组件的对话框
+		"fuelux-wizard-instance":"js/common/wizard/js/fuelux-wizard-instance", // 导航组件
+		"tabbed" : "js/common/tabbed/src/js/tabbed",// tabbed 组件
+		"cityselector":"js/common/cityselector/js/cityselector",//地区选择组件
+		"treetable" : "js/common/treetable/src/js/treetable",// 树表 组件
+		"textarea" : "js/common/textarea/src/js/textarea",// 文本输入框 组件
+		"ueditor" : "js/common/ueditor/src/js/ueditor",//  富文本编辑框 组件
+		/* common组件-end- */
+		
+		/* 业务组件-start- */
+		
+		/* 系统管理员-start- */
+		"sysindex" : "js/admin/sys/index/src/js/sysindex",			// 索引页
+		"header" : "js/admin/sys/header/src/js/header",        //主页头部	
+		"secheader" : "js/admin/sys/header/src/js/sec-header",    //主页头部导航
+		"menu" : "js/admin/sys/menu/src/js/menu",				// 菜单
+		"console" : "js/admin/sys/console/src/js/console",				// 工作台
+		"consoledata":"js/admin/sys/console/src/js/consoledata",	// 控制台界面数据
+		
+		"sys_business_info":"js/admin/sys/business/sys_business_info",// 系统管理员-商户信息列表
+		"sys_business_approve":"js/admin/sys/business/sys_business_approve",// 系统管理员-商户审核列表
+		
+		"sys_user_form":"js/admin/sys/user/sys_user_form",// 系统管理员-景点类型列表
+		"sys_user_table":"js/admin/sys/user/sys_user_table",// 系统管理员-景点类型列表
+		
+		"sys_scenic_type_table":"js/admin/sys/scenic/sys_scenic_type_table",// 系统管理员-景点类型列表
+		"sys_scenic_type_form":"js/admin/sys/scenic/sys_scenic_type_form",// 系统管理员-景点类型表单
+		"sys_scenic_level_table":"js/admin/sys/scenic/sys_scenic_level_table",// 系统管理员-景点星级类型列表
+		"sys_scenic_level_form":"js/admin/sys/scenic/sys_scenic_level_form",// 系统管理员-景点星级类型表单
+		"sys_scenic_ticket_type_table":"js/admin/sys/scenic/sys_scenic_ticket_type_table",// 系统管理员-景点门票类型列表
+		"sys_scenic_ticket_type_form":"js/admin/sys/scenic/sys_scenic_ticket_type_form",// 系统管理员-景点门票类型表单
+		
+		
+		"sys_tourismline_table":"js/admin/sys/tourismline/sys_tourismline_table",// 系统管理员-线路列表
+		"sys_tourismline_form":"js/admin/sys/tourismline/sys_tourismline_form",// 系统管理员-线路表单
+		"sys_tourismline_theme_table":"js/admin/sys/tourismline/sys_tourismline_theme_table",// 系统管理员-线路主题列表
+		"sys_tourismline_theme_form":"js/admin/sys/tourismline/sys_tourismline_theme_form",// 系统管理员-线路主题表单
+		
+		"sys_tourismline_type_table":"js/admin/sys/tourismline/sys_tourismline_type_table",// 系统管理员-线路类型列表
+		"sys_tourismline_type_form":"js/admin/sys/tourismline/sys_tourismline_type_form",// 系统管理员-线路类型表单
+		"sys_tourismline_property_table":"js/admin/sys/tourismline/sys_tourismline_property_table",// 系统管理员-线路性质列表
+		"sys_tourismline_property_form":"js/admin/sys/tourismline/sys_tourismline_property_form",// 系统管理员-线路性质表单
+		
+		"sys_hotel_type_table":"js/admin/sys/hotel/sys_hotel_type_table",// 系统管理员-酒店类型列表
+		"sys_hotel_type_form":"js/admin/sys/hotel/sys_hotel_type_form",// 系统管理员-酒店类型表单
+		"sys_hotel_bed_type_table":"js/admin/sys/hotel/sys_hotel_bed_type_table",// 系统管理员-酒店床型列表
+		"sys_hotel_bed_type_form":"js/admin/sys/hotel/sys_hotel_bed_type_form",// 系统管理员-酒店床型表单
+		"sys_hotel_room_type_table":"js/admin/sys/hotel/sys_hotel_room_type_table",// 系统管理员-酒店房型列表
+		"sys_hotel_room_type_form":"js/admin/sys/hotel/sys_hotel_room_type_form",// 系统管理员-酒店房型表单
+		"sys_hotel_level_table":"js/admin/sys/hotel/sys_hotel_level_table",// 系统管理员-酒店星级列表
+		"sys_hotel_level_form":"js/admin/sys/hotel/sys_hotel_level_form",// 系统管理员-酒店星级表单
+		
+		"sys_equipment_type_table":"js/admin/sys/equipment/sys_equipment_type_table",// 系统管理员-设备类型列表
+		"sys_equipment_type_form":"js/admin/sys/equipment/sys_equipment_type_form",// 系统管理员-设备类型表单
+		
+		"sys_news_table":"js/admin/sys/news/sys_news_table",// 系统管理员-新闻列表
+		"sys_news_form":"js/admin/sys/news/sys_news_form",// 系统管理员-新闻表单
+		"sys_news_preview":"js/admin/sys/news/sys_news_preview",// 系统管理员-新闻预览
+		
+		"sys_news_type_table":"js/admin/sys/news/sys_news_type_table",// 系统管理员-新闻类型列表
+		"sys_news_type_form":"js/admin/sys/news/sys_news_type_form",// 系统管理员-新闻类型表单
+		
+		"sys_car_type_table":"js/admin/sys/car/sys_car_type_table",//系统管理员-汽车类型列表
+		"sys_car_type_form":"js/admin/sys/car/sys_car_type_form",// 系统管理员-汽车类型表单
+		"sys_car_brand_table":"js/admin/sys/car/sys_car_brand_table",//系统管理员-汽车品牌列表
+		"sys_car_brand_form":"js/admin/sys/car/sys_car_brand_form",// 系统管理员-汽车品牌表单
+		
+		"sys_product_type_treetable":"js/admin/sys/product/sys_product_type_treetable",//系统管理员—一级特产表单
+
+		"sys_region_fir":"js/admin/sys/region/sys_region_fir",// 系统管理员-一级城市
+		"sys_region_sec":"js/admin/sys/region/sys_region_sec",// 系统管理员-二级城市
+		"sys_region_thr":"js/admin/sys/region/sys_region_thr",// 系统管理员-三级城市
+		"sys_region_form_fir":"js/admin/sys/region/sys_region_form_fir",// 系统管理员-城市表单
+		"sys_region_form_sec":"js/admin/sys/region/sys_region_form_sec",// 系统管理员-二级城市表单
+		"sys_region_form_thr":"js/admin/sys/region/sys_region_form_thr",// 系统管理员-三级城市表单
+		"sys_resource_table":"js/admin/sys/resource/sys_resource_table",// 系统管理员-资源
+		"sys_resource_form":"js/admin/sys/resource/sys_resource_form",// 系统管理员-资源
+		
+		"sys_role_table":"js/admin/sys/role/sys_role_table",// 系统管理员-角色
+		"sys_role_form":"js/admin/sys/role/sys_role_form",// 系统管理员-角色
+		
+		"sys_admin_table":"js/admin/sys/admin/sys_admin_table",// 系统管理员-管理员列表
+		"sys_admin_form_update":"js/admin/sys/admin/sys_admin_form_update",// 系统管理员-管理员更新表单
+		"sys_admin_form_create":"js/admin/sys/admin/sys_admin_form_create",// 系统管理员-管理员新建表单
+		"sys_admin_modifypassword":"js/admin/sys/admin/sys_admin_modifypassword",// 系统管理员-管理员表单
+		
+		"sys_national_feature_form":"js/admin/sys/nationalfeature/sys_national_feature_form",// 系统管理员-民族特色表单
+		"sys_national_feature_table":"js/admin/sys/nationalfeature/sys_national_feature_table",// 系统管理员-民族特色列表
+		"sys_national_feature_preview":"js/admin/sys/nationalfeature/sys_national_feature_preview",// 系统管理员-民族特色预览
+		/* 系统管理员-end- */
+		
+		/* 商家-start- */
+		"biz_scenic_form":"js/admin/customer/business/scenic/biz_scenic_form",
+		"biz_scenic_ticket_form":"js/admin/customer/business/scenic/biz_scenic_ticket_form",
+		"biz_scenic_ticket_table":"js/admin/customer/business/scenic/biz_scenic_ticket_table",
+		"biz_scenic_table":"js/admin/customer/business/scenic/biz_scenic_table",
+		/* 商家-end- */
+		
+		/* 系统前台-start- */
+		"frontindex" :"js/front/index/frontindex.js",  // 前台首页
+		"fixed-header-unlogin" : "js/front/header/src/js/fixed-header-unlogin", // 前台首页顶部，没登陆
+		"front-left-menu" : "js/front/index/front-left-menu.js",// 前台首页左侧菜单
+		
+		"center-header" : "js/front/header/src/js/center-header",			// 首页顶部中间搜索框
+		"navicat-header" : "js/front/header/src/js/navicat-header",			// 前台首页横向导航栏
+		
+		"footer" : "js/front/footer/src/js/footer",			// 底部组件
+		
+		"customerindex" : "js/admin/customer/common/customerindex/src/js/customerindex",			// 前台用户中心
+		"left-navicat-menu" : "js/admin/customer/common/left_navicat_menu/src/js/left-navicat-menu",			// 前台用户左侧导航栏
+		"fixed-header-login" : "js/admin/customer/common/header/src/js/fixed-header-login",			// 中心顶部，登录
+		
+		/* 系统前台-end- */
+		/* 业务组件-end- */
+		
+		// bootstrap css
+		'bootstrap.css' : 'css/tool/bootstrap/bootstrap.css',
+		'bootstrap-responsive.css' : 'css/tool/bootstrap/bootstrap-responsive.css',
+		'light-theme.css' : 'css/tool/bootstrap/light-theme.css',
+		'dark-theme.css' : 'css/tool/bootstrap/dark-theme.css',
+		'dark-blue-theme.css' : 'css/tool/bootstrap/dark-blue-theme.css',
+		'theme-colors.css': 'css/tool/bootstrap/theme-colors.css',
+		
+		
+		// 插件css
+		'wizard.css' : 'css/tool/fuelux/wizard.css',
+		'fuelux.min.css' : 'css/tool/fuelux/fuelux.min.css',
+		'bootstrap-datetimepicker.min.css' : 'css/tool/bootstrap_datetimepicker/bootstrap-datetimepicker.min.css',
+		'bootstrap-dynatree.css' : 'css/tool/dynatree/ui.dynatree.css',
+		'select2.css' : 'css/tool/select2/select2_3.4.6.css',
+		'daterangepicker.css' : 'css/tool/bootstrap_daterangepicker/daterangepicker-bs2.css',
+		'bootbox.css' : 'css/tool/bootbox/bootbox.css',
+		'bootstrap-editable.css' : 'css/tool/xeditable/bootstrap-editable.css',
+		'jquery.multiselect2side.css':'css/tool/select2/jquery.multiselect2side.css',
+		
+		// bootstrap 核心js
+		'bootstrap_commonrequire' : 'js/tool/bootstrap/bootstrap_commonrequire',
+		'bootstrap' : 'js/tool/bootstrap/bootstrapcmd',
+		'bootstrap_nav' : 'js/tool/bootstrap/navcmd',
+		'bootstrap_theme':'js/tool/bootstrap/themecmd',
+		
+		// 插件js
+		'bootstrap-daterangepicker' : 'js/tool/bootstrap_daterangepicker/bootstrap-daterangepickercmd',
+		'bootstrap-daterangepickercmd.zh-CN' : 'js/tool/bootstrap_daterangepicker/locales/bootstrap-daterangepickercmd.zh-CN',
+		'bootstrap_datetimepicker':'js/tool/bootstrap_datetimepicker/bootstrap-datetimepickercmd',
+		'bootstrap_datetimepicker.zh-CN':'js/tool/bootstrap_datetimepicker/locales/bootstrap-datetimepickercmd.zh-CN',
+		'bootstrap_maxlength':'js/tool/bootstrap_maxlength/bootstrap-maxlengthcmd.min',
+		
+		// tool组件js
+		'bootbox' : 'js/tool/bootbox/bootboxcmd',
+		'layout' : 'js/tool/layout/src/js/layout',
+		'store' : 'js/tool/store/storecmd',
+		'json' : 'js/tool/store/jsoncmd',
+		'jsuri' : 'js/tool/jsuri/Uricmd',
+		'moment' : 'js/tool/moment/momentcmd',
+		"draganddrop":"js/tool/draganddrop/src/js/draganddrop",//新的拖拽接口
+		'autosize':'js/tool/autosize/jquery.autosizecmd.min',
+		'charCount':'js/tool/charCount/charCountcmd',
+		'jquery.dataTables': 'js/tool/datatables/jquery.dataTablescmd.min',
+		'jquery-ui': 'js/tool/jquery_ui/jquery-uicmd.min',
+		"jquery.ui.sortable" : "js/tool/jquery.ui.sortable/src/js/jquery.ui.sortable",
+		'jquery.validate': 'js/tool/validate/jquery.validatecmd',
+		'jquery.dynatree' : 'js/tool/dynatree/jquery.dynatreecmd',
+		'fuelux_wizard' : 'js/tool/fuelux/wizardcmd',
+		'fuelux_wizard2' : 'js/tool/fuelux/wizard2cmd',
+		'select2' : 'js/tool/select2/select2_3.4.6',
+		"jquery.multiselect2side":"js/tool/jquery.multiselect2side/jquery.multiselect2side",
+		'imagezoom':'js/tool/imagezoom/imagezoomcmd',
+		'swfobject':'js/tool/swfobject/swfobjectcmd', // swf视频播放插件
+		"jquery.ba-resize" : "js/tool/jquery.ba-resize/jquery.ba-resize",// 监听DOM元素大小变化
+		
+		// editor组件js-1.3.6
+		'ueditor.config-1.3.6':'/yntp/js/tool/ueditor-1.3.6/ueditor.config',
+		'ueditor.all-1.3.6':'/yntp/js/tool/ueditor-1.3.6/ueditor.all',
+		'ueditor-zh-cn-1.3.6':'/yntp/js/tool/ueditor-1.3.6/lang/zh-cn/zh-cn',
+	},
+
+	
+	// 移除shim插件 seajs2.1.0推荐
+	plugins : [ 'text' ],
+	debug : true,
+	
+	charset : 'utf-8',
+	editable : true
+});
+// url配置
+seajs.use("urlconfig");
+
+seajs.use("globalutil");
+
+seajs.use(["$","bootstrap_nav"], function($,Bootstrap_nav){
+	// 解决IE下ajax请求使用缓存问题
+    jQuery.ajaxSetup({ cache: false });
+    
+    jQuery.ajaxSetup({
+    	// 因为如果退出登录，在网页后退，在点击，界面会弹出，不会跳到登录界面
+        complete:function(XMLHttpRequest, textStatus, errorThrown){
+              if(textStatus=="parsererror"){
+                  window.location.href = GLOBAL.URL.LOGINURL;
+              } else if(textStatus=="error"){
+            	  
+            	if(XMLHttpRequest.status == 404){
+              		Bootstrap_nav.toPageView(GLOBAL.URL.ERROR_404);
+              	} else if(XMLHttpRequest.status == 500){
+              		Bootstrap_nav.toPageView(GLOBAL.URL.ERROR_500);
+              	} else if(XMLHttpRequest.status == 503){
+              		Bootstrap_nav.toPageView(GLOBAL.URL.ERROR_503);
+              	} 
+              }
+        }
+    });
+});

@@ -1,0 +1,2 @@
+
+<div>{{#equipmentlist }}{{/equipmentlist}}</div>

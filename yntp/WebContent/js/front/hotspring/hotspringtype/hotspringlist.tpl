@@ -1,0 +1,2 @@
+
+<div>{{#hotspringlist }}{{/hotspringlist}}</div>

@@ -1,0 +1,24 @@
+package com.yn.yntp.module.car.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.yn.yntp.common.web.controller.BaseCRUDController;
+import com.yn.yntp.module.car.entity.CarBrandEntity;
+
+/**
+ * 
+ * @Title: CarBrandController.java 
+ * @Package com.yn.yntp.module.car.web 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author jiqr    
+ * @date 2014年12月8日 下午12:19:54 
+ * @version V1.0 
+ */
+
+@Controller
+@RequestMapping("/admin/car/carbrand")
+public class CarBrandController extends BaseCRUDController<CarBrandEntity,Long>{
+
+}

@@ -317,11 +317,11 @@ define(function(require, exports, module) {
 			}
 			
 			if (com_id != 'undefined' && com_id != null)
-				com_id.val(currentLastData.id);
+				com_id.val(data.id);
 			if (com_title != 'undefined' && com_title != null)
 				com_title.val(data.title);
 			if (com_newstype != 'undefined' && com_newstype != null){
-				com_newstype.select2("val",currentLastData.newsTypeEntity.id);
+				com_newstype.select2("val",data.newsTypeEntity.id);
 			}
 			if (com_imagekey != 'undefined' && com_imagekey != null)
 				com_imagekey.val(data.imagekey);

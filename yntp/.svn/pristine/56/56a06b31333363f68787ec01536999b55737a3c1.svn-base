@@ -1,0 +1,18 @@
+<div class="box-header"
+	style="border-top: 1px solid #dddddd; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd">
+	<div class="title">
+		<i class="icon-windows"></i>汽车品牌
+	</div>
+</div>
+<div class="box-content  hotel " style="padding:0;height:450px ">
+	<ul style="margin:0">
+		{{#each this.model}}
+		 	<li >
+		 		<a href="{{this.url}}" title="{{this.title}}" target="_blank">
+		 			<img src="{{this.src}}" width="50" height="40" >
+		 			<div>{{this.name}}</div>
+		 		</a>
+		 	</li>
+		 {{/each}}
+	</ul>
+</div>

@@ -1,0 +1,27 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "firstImg",
+            "active": true,
+            "index": "1",
+            "src": "/yntp/upload/image/carousel/f20141229083751148789-tl.jpg",
+            "alt": "旅行线路",
+            "caption": "旅行线路"
+        },
+        {
+        	"id" : "secondImg",
+            "index": "2",
+            "src": "/yntp/upload/image/carousel/f20141229083804175351-tl.jpg",
+            "alt": "旅行线路",
+            "caption": "旅行线路"
+        },
+        {
+        	"id" : "thirdImg",
+            "index": "3",
+            "src": "/yntp/upload/image/carousel/f20141229091357119175-tl.jpg",
+            "alt": "旅行线路",
+            "caption": "旅行线路"
+        }
+    ]
+}

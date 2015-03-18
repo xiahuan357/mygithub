@@ -1,0 +1,26 @@
+
+<nav id='main-nav'>
+	<div class='navigation '>
+	    <ul class="nav nav-stacked">
+		    {{#each this.model}}
+				<li>
+		            <a id={{this.id}} class='dropdown-collapse' href='javascript:void(0);'>
+		                <i class='{{this.icon}}'></i>
+		                <span>{{this.name}}</span>
+		                <i class='icon-angle-right' style="float:right;line-height: 40px;margin-right: 0;"></i>
+		            </a>
+		            <ul class="nav nav-stacked">
+    				{{#each this.children}}
+    					<li>
+							<a id={{this.id}} class="child" href='javascript:void(0);' url='{{this.url}}'>
+		                    <i class='{{this.icon}}'></i>
+		                    <span style="margin-left: 8px;">{{this.name}}</span>
+                			</a>	
+                		</li>
+    				{{/each}}
+    			    </ul>
+		        </li>
+			{{/each}}
+	    </ul>
+	</div>
+</nav>

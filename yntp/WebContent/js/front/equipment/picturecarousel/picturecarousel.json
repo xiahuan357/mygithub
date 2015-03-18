@@ -1,0 +1,34 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "firstImg",
+            "active": true,
+            "index": "1",
+            "src": "/yntp/upload/image/carousel/equipment/f20141223120149129095.jpg",
+            "alt": "旅行设备",
+            "caption": "旅行设备"
+        },
+        {
+        	"id" : "secondImg",
+            "index": "2",
+            "src": "/yntp/upload/image/carousel/equipment/f20141223120754110912.jpg",
+            "alt": "旅行设备",
+            "caption": "旅行设备"
+        },
+        {
+        	"id" : "thirdImg",
+            "index": "3",
+            "src": "/yntp/upload/image/carousel/equipment/f20141223135204142713.jpg",
+            "alt": "旅行设备",
+            "caption": "旅行设备"
+        },
+        {
+        	"id" : "fourthImg",
+            "index": "4",
+            "src": "/yntp/upload/image/carousel/equipment/f20141223135427160160.jpg",
+            "alt": "旅行设备",
+            "caption": "旅行设备"
+        }
+    ]
+}

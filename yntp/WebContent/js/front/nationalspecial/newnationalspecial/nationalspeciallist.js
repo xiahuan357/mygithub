@@ -1,0 +1,103 @@
+/**
+ * 推荐线路列表构建
+ */
+define(function(require, exports, module) {
+	var $ = require("$");
+	var handlebars = require("handlebars");
+	
+	/**
+	 * 初始化组件
+	 */
+	var init = function(param) {
+		/** 查询线路，在tabbed内部显示*/
+		var nationalspecial_query = GLOBAL.BASE + "front/nationalspecial/nationalspecial/frontshow/fileds/pagesearch?start=0&size=6&q=";
+        handlebars.registerHelper('nationalspeciallist', function(items, options) {
+        	var dataList;
+    		var listBlockOut = "";
+            $.ajax({
+            	async : false,
+            	dataType : 'json',
+    			contentType : "application/json;charset=UTF-8",
+    			url : nationalspecial_query,
+    			success : function(resultData) {
+    				if('000000' == resultData.flag &&  resultData.data != null && resultData.data.items != null && resultData.data.items.length > 0){
+    					dataList = resultData.data.items;
+    					var dataItems = dataList;
+    					  for(var i = 0;i < dataItems.length; i++){
+    						  var dataItem = dataItems[i];
+    						  var topDivClass = "";
+    						  if(i == 0 ){
+    							  topDivClass = '<div class="row-fluid" style="margin-top:5px">';
+    							  listBlockOut = listBlockOut + topDivClass;
+    						  } else if(i == 3){
+    							  listBlockOut = listBlockOut + '</div>';
+    							  topDivClass = '<div class="row-fluid" style="margin-top:20px">';
+    							  listBlockOut = listBlockOut + topDivClass;
+    						  }  
+    						  var coverImage = dataItem.coverimagename;
+    						  listBlockOut = listBlockOut + '<div class="span4  ">';
+    						  listBlockOut = listBlockOut +     '<div style="border: 1px solid #dddddd ">';
+    						  listBlockOut = listBlockOut +          '<div class=" ">';
+    						  listBlockOut = listBlockOut +             '<div class="picture"><a href="#">';
+    						  listBlockOut = listBlockOut +                 '<img src="' + coverImage +'" style="width:265px;height:230px"></a>';
+    						  listBlockOut = listBlockOut +             '</div>';
+    						  listBlockOut = listBlockOut +             '<div style="padding:5px 10px">';
+    						  listBlockOut = listBlockOut +                 '<div class="row-fluid  " style="margin-top:5px;">';
+    						  listBlockOut = listBlockOut +                     '<div class="price pull-left" style="color:#F40">';
+    						  listBlockOut = listBlockOut +                         '<strong>¥' + dataItem.price + '</strong>';
+    						  listBlockOut = listBlockOut +                     '</div>';
+    						  listBlockOut = listBlockOut +                     '<div class="sellcount pull-right" style="color:#888">';
+    						  listBlockOut = listBlockOut +                     '已卖出' + dataItem.selledCount;
+    						  listBlockOut = listBlockOut +                     '</div>';
+    						  listBlockOut = listBlockOut +                 '</div>';
+    						  listBlockOut = listBlockOut +                 '<div class="row-fluid title " style="margin-top:5px;height:40px">';
+    						  listBlockOut = listBlockOut +                     '<a href="#" class="pull-left">';
+    						  listBlockOut = listBlockOut +                     dataItem.name;
+    						  listBlockOut = listBlockOut +                     '</a>';
+    						  listBlockOut = listBlockOut +                 '</div>';
+    						  listBlockOut = listBlockOut +                 '<div class="row-fluid  " style="margin-top:5px;">';
+    						  listBlockOut = listBlockOut +                     '<div class="shop pull-left " style="color:#888">';
+    						  listBlockOut = listBlockOut +                         '<i class="icon-reorder"></i>';
+    						  listBlockOut = listBlockOut +                         dataItem.regionName;
+    						  listBlockOut = listBlockOut +                     '</div>';
+    						  listBlockOut = listBlockOut +                 '</div>';
+    						  listBlockOut = listBlockOut +                 '<div class="row-fluid  " style="margin-top:5px;">';
+    						  listBlockOut = listBlockOut +                     '<div class="location pull-left" style="color:#888">';
+    						  listBlockOut = listBlockOut +                         '<i class="icon-map-marker text-dark-orange"></i> ';
+    						  listBlockOut = listBlockOut +                         dataItem.regionName;
+    						  listBlockOut = listBlockOut +                     '</div>';
+    						  listBlockOut = listBlockOut +                 '</div>';
+    						  listBlockOut = listBlockOut +             '</div>';
+    						  listBlockOut = listBlockOut +         '</div>';
+    						  listBlockOut = listBlockOut +     '</div>';
+    						  listBlockOut = listBlockOut + '</div>';
+    					  }
+    					  listBlockOut = listBlockOut + '</div>';
+    				} else {
+    					listBlockOut = "还未有特产，后续会添加。。敬请期待！"
+    				}
+    			},
+    			error : function(XMLHttpRequest, textStatus, errorThrown) {
+    				listBlockOut = "服务器查询出现错误了。。请刷新界面试试吧！"
+    			}
+            });
+            return listBlockOut;
+		});
+	};
+	
+	// 实例化组件-------------------------START
+	var template = require("./nationalspeciallist.tpl");
+	var Widget = require("widget");
+	var Component = Widget.extend({
+		template : template,
+		beforeRender : function() {
+			init();
+		},
+		afterRender : function() {
+		}
+	});
+	// 实例化组件-------------------------END
+
+	// 组件对外提供使用
+	module.exports = Component;
+});

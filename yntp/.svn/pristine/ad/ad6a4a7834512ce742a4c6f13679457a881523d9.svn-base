@@ -1,0 +1,105 @@
+/**
+ * 基础档案辅助类
+ */
+define(function(require, exports, module) {
+	var $ = require("$");
+	/**
+	 * 常量
+	 */
+	exports.FORMOPT_CREATE="create";
+	exports.FORMOPT_UPDATE="update";
+	
+	var store = require('store');
+	
+	exports.cutLength = function(param,length){
+		if(param == null || param=="")
+			return param;
+		
+		var stringLen = param.length;
+		var showMsg = stringLen > length ? param.substring(0,length)+".." : param;
+		return showMsg;
+	};
+	
+	/**
+	 * 清除本地缓存
+	 */
+	exports.clearStoreCache = function(cacheKeyList){
+		if(cacheKeyList == null)
+			return;
+		
+		for(var i =0; i < cacheKeyList.length;i++){
+			store.remove(cacheKeyList[i]);
+		}
+	};
+	
+	// 界面跳转
+	exports.jumpToHtml = function(targetUrl){
+		$.ajax({
+			url : targetUrl,
+			dataType : "html",
+			contentType : "application/json; charset=utf-8",
+			success : function(res) {
+				$("#content-wrapper").html(res);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				bootbox.alertTimeout('Ajax请求发生错误！');
+			}
+		});
+	};
+	
+	/**
+	 * 初始化下拉框
+	 */
+	exports.initSelect2Value = function(param){
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : param.queryUrl,
+			success : function(resultdata) {
+				if (resultdata && resultdata.flag == "000000") {
+					// 解析data
+					param.com_select2.select2({
+						placeholder : param.placeholder,
+						allowClear : false,
+						multiple : false,
+						data : resultdata.data
+					});
+				} else {
+					bootbox.alertTimeout(param.errorMsg);
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				bootbox.alertTimeout(param.errorMsg);
+			}
+		});
+	}
+	
+	/**
+	 * 初始化时间范围
+	 */
+	exports.initDateRange = function(param){
+		
+		param.com_daterange.data('daterangepicker').setStartDate(param.start);
+		param.com_daterange.data('daterangepicker').setEndDate(param.end);
+    	
+    	var range =  param.start +"/"+ param.end
+    	param.com_daterange.prev().val(range);
+	}
+	
+	/**
+	 * 获取时间范围
+	 */
+	exports.getDateRange = function(param){
+		var dateText = param.com_daterange.prev().val();
+		
+		var vdate=dateText.split("/");
+		var vdate_start=vdate[0];
+		var vdate_end=vdate[1];
+		return {
+			start : vdate_start,
+			end : vdate_end,
+		}
+	}
+});

@@ -1,0 +1,50 @@
+/**
+ * 商家和普通用户的个人中心左侧菜单
+ */
+define(function(require, exports, module) {
+
+	var $ = require("$");
+	var Widget = require("widget");
+	var template = require("./left-navicat-menu.tpl");
+	require("bootstrap_commonrequire");
+
+	var userutil = require("userutil");
+
+	// 暂用静态JSON资源
+	var menudata_personal = require("./left-navicat-menu-personal.json");
+	var menudata_business = require("./left-navicat-menu-business.json");
+
+	var Menu = Widget.extend({
+		template : template,
+		loadData : function() {
+			var userInfo = userutil.getUserInfo();
+			var menudata;
+			// 用户类型0 系统管理员；1 商家；2 用户
+			if (userInfo.usertype == 1) {
+				menudata = menudata_business;
+			} else if (userInfo.usertype == 2) {
+				menudata = menudata_personal;
+			}
+
+			this.setModel(menudata);
+		},
+		afterRender : function() {
+			var nav = require("bootstrap_nav");
+
+			require("jquery.ba-resize");
+
+			// 有点问题，如果左侧菜单展开的过多，会出现菜单看不见情况。
+			$('#main-nav').resize(function() {
+				var main_navHeight = $('#main-nav').height();
+				var main_nav_bgHeight = $('#main-nav-bg').height();
+				if (main_navHeight > main_nav_bgHeight) {
+					$('#main-nav-bg').css('height', main_navHeight + 151);
+				} else {
+					$('#main-nav-bg').css('height', main_nav_bgHeight);
+					//					$('#main-nav-bg').attr("style","margin-top: 110px;");
+				}
+			});
+		}
+	});
+	module.exports = Menu;
+});

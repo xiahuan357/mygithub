@@ -1,0 +1,39 @@
+/**
+ * tabbed组件
+ */
+define(function(require, exports, module) {
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+
+	//	var tabstatus = [ {id : firstTabbedName, label : "全部"}, ];
+	
+	// 根据tabbed id 获得索引
+	var getTabLabelIndexByTabId = function(tabid) {
+		if ("string" == typeof (tabid)) {
+			var sepIdx = tabid.lastIndexOf("#");
+			if (sepIdx >= 0) {
+				var idx = tabid.substring(sepIdx + 1);
+				return idx;
+			}
+		}
+		return null;
+	}
+
+	// 实例化组件
+	var template = require("./tabbed.tpl");
+	var Widget = require("widget");
+	var Component = Widget.extend({
+		template : template,
+		// 初始化参数
+		initCustAttr : function() {
+			var attrs = this.get("attrs");
+		},
+		afterRender : function() {
+			var attrs = this.get("attrs");
+			// 默认选中第一个
+			$('#' + attrs.id + ' ul li:first a').click();
+		}
+	});
+	module.exports = Component;
+	module.exports.getTabLabelIndexByTabId = getTabLabelIndexByTabId;
+});

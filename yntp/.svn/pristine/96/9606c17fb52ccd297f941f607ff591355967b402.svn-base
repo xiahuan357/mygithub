@@ -1,0 +1,132 @@
+package com.yn.yntp.module.nationalspecial.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.yn.yntp.common.entity.BaseImageLibraryEntity;
+import com.yn.yntp.module.product.entity.ProductTypeEntity;
+
+/**
+ * 
+ * @Title: NationalspecialEntity.java
+ * @Package com.yn.yntp.module.nationalspecial.entity
+ * @Description: TODO(用一句话描述该文件做什么)
+ *
+ * @author liucc
+ * @date 2015年1月17日 下午1:41:20
+ * @version V1.0
+ */
+
+@Entity
+@Table(name = "biz_national_special")
+public class NationalSpecialEntity extends BaseImageLibraryEntity<Long> {
+  // 名称
+  private String name;
+
+  // 价格
+  private Double price;
+
+  // 库存数量
+  private Integer stockcount;
+
+  // 区域
+  private String region_id;
+
+  // 商品类型
+  // 框架自动查询出类型
+  @ManyToOne(optional = true)
+  @Fetch(FetchMode.SELECT)
+  @JoinColumn(name = "type_id")
+  private ProductTypeEntity productTypeEntity;
+  
+
+  // 特产简述
+  private String special_abstract;
+
+  // 特产详细描述
+  private String special_description;
+
+  // 特产规格说明
+  private String special_specification;
+
+  // 商家id
+  private Long business_id;
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Double getPrice() {
+    return this.price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
+  }
+
+  public Integer getStockCount() {
+    return this.stockcount;
+  }
+
+  public void setStockCount(Integer stockcount) {
+    this.stockcount = stockcount;
+  }
+
+  public String getRegion_id() {
+    return this.region_id;
+  }
+
+  public void setRegion_id(String region_id) {
+    this.region_id = region_id;
+  }
+
+  public ProductTypeEntity getProductTypeEntity() {
+    return this.productTypeEntity;
+  }
+
+  public void setProductTypeEntity(ProductTypeEntity productTypeEntity) {
+    this.productTypeEntity = productTypeEntity;
+  }
+
+  public String getSpecial_abstract() {
+    return this.special_abstract;
+  }
+
+  public void setSpecial_abstract(String special_abstract) {
+    this.special_abstract = special_abstract;
+  }
+
+  public String getSpecial_description() {
+    return this.special_description;
+  }
+
+  public void setSpecial_description(String special_description) {
+    this.special_description = special_description;
+  }
+
+  public String getSpecial_specification() {
+    return this.special_specification;
+  }
+
+  public void setSpecial_specification(String special_specification) {
+    this.special_specification = special_specification;
+  }
+
+  public Long getBusiness_id() {
+    return this.business_id;
+  }
+
+  public void setBusiness_id(Long business_id) {
+    this.business_id = business_id;
+  }
+
+}

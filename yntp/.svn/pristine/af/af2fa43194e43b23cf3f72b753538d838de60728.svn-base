@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.pop {
+	width: 357px;
+	height: 194px;
+	background: #0F0;
+	position: absolute;
+	display: none;
+}
+
+.pop .ct {
+	margin: 10px 10px 10px 60px;
+	background: #F00;
+}
+</style>
+</head>
+<body>
+
+	<div class="pop" id="popDV" onmouseout="hide(event)"
+		onmouseover="clearTimeout(mouseOutTimer)">
+		<div class="ct">
+			<a href="#">hello world ></a>
+		</div>
+	</div>
+	<div id="dvCT">
+		<a href="#">把鼠标放这里吧</a>
+	</div>
+
+	<script type="text/javascript">
+		function getAbsolutePosition(o) {
+			//获取对象的绝对位置
+			var p = {
+				x : o.offsetLeft,
+				y : o.offsetTop
+			};
+			while (o = o.offsetParent) {
+				p.x += o.offsetLeft;
+				p.y += o.offsetTop;
+			}
+			return p;
+		}
+		function showPopUp() {//
+			var p = getAbsolutePosition(this), popDV = document
+					.getElementById('popDV');
+			popDV.style.left = p.x + this.offsetWidth + 'px';
+			popDV.style.top = p.y + 'px';
+			popDV.style.display = 'block';
+		}
+		var mouseOutTimer = false;
+
+		window.onload = function() {//加载完毕后给a标签添加事件
+			var as = document.getElementById('dvCT').getElementsByTagName('a');
+			for (var i = 0; i < as.length; i++) {
+				as[i].onmouseover = showPopUp;
+				as[i].onmouseout = function() {
+					mouseOutTimer = setTimeout(function() {
+						hide(true);
+					}, 100);
+				}
+			}
+		}
+
+		function hide(e) {
+			var dv = document.getElementById('popDV');
+			if (e === true)
+				dv.style.display = 'none';//计时器直接隐藏
+			else {//如果鼠标从弹出层移出时，需要判断是否是移动到弹出层里面的子控件上了，因为移动到子控件，如a标签等上时，也会触发onmuseout事件
+				var refObj = e.toElement || e.relatedTarget;
+				if (!dv.contains(refObj))
+					dv.style.display = 'none';//不是div的子控件则隐藏
+			}
+		}
+
+		if (typeof HTMLElement != 'undefined')
+			HTMLElement.prototype.contains = function(o) {//扩展非IE浏览器下的contains方法
+				if (this == o)
+					return true;
+				while (o = o.parentNode)
+					if (o == this)
+						return true;
+				return false;
+			}
+	</script>
+</body>
+</html>

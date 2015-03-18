@@ -1,0 +1,5 @@
+本程序为研究生阶段研究方向的实战项目中的Mapreduce程序，参与人数为2人，本人主要负责Hadoop2.0的集群搭建与应用，Hadoop HA（高可靠性）的配置，yarn资源管理系统的管理。采用MapReduce离线计算框架，进行过MapReduce程序的开发，应用，以及集群的维护等。该MapReduce程序的主要作用为分析广电机顶盒回传的数据，以统计用户在某一时段观看某一节目的百分比。
+
+MapReduce程序github地址：https://github.com/xiahuan357/mygithub/tree/master/hadoopcount
+
+

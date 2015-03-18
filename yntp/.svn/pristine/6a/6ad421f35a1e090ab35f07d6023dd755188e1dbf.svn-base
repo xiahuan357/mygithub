@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta content='Flat administration template for Twitter Bootstrap.'
+	name='description'>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="shortcut icon" href="/yntp/images/portal/logo/logo.png" />
+<title>云南旅游平台</title>
+<script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+	data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+<style type="text/css">
+
+/**服务承若**/
+ .carpromise{ float:left;display:inline; padding:3px 12px 10px; background:#FFF;}
+ .carpromise h2{font-size:18px; height:36px; line-height:36px; }
+ .carpromise dl{ padding:8px 0 8px 36px; position:relative;}
+ .carpromise dt{font-size:14px; padding-bottom:5px; color:#000;}
+ .carpromise dd{ color:#898989;}
+ .carpromise dd.icon{ position:absolute;top:12px;left:0;width:29px; height:29px; background:url(/yntp/img/icon/carpromise.png) no-repeat;}
+ .carpromise dl.dl .icon{ background-position:0 0;}
+ .carpromise dl.d2 .icon{ background-position: -32px 0;}
+ .carpromise dl.d3 .icon{ background-position:-64px 0;}
+
+ .mode{margin-top:20px;}
+ .mode h2{font-size:16px; height:40px; line-height:40px; background:#F4F4F4;padding:0 10px; border-bottom:1px solid #E8E8E8;}
+</style>
+<!--[if lt IE 9]>
+        <script src="js/tool/html5/html5.js" type="text/javascript"></script>
+        <![endif]-->
+</head>
+<body class="wysihtml5-supported ">
+	<!-- 头部固定区域 -->
+	<div id="top-header"></div>
+    <div style="">
+    	<!-- 头部中间搜索区域 -->
+        <div id="center-header">
+        </div>
+        
+        <!-- 头部导航区域 -->
+        <div id="navicat-header" style="min-width:1200px">
+        </div>
+    </div>
+	<div class="container" style="margin-top: 10px; width: 1170px">
+		<!--搜索区域 和 图片轮播 和 承诺 -->
+		<div class="row-fluid">
+			<div class="span3" id="searchWrapperDiv"></div>
+			<div class="span6" id="carouselWrapperDiv"></div>
+			<div class="span3" >
+				<div class='row-fluid' style="margin-top: 10px;">
+					<div class='span12   box box-nomargin' id="promiseWrapperDiv"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row-fluid">
+			<div class="span9">
+				<!--推荐租车-->
+				<div class='row-fluid' style="margin-top: 10px;">
+					<div class='span12   box box-nomargin' id="recommendCarWrapperDiv"></div>
+				</div>
+
+				<!--租车类型 -->
+				<div class='row-fluid' style="margin-top: 10px;">
+					<div class='span12 box box-nomargin' id="carTypeWrapperDiv">
+					</div>
+				</div>
+			</div>
+
+			<div class="span3">
+				<!--汽车品牌-->
+				<div class='row-fluid' style="margin-top: 10px;">
+					<div class='span12   box box-nomargin' id="carBrandWrapperDiv">
+
+					</div>
+				</div>
+
+				<!--常见问题-->
+				<div class='row-fluid' style="margin-top: 10px;">
+					<div class='span12   box box-nomargin' id="carQuestionsWrapperDiv"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr style=" margin:20px 0;border:0">
+	<div id="footer" class="container" style="padding-top: 50px;"></div>
+	
+	<script type="text/javascript">
+            seajs.use('carindex', function(Index)
+            {
+                Index.init(
+                {
+                	topheaderId : "top-header",
+                	centerheaderId : "center-header",  
+                	navicatheaderId : "navicat-header",
+                	
+                	searchId : "searchWrapperDiv",
+                	carouselId : "carouselWrapperDiv",
+                    promiseId : "promiseWrapperDiv",
+                    
+                	recommendCarWrapperDiv : "recommendCarWrapperDiv",
+                	carBrandWrapperDiv : "carBrandWrapperDiv",
+                	
+                	carTypeWrapperDiv : "carTypeWrapperDiv",
+                	carQuestionsWrapperDiv : "carQuestionsWrapperDiv",
+                	
+                    footerId : "footer",
+                });
+            });
+    </script>
+</body>
+</html>

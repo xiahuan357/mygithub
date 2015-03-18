@@ -1,0 +1,578 @@
+/**
+ * 景点分类-form
+ */
+define(function(require, exports, module) {
+
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	require("bootbox.css");
+	require('select2.css');
+	require('select2');
+	var bootbox = require('bootbox');
+	var theme = require('bootstrap_theme');
+	var store = require('store');
+	var loader = require('loader');
+
+	var basearchiveUtil = require('basearchive-util');
+	var form = require('basearchive-form');
+
+	var FORMOPTURL_INSERT = GLOBAL.BASE + "admin/business/scenic/create";
+	var FORMOPTURL_UPDATE = GLOBAL.BASE + "admin/business/scenic/update";
+	var TARGETDIV_FORM = "basearchive_form";
+	var MODULENAME = "scenic";
+	var userutil = require("userutil");
+	var userInfo = userutil.getUserInfo();
+	var COMPONENTID_FORM = "validationform" + "_" + MODULENAME;
+
+	var tableUrl = GLOBAL.HTML_HOME
+			+ "admin/customer/business/scenic/biz_scenic_table.html";
+
+	var tabbed_textarea;
+	var tabbed_ueditot_description;
+	var tabbed_ueditot_transportation;
+	var scenicRegion;
+	var form_param = {
+		// Form信息
+		form_attr : {
+			formitem : {
+				title : "景区信息",
+				spansize : 'span12',
+				type : basearchiveUtil.FORMOPT_CREATE, // create 创建 ; update 更新
+				formid : COMPONENTID_FORM,
+				targetdiv : TARGETDIV_FORM,
+			},
+			items : [ {
+				isHidden : true,
+				id : 'hidden_id',
+				name : 'hidden_id',
+				value : ''
+			},
+			{
+				isHidden : true,
+				id : 'business_id',
+				name : 'business_id',
+				value : ''
+			}, {
+				isText : true,
+				label : "景区名称",
+				id : 'text_name',
+				name : 'text_name',
+				type : "text",
+				style : "width:50%",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+				}
+			}, 
+			 {
+				isDiv : true,
+				id : 'text_region',
+				name : 'text_region',
+				style : "width:50%",
+				label : '景点地区',
+			} ,
+			{
+				isSelect : true,
+				label : "景区类型",
+				id : 'select_type',
+				name : 'select_type',
+				style : "width:50%",
+				type : "select",
+				
+			},
+
+			{
+				isSelect : true,
+				label : "景区级别",
+				id : 'select_level',
+				name : 'select_level',
+				style : "width:50%",
+				type : "select",
+				
+			}, 
+			{
+				isText : true,
+				label : "景区地址",
+				id : 'text_address',
+				name : 'text_address',
+				type : "text",
+				style : "width:50%",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+				}
+			}, {
+				isText : true,
+				label : "联系电话",
+				id : 'text_tel',
+				name : 'text_tel',
+				type : "text",
+				style : "width:50%",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+				}
+			}, {
+				isDiv : true,
+				id : 'text_info',
+				name : 'text_info',
+				style : "width:50%",
+				label : '景点信息',
+			} , {
+				isHidden : true,
+				id : 'hidden_imagekey',
+			}, {
+				isDaterange : true,
+				label : "起始时间",
+				id : 'date_range',
+				name : 'date_range',
+				style : "width:50%",
+				format : "YYYY-MM-DD",
+				placeholder : "请选择起始时间",
+			},
+			]
+
+		}
+	};
+
+	// 保存
+	var fnsubmithandler = function() {
+		var optType = store.get("currentOptType" + MODULENAME);
+		var vname = $('#text_name').attr("value");
+		var vid = $('#hidden_id').attr("value");
+		var vaddress = $('#text_address').attr("value");
+		var vtel = $('#text_tel').attr("value");
+		var vtype = $('#select_type').attr("value");
+		var vlevel = $('#select_level').attr("value");
+        var vbusiness_id=userInfo.id;
+        var vregion_id=ScenicRegion.getRegion_id;
+        var vabstract = tabbed_textarea.getText();
+        var vdescription = tabbed_ueditot_description.getContent();
+        var vtransportation = tabbed_ueditot_transportation.getContent();
+		// ------------------------
+		var data = {
+			name : vname,
+			tel:vtel,
+			address:vaddress,
+			business_id:vbusiness_id,
+			type_id:vtype,
+			level_id:vlevel,
+			scenic_abstract:vabstract,
+			scenic_trafficguide:vtransportation,
+			scenic_description:vdescription,
+			region_id:vregion_id,
+		};
+			
+
+		var requestURL = "";
+
+		if (optType == basearchiveUtil.FORMOPT_UPDATE) {
+			data.id = vid;
+			requestURL = FORMOPTURL_UPDATE + "/" + vid;
+		} else {
+			requestURL = FORMOPTURL_INSERT;
+		}
+		var saveResult = form.doSaveAction(requestURL, data, optType);
+
+		if (saveResult) {
+			// 清除本地store的数据
+			var cacheKeyList = [ "currentSelectRowData" + MODULENAME,
+					"currentOptType" + MODULENAME ];
+			basearchiveUtil.clearStoreCache(cacheKeyList);
+
+			basearchiveUtil.jumpToHtml(tableUrl);
+		} else {
+			return false;
+		}
+	};
+
+	// 初始化Form数据，新建和编辑时
+	function initFormValue(optType, data) {
+		var hidden_id = $('#hidden_id');
+		var text_name = $('#text_name');
+		var text_address = $('#text_address');
+		var text_tel = $('#text_tel');
+        var select_type = $('#select_type');
+        var select_level = $('#select_level');
+        var com_imagekey = $("#hidden_imagekey");
+      
+		if (optType == basearchiveUtil.FORMOPT_CREATE) {
+			if (hidden_id != 'undefined' && hidden_id != null)
+				hidden_id.attr("value", "");
+			if (text_name != 'undefined' && text_name != null)
+				text_name.attr("value", "");
+			if (text_address != 'undefined' && text_address != null)
+				text_address.attr('value',"");
+			if (text_tel != 'undefined' && text_tel != null)
+				text_tel.attr("value", "");
+			if (select_type != 'undefined' && select_type != null)
+				select_type.attr("value", "");
+			initScenicTypeSelect();
+			if (select_level != 'undefined' && select_level != null)
+				select_level.attr("value", "");
+			initScenicLevelSelect();
+			getImageKey();
+			tabbed_textarea.setText("");
+			var imagekey = com_imagekey.attr("value");
+			tabbed_ueditot_description.initUEditor(imagekey, "");
+			tabbed_ueditot_transportation.initUEditor(imagekey,"");
+		} else if (optType == basearchiveUtil.FORMOPT_UPDATE) {
+			// 重新从数据库中读取数据
+			var queryUrl = GLOBAL.BASE + "admin/business/scenic/search?q=id="
+					+ data.id;
+			var lastdata = null;
+			$.ajax({
+				async : false,
+				type : "GET",
+				dataType : 'json',
+				contentType : "application/json;charset=UTF-8",
+				url : queryUrl,
+				success : function(resultdata) {
+					if ('000000' != resultdata.flag) {
+						bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+						lastdata = null; // 查询出错
+					} else {
+						var receiptList = resultdata.data;
+						if (receiptList != null && receiptList.length > 0) {
+							lastdata = receiptList[0];
+						} else {
+							bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+							lastdata = null; // 没有此条数据
+						}
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					bootbox.alertTimeout('查询数据出现错误，请重试！');
+				}
+			});
+			if (null == lastdata) {
+				// 清除本地store的数据
+				var cacheKeyList = [ "currentSelectRowData" + MODULENAME,
+						"currentOptType" + MODULENAME ];
+				basearchiveUtil.clearStoreCache(cacheKeyList);
+
+				basearchiveUtil.jumpToHtml(tableUrl);
+			}
+
+			if (hidden_id != 'undefined' && hidden_id != null)
+				hidden_id.attr('value', lastdata.id);
+			if (text_name != 'undefined' && text_name != null)
+				text_name.attr("value", lastdata.name);
+			if (text_address != 'undefined' && text_address != null)
+				text_address.attr('value', lastdata.address);
+			if (text_tel != 'undefined' && text_tel != null)
+				text_tel.attr("value", lastdata.tel);
+			if (select_type != 'undefined' && select_type != null)
+				initScenicTypeSelect();
+				select_type.select2("val",lastdata.type_id);
+			if (select_level != 'undefined' && select_level != null)
+			    initScenicLevelSelect();
+			    select_level.select2("val",lastdata.level_id);
+			if (com_imagekey != 'undefined' && com_imagekey != null)
+				com_imagekey.val(lastdata.imagekey);
+			scenicRegion.initRegion(lastdata.region_id);
+
+			
+			tabbed_textarea.setText(lastdata.scenic_abstract);
+			tabbed_ueditot_description.initUEditor(lastdata.imagekey, lastdata.scenic_description);
+			tabbed_ueditot_transportation.initUEditor(lastdata.imagekey,lastdata.scenic_trafficguide);
+			
+			// 将记录的上传的文件清除
+			clearImageMap($('#hidden_imagekey').attr("value"));
+		}
+	}
+	// 编辑对象时，需要将已经记录的上传的文件删除
+	function clearImageMap(imagekey){
+		var requstUrl = "/yntp/imageupload/clearimagemap";
+		
+		$.ajax({
+	        type : "POST",
+	        async:false,
+	        dataType : "text",
+	        url:requstUrl,
+	        data:{imagekey:imagekey},
+	        success : function(data)
+	        {
+	        	 
+	        },
+	        error : function(XMLHttpRequest, textStatus, errorThrown) {
+				 
+			}
+	    });
+	}
+	
+	// 取消了，需要将上传的文件删除
+	function deleteCancelImage(optType,imagekey){
+		var requstUrl;
+		if (optType == basearchiveUtil.FORMOPT_CREATE) {
+			requstUrl = "/yntp/imageupload/create/cancel";
+		} else if(optType == basearchiveUtil.FORMOPT_UPDATE){
+			requstUrl = "/yntp/imageupload/update/cancel";
+		}
+		
+		$.ajax({
+	        type : "POST",
+	        async:false,
+	        dataType : "text",
+	        url:requstUrl,
+	        data:{imagekey:imagekey},
+	        success : function(data)
+	        {
+	        	 
+	        },
+	        error : function(XMLHttpRequest, textStatus, errorThrown) {
+				 
+			}
+	    });
+	}
+	
+	// 新建时，获得图片key
+	function getImageKey(){
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+	        url:"/yntp/imageupload/imagekey",
+	        success : function(data)
+	        {
+	        	$("#hidden_imagekey").attr("value", data.data);
+	        },
+	        error : function(XMLHttpRequest, textStatus, errorThrown) {
+	        	bootbox.alertTimeout('初始化数据出现错误！');
+			}
+	    });
+	}
+	
+	//初始化景点类型
+	function initScenicTypeSelect() {
+		var newsTypeQueryUrl = GLOBAL.BASE + "admin/business/scenic/getscenictype";
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : newsTypeQueryUrl,
+			success : function(data) {
+				if(data && data.flag == "000000"){
+					// 解析data
+					$("#select_type").select2({
+						placeholder : "景区类型",
+						allowClear : false,
+						multiple : false,
+						data : data.data
+					});
+				} else{
+					bootbox.alertTimeout('初始化景区分类数据失败！');
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				bootbox.alertTimeout('初始化景区分类数据失败！');
+			}
+		});
+		
+	}
+	//初始化景点级别
+	function initScenicLevelSelect() {
+		var newsLevelQueryUrl = GLOBAL.BASE + "admin/business/scenic/getsceniclevel";
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : newsLevelQueryUrl,
+			success : function(data) {
+				if(data && data.flag == "000000"){
+					// 解析data
+					$("#select_level").select2({
+						placeholder : "景区级别",
+						allowClear : false,
+						multiple : false,
+						data : data.data
+					});
+				} else{
+					bootbox.alertTimeout('初始化景区级别类数据失败！');
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				bootbox.alertTimeout('初始化景区级别数据失败！');
+			}
+		});
+		
+	}	
+	//初始化景点所属一级地区
+	function initScenicRegion_firSelect() {
+		var newsRegionQueryUrl = GLOBAL.BASE + "admin/business/scenic/getscenicregion/0";
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : newsRegionQueryUrl,
+			success : function(data) {
+				if(data && data.flag == "000000"){
+					// 解析data
+					$("#region_fir").select2({
+						placeholder : "省/自治区/直辖市/特别行政区",
+						allowClear : false,
+						multiple : false,
+						data : data.data
+					});
+				} else{
+					bootbox.alertTimeout('初始化地区数据失败！');
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				bootbox.alertTimeout('初始化地区数据失败！');
+			}
+		});
+		
+	}
+	//初始化景点所属二级地区
+	function initScenicRegion_secSelect(region_id) {
+		var newsRegion_secQueryUrl = GLOBAL.BASE + "admin/business/scenic/getscenicregion/"+region_id;
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : newsRegion_secQueryUrl,
+			success : function(data) {
+				if(data && data.flag == "000000"){
+					// 解析data
+					$("#region_sec").select2({
+						placeholder : "市/市辖区",
+						allowClear : false,
+						multiple : false,
+						data : data.data
+					});
+				} else{
+					bootbox.alertTimeout('初始化地区数据失败！');
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				bootbox.alertTimeout('初始化地区数据失败！');
+			}
+		});
+		
+	}
+	//初始化景点所属三级地区
+	function initScenicRegion_thrSelect(region_sec_id) {
+		var newsRegion_thrQueryUrl = GLOBAL.BASE + "admin/business/scenic/getscenicregion/"+region_sec_id;
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : newsRegion_thrQueryUrl,
+			success : function(data) {
+				if(data && data.flag == "000000"){
+					// 解析data
+					$("#region_thr").select2({
+						placeholder : "区/县",
+						allowClear : false,
+						multiple : false,
+						data : data.data
+					});
+				} else{
+					bootbox.alertTimeout('初始化地区数据失败！');
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				bootbox.alertTimeout('初始化地区数据失败！');
+			}
+		});
+		
+	}
+	
+	
+	exports.init = function() {
+		$(document)
+				.ready(
+						function() {
+							// 当前操作：新建，编辑
+							var optType = store.get("currentOptType"
+									+ MODULENAME);
+							var storeRowData = store.get("currentSelectRowData"
+									+ MODULENAME);
+
+							form.init(form_param);
+							var ScenicRegion=require("cityselector");
+							scenicRegion = new ScenicRegion({
+								attrs :{
+									width1 : "width:150px",
+									width2 : "width:150px",
+									width3 : "width:150px",
+								},
+								renderTo:"text_region"
+							})
+							var ScenicEdit = require("tabbed");
+							new ScenicEdit({
+								attrs : {
+									id : "editor_info",
+									tabs : [ {
+										id : "abstractdiv",
+										label : "景点简述"
+									}, {
+										id : "descriptiondiv",
+										label : "景点介绍"
+									} ,
+									{
+										id : "transportationdiv",
+										label : "交通指南"
+									} ,
+									]
+								},
+								renderTo : "text_info"
+							});
+							var TextArea =require("textarea");
+							tabbed_textarea = new TextArea({
+						    	attrs:{
+						    		id:"textarea_abstract",
+						    	},
+								renderTo : "abstractdiv"
+							});
+						    
+							var ScenicUeditor = require("ueditor");
+							tabbed_ueditot_description = new ScenicUeditor({
+								attrs : {
+									id : "ueditor_description",
+									name:"ueditor_description",
+								},
+								renderTo : "descriptiondiv"
+							});
+							tabbed_ueditot_transportation = new ScenicUeditor({
+								attrs : {
+									id : "ueditor_trafficguide",
+									name:"ueditor_trafficguide",
+								},
+								renderTo : "transportationdiv"
+							});
+							
+				        	initFormValue(optType, storeRowData)
+							var optType = "create";
+							
+						    
+				        	// 取消方法
+							$('#btn_mct_cancel').die().on('click', function() {
+								bootbox.confirm('确认取消？',function(YesOrNo){
+									if(YesOrNo){
+										// 清除本地store数据
+										var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+										basearchiveUtil.clearStoreCache(cacheKeyList);
+										// 清除已经上传的文件
+										deleteCancelImage(optType,$('#hidden_imagekey').attr("value"));
+										
+										basearchiveUtil.jumpToHtml(tableUrl);
+									}
+								});
+							});
+
+							//加载验证，验证表单
+							theme.setValidateForm($("#"+COMPONENTID_FORM), fnsubmithandler);
+						});
+	};
+});

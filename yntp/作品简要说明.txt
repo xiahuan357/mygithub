@@ -1,0 +1,4 @@
+该项目将在今年（2015年）正式上线，由二人独立开发，本人参与项目的各个部分包括前端与后台。
+使用Java语言，html+js，采用Spring，hibernate框架，以及 dwr技术以实现页面消息推送。
+
+项目github地址：https://github.com/xiahuan357/mygithub/tree/master/yntp

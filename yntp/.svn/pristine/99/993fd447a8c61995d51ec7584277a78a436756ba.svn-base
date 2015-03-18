@@ -1,0 +1,27 @@
+ [
+ 	{"url":"/admin/customer/personal/console/console.html","icon":"icon-dashboard","name":"工作台","id":"menu_console"},
+ 	{"url":"","icon":"icon-info-sign","name":"旅游景点","id":"menu_scenic_p","children":[
+ 		{"url":"admin/customer/personal/scenic/per_scenic_order_table.html","icon":"icon-info-sign","name":"景点订单","id":"menu_scenic_order_table"},
+		{"url":"admin/customer/personal/scenic/per_scenic_comment_table.html","icon":"icon-info-sign","name":"景点点评","id":"menu_scenic_comment_table"},
+	]},
+	{"url":"","icon":"icon-road","name":"旅游路线","id":"menu_toursimline_p","children":[
+	    {"url":"admin/customer/personal/tourismline/per_tourismline_order_table.html","icon":"icon-road","name":"线路订单","id":"menu_toursimline_order_table"},
+	    {"url":"admin/customer/personal/tourismline/per_tourismline_comment_table.html","icon":"icon-road","name":"线路点评","id":"menu_toursimline_comment_table"},
+	]},
+	{"url":"","icon":"icon-building","name":"酒店管理","id":"menu_hotel_p","children":[
+	    {"url":"admin/customer/personal/hotel/per_hotel_order_table.html","icon":"icon-building","name":"酒店订单","id":"menu_hotel_order_table"},
+	    {"url":"admin/customer/personal/hotel/per_hotel_comment.html","icon":"icon-building","name":"酒店点评","id":"menu_hotel_comment_table"},
+	]},
+	{"url":"","icon":"icon-envelope","name":"民族特产","id":"menu_special_p","children":[
+	    {"url":"admin/customer/personal/nationalspecial/per_nationalspecial_order_table.html","icon":"icon-envelope","name":"特产订单","id":"menu_nationalspecial_order_table"},
+	    {"url":"admin/customer/personal/nationalspecial/per_nationalspecial_comment_table.html","icon":"icon-envelope","name":"特产点评","id":"menu_nationalspecial_comment_table"},
+	]},
+	{"url":"","icon":"icon-truck","name":"汽车租赁","id":"menu_car_p","children":[
+	    {"url":"admin/customer/personal/car/per_car_order_table.html","icon":"icon-truck","name":"汽车订单","id":"menu_car_order_table"},
+	    {"url":"admin/customer/personal/car/per_car_comment_table.html","icon":"icon-truck","name":"汽车点评","id":"menu_car_comment_table"},
+	]},
+	{"url":"","icon":"icon-camera","name":"旅游设备","id":"menu_equipment_p","children":[
+	    {"url":"admin/customer/personal/equipment/per_equipment_order_table.html","icon":"icon-camera","name":"设备订单","id":"menu_equipment_order_table"},
+	    {"url":"admin/customer/personal/equipment/per_equipment_comment_table.html","icon":"icon-camera","name":"设备点评","id":"menu_equipment_comment_table"},
+	]},
+]

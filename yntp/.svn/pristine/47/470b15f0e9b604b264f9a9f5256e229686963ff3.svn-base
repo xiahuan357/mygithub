@@ -1,0 +1,393 @@
+/**
+ * 特产分类-form
+ */
+define(function(require, exports, module) {
+
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	require("bootbox.css");
+
+	var bootbox = require('bootbox');
+	var theme = require('bootstrap_theme');
+	var store = require('store');
+	var loader = require('loader');
+	
+	var basearchiveUtil = require('basearchive-util');
+	var form = require('basearchive-form');
+	var TreeTableCom = require("treetable");
+	
+	var FORMOPTURL_INSERT= GLOBAL.BASE + "admin/product/producttype/treetable/create";
+	var FORMOPTURL_UPDATE= GLOBAL.BASE + "admin/product/producttype/treetable/update";
+	var FORMOPTURL_DELETE = GLOBAL.BASE + "admin/product/producttype/delete";
+	
+	var querybylevel =  GLOBAL.BASE + "admin/product/producttype/level/1/producttype";
+	var querybyparentid =  GLOBAL.BASE + "admin/product/producttype/parentid/";
+	
+	var MODULENAME = "producttype";
+	var COMPONENTID_FORM = "validationform" + "_" + MODULENAME;
+	
+	// 选择的操作
+	var actionType ;
+	var TYPE_ADDNEW = "addnew";
+	var TYPE_ADDCHILD = "addchild";
+	var UPDATE = "update";
+	
+	// 记录当前选中的节点
+	var currentSelectedNode;
+	
+	var form_param = {
+		// Form信息
+		form_attr : {
+			formitem : {
+				title : "产品类型",
+				spansize : 'span12',
+				type : basearchiveUtil.FORMOPT_CREATE, // create 创建 ; update 更新
+				formid : COMPONENTID_FORM,
+			},
+			items : [ {
+				isHidden : true,
+				id : 'hidden_id',
+				name : 'hidden_id',
+				value : ''
+			}, {
+				isText : true,
+				label : "产品类型",
+				id : 'text_name',
+				name : 'text_name',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入产品类型",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+				},
+			}],
+			 buttons : [ {
+					text : "保存",
+					id : "btn_mct_save_pt",
+					type : "submit",
+					style : "btn btn-primary contrast-background",
+					name : "submit",
+				}, {
+					text : "取消",
+					id : "btn_mct_cancel_pt",
+					type : "button",
+					style : "btn btn-primary",
+					name : "submit",
+				}]
+		}
+	};
+	
+	// 获得展开下级的数据
+	var getExpandNodeData = function(node){
+		var parentid = node.id;
+		var lastdata = null;
+		$.ajax({
+			async : false,
+			type : "GET",
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			url : querybyparentid + parentid + "/producttype",
+			success : function(resultdata) {
+				if('000000' != resultdata.flag){
+					bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+					lastdata = null; 	// 查询出错
+				} else {
+					var receiptList = resultdata.data;
+					lastdata = receiptList;
+				}
+			},
+			error : function(resultdata) {
+				bootbox.alertTimeout('查询数据出现错误，请重试！');
+			}
+		});
+		return lastdata;
+	}
+	
+	// 保存
+	var fnsubmithandler = function(treeTable){
+		var vid = $('#hidden_id').attr("value");
+		var vname = $('#text_name').attr("value");
+		//------------------------
+		var data = {
+			name : vname,
+		};
+
+		var requestURL = "";
+		
+		if(actionType == TYPE_ADDNEW ){
+			data.parent_id = 0;
+			data.level = 1;
+			
+			requestURL = FORMOPTURL_INSERT;
+		} else if(actionType == TYPE_ADDCHILD){
+			data.parent_id = currentSelectedNode.id;
+			data.level = 1 + currentSelectedNode.userObject.level ;
+			
+			requestURL = FORMOPTURL_INSERT;
+		} else if(actionType == UPDATE){
+			data.id = vid;
+			// 如果没有父亲节点，pid设为0
+			var parentNode = currentSelectedNode.pNode;
+			data.parent_id = parentNode == null ? 0 : parentNode.id;
+			
+			requestURL = FORMOPTURL_UPDATE + "/" + vid;
+		}
+		
+		var loader = require('loader');
+		var saveResult = false;
+		var fifaGirdTree = treeTable.getTreeTable();
+		loader.loading("正在保存，请稍等……");
+		$.ajax({
+			async: false,
+			type : "POST",
+			url : requestURL,
+			data : data,
+			success : function(resultdata) {
+				loader.noloading();
+				if('000000' != resultdata.flag){
+					saveResult = false; 	// 保存出错
+					// 显示错误信息
+					form.showMsg(resultdata.desc);
+				} else {
+					saveResult = true;
+					if (actionType == TYPE_ADDNEW || actionType == TYPE_ADDCHILD) {
+						bootbox.alertTimeout("创建成功！");
+						
+						// 刷新数据
+						//add one node
+						var addnode = treeTable.getNewTableTreeNode(resultdata.data);
+						if(actionType == TYPE_ADDNEW ){
+							fifaGirdTree.addNode(addnode);
+						} else if(actionType == TYPE_ADDCHILD){
+							fifaGirdTree.addNode(addnode,currentSelectedNode.id);
+						}
+						$("#formDiv").hide();//隐藏div 
+					} else if (actionType == UPDATE) {
+						var parentNode = currentSelectedNode.pNode;
+						
+						bootbox.alertTimeout("修改成功！");
+						// 刷新数据
+						treeTable.rebuildTreeByNodes();
+						if(parentNode != null){
+							fifaGirdTree.toggleNodeById(parentNode.id,true);
+						}
+						$("#formDiv").hide();//隐藏div 
+					}
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+				loader.noloading();
+				saveResult = false;
+				bootbox.alertTimeout("操作失败！");
+			}
+		});
+	};
+	
+	var reBuildForm = function(treetable){
+		// 创建表单
+		form.init(form_param);
+		
+		// 保存操作
+		$('#btn_mct_save_pt').die().on('click', function() {
+			if(!form.formValidation(form_param))
+				return;
+			
+			fnsubmithandler(treetable);
+		});
+		
+		// 取消操作
+		$('#btn_mct_cancel_pt').die().on('click', function() {
+			$("#formDiv").hide();//隐藏div 
+		});
+		
+		// 验证
+		callvalidate();
+	}
+	//加载验证
+	var callvalidate = function(data) {
+		var selector = $("#" + COMPONENTID_FORM);
+		if (data && data.selector)
+			selector = data.selector;
+	
+		selector.each(function(i, elem) {
+			gvalidater = $(elem).die().validate({
+				debug : true,
+				ignore : "",
+				errorElement : "span",
+				errorClass : "help-block error",
+				errorPlacement : function(e, t) {
+					return t.parents(".controls").append(e);
+				},
+				highlight : function(e) {
+					return $(e).closest(".control-group").removeClass("error success").addClass("error");
+				},
+				success : function(e) {
+					return e.closest(".control-group").removeClass("error");
+				},
+				submitHandler : function() {
+				//	 fnsubmithandler();
+				},
+			});
+		});
+	};
+	
+	exports.init = function(param){
+		$(document).ready(function() {
+			form_param.form_attr.formitem.targetdiv = param.formWrapperDiv;
+
+			// 渲染单元格，添加删除按钮
+			function operateRenderFunction(infoObj) {
+				var value = infoObj.dataValue;
+				var node = infoObj.node;
+				var tree = infoObj.tabletreeObj;
+				var aElobj = Core4j.Domhelper.createElement("a", {
+					attributeNames : [ 'href' ],
+					valueObject : {
+						href : '#'
+					}
+				});
+				aElobj.innerHTML = "删除分类";
+				return aElobj;
+			}
+			
+			var treetable = new TreeTableCom( {
+				attrs : {
+					treetableWrapperDiv : param.treetableWrapperDiv,
+					treetableid : "treetable_producttype",
+					initnodequeryurl : querybylevel,
+					getExpandNodeData : getExpandNodeData,
+					// 列名
+					FIFAHeadersColumns : [ {
+						dataIndex : 'typename'
+					}, {
+						dataIndex : 'operate'
+					} ],
+					// 数据映射
+					FIFAHeadersDataObject : {
+						typename : '类型名称',
+						operate : '操作'
+					},
+					GirdTreeColumns : [ {
+						isNodeClick : true,
+						dataIndex : 'typename',
+						width : '50%'
+					}, {
+						width : '50%',
+						canSort : false,
+						renderFunction : operateRenderFunction
+					} ],
+				}
+			});
+			
+			reBuildForm(treetable);
+			
+			//添加新分类
+			$('#addnewbtn').die().live('click', function() {
+				if(form_param.form_attr.items.length > 2){
+					form_param.form_attr.items.remove(1);
+					
+					reBuildForm(treetable);
+				}
+				
+				$("#formDiv").show();//显示div    				
+				$("#formboxtitle").text( "添加新分类");
+				$("#text_name").val("");
+				form.clearMsg();
+				actionType = TYPE_ADDNEW;
+			});
+			
+			//添加下级分类
+			$('#addchildbtn').die().live('click', function() {
+				currentSelectedNode = treetable.getSelectedNode();
+				if(currentSelectedNode == null){
+					bootbox.alertTimeout('请先选择数据！');
+					return;
+				}
+				
+				if(form_param.form_attr.items.length == 2){
+					var parentControl = {
+						isText : true,
+						label : "父产品类型",
+						id : 'text_parentname',
+						name : 'text_parentname',
+						type : "text",
+						style : "width:50%",
+						readonly : true
+					};
+					form_param.form_attr.items.insert(1, parentControl);
+					reBuildForm(treetable);
+				}
+				
+				$("#formDiv").show();//显示div    
+				$("#formboxtitle").text( "添加下级分类");
+				$("#text_name").val("");
+				$("#text_parentname").val(currentSelectedNode.dataObject.typename);
+				form.clearMsg();
+				
+				actionType = TYPE_ADDCHILD;
+			});
+			
+			//修改分类信息
+			$('#updatebtn').die().live('click', function() {
+				currentSelectedNode = treetable.getSelectedNode();
+				if(currentSelectedNode == null){
+					bootbox.alertTimeout('请先选择数据！');
+					return;
+				}
+				if(form_param.form_attr.items.length > 2){
+					form_param.form_attr.items.remove(1);
+					reBuildForm(treetable);
+				}
+				$("#formDiv").show();//显示div    
+				$("#formboxtitle").text("修改分类信息");
+				
+				var currentNodeId = currentSelectedNode.id;
+				var currentNodeName = currentSelectedNode.dataObject.typename;
+				
+				$("#hidden_id").val( currentNodeId);
+				$("#text_name").val( currentNodeName);
+				form.clearMsg();
+				
+				actionType = UPDATE;
+			});
+			
+			// 删除
+			$(".arrow-tt-node-content").die().live('click', function() {
+				currentSelectedNode = treetable.getSelectedNode();
+				
+				var currentNodeId = currentSelectedNode.id;
+				if(currentSelectedNode.childs!=null&&currentSelectedNode.childs.length>0){
+					bootbox.alertTimeout('分类下含有子类，请先删除子类后再试！' );
+					return;
+				}
+					
+				bootbox.confirm('确认删除？',function(YesOrNo){
+					if(YesOrNo){
+						$.ajax({
+							async:false,
+							type : "DELETE",
+							dataType : 'json',
+							contentType : "application/json;charset=UTF-8",
+							url : FORMOPTURL_DELETE + "/" + currentSelectedNode.id,
+							success : function(resultdata) {
+								if('000000' != resultdata.flag){
+									bootbox.alertTimeout('删除失败，请重试，错误原因：' +resultdata.desc );
+								} else {
+									// 显示成功提交
+									bootbox.alertTimeout('删除成功！');
+									// 刷新数据
+									treetable.getTreeTable().removeNode(node.id);
+								}
+							},
+							error : function(XMLHttpRequest, textStatus, errorThrown) {
+								bootbox.alertTimeout('删除失败，请重试！');
+							}
+						});
+					}
+				});
+			});
+		});
+	};
+});

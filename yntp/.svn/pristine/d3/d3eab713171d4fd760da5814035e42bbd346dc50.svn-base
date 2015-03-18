@@ -1,0 +1,44 @@
+/**
+ * 线路行程信息界面
+ */
+define(function(require, exports, module) {
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	
+	var basearchiveUtil = require('basearchive-util');
+	var MODULENAME = "tourismline_extendinfo";
+	
+	var UeditorComponent = require("ueditor");
+	
+	// 初始化Form组件
+	var initFormComponent = function(wrapperDivId){
+	    
+		var tabbed_ueditor_tripdescription = new UeditorComponent({
+			attrs : {
+				id : "ueditor_tripdescription",
+				name:"ueditor_tripdescription",
+			},
+			renderTo : wrapperDivId
+		});
+		
+		tabbed_ueditor_tripdescription.initUEditor("", "");
+	}
+	
+	// 初始化Form数据
+	var initFormValue = function(){
+		
+	}
+	
+	exports.getFormData = function(){
+	}
+	
+	exports.init = function(param){
+		$(document).ready(function() {
+			
+			var wrapperDivId = param.attrs.divWrapperId;
+			initFormComponent(wrapperDivId);
+			initFormValue();
+		});
+	};
+	
+});

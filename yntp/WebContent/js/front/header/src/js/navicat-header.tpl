@@ -7,23 +7,22 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
   				</a> 
-  				<a class="brand" href="./index.html" id="indexlink">云南旅游</a>
+  				<a class="brand" href="/yntp/index.html" id="indexlink">云南旅游</a>
   				<div class="nav-collapse">
   					<ul class="nav" style="font-size:16px">
-  						<li class="active"><a href="./index.html">首页</a></li>
-  						<li class=""><a href="./base-css.html">旅游线路</a></li>
-  						<li class=""><a href="./components.html">旅游景点</a></li>
-  						<li class=""><a href="./javascript.html">酒店预订</a></li>
-  						<li class=""><a href="./less.html">机票预订</a></li>
+  						<li class="active" id="index_page"><a href="/yntp/index.html">首页</a></li>
+  						<li class="" id="tourismline_page"><a href="/yntp/tourismlineindex.html">旅游线路</a></li>
+  						<li class="" id="scenic_page"><a href="/yntp/scenicindex.html">旅游景点</a></li>
+  						<li class="" id="hotel_page"><a href="/yntp/hotelindex.html">酒店预订</a></li>
   						<!--<li class="divider-vertical"></li>-->
-  						<li class=""><a href="./download.html">汽车租赁</a></li>
-  						<li class=""><a href="./download.html">旅行设备租赁</a></li>
+  						<li class="" id="car_page"><a href="/yntp/carindex.html">汽车租赁</a></li>
+  						<li class="" id="equipment_page"><a href="/yntp/equipmentindex.html">旅行设备租赁</a></li>
  
   						<!--<li class="divider-vertical"></li>-->
-  						<li class=""><a href="./examples.html">美食推荐</a></li>
-  						<li class=""><a href="./examples.html">特产中心</a></li>
-  						<li class=""><a href="./examples.html">温泉之旅</a></li>
-  						<li class=""><a href="./examples.html">民族风情</a></li>
+  						<li class="" id="food_page"><a href="/yntp/foodindex.html">美食推荐</a></li>
+  						<li class="" id="nationalspecial_page"><a href="/yntp/nationalspecialindex.html">特产中心</a></li>
+  						<li class="" id="hotspring_page"><a href="/yntp/hotspringindex.html">温泉之旅</a></li>
+  						<li class="" id="nationalfeature_page"><a href="/yntp/nationalfeatureindex.html">民族风情</a></li>
   					</ul>
   				</div>
 			</div>

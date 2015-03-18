@@ -1,0 +1,97 @@
+/**
+ * 顶部栏
+ */
+define(function(require, exports, module)
+{
+	var $ = require("$");
+	var store = require("store");
+	var userutil = require("userutil");
+
+    // 默认引入：组件继承自widget
+    var Widget = require("widget");
+    // 自定义：组件的html模板
+    var template = require("./fixed-header-login.tpl");
+    
+    // 组件的定义 组件名大写
+    var FixedHeader = Widget.extend(
+    {
+        template : template,
+        afterRender : function(){
+	        //获取用户信息事件
+	        var userName = userutil.getUserName();
+	        var userLink;
+	        var userInfo = userutil.getUserInfo();
+	        // 用户类型0 系统管理员；1 商家；2 用户
+	        if(userInfo.usertype == 0){
+	        	userLink = "<a id='linktobusinessinfo' href='" +GLOBAL.URL.ADMIN_INDEX + "'  style='color:red'>" + userName +"</a>";
+	        } else if(userInfo.usertype == 1){
+	        	userLink = "<a id='linktobusinessinfo' href='" +GLOBAL.URL.BUSINESSINFO_INDEX + "'  style='color:red'>" + userName +"</a>";
+        	} else if(userInfo.usertype == 2){
+        		userLink = "<a id='linktobusinessinfo' href='" +GLOBAL.URL.BUSINESSINFO_INDEX + "'  style='color:red'>" + userName +"</a>";
+        	}
+	        $("#userName").prepend(userLink);
+	        $("#linktobusinessinfo").die().on("click",function(){
+	        	window.location=GLOBAL.URL.BUSINESSINFO_INDEX;
+	        });
+	        $('#dropdown-usersetting').hover(function() {
+	        	$('#dropdown-usersetting').addClass("open");
+			}, function() {
+ 
+			}); 
+	        
+	        $('#dropdown-menu-usersetting').hover(function() {
+ 
+	        }, function() {
+				$('#dropdown-usersetting').removeClass("open");
+	        }); 
+	    	// 退出事件
+	    	$("#logout").die().on("click",function(){
+	    		var url = GLOBAL.BASE + "front/login/logout";  
+	    		$.ajax({  
+			        url:url,  
+			        type:"POST",  
+			        success: function(data){  
+			        	userutil.clearUserInfo();
+			        	window.location=GLOBAL.URL.LOGINURL;
+			        },
+			        error : function(XMLHttpRequest, textStatus, errorThrown) {
+		 			}
+			    });  
+	    	});
+	    	
+	    	// 账户设置
+	    	$("#baseinfoset").die().on("click", function() {
+	    		window.location=GLOBAL.URL.BASEINFO_INDEX;
+	    	});
+	    	
+	    	// 联系我们事件
+			$("#connectus").die().on("click", function() {
+				window.location=GLOBAL.URL.CONNECTUS;
+			});
+			
+			$(function () { 
+			    var x = 10; 
+			    var y = 20; //设置提示框相对于偏移位置，防止遮挡鼠标 
+			    $("#userName").hover(function (e) {  //鼠标移上事件 
+			        this.myTitle = this.title; //把title的赋给自定义属性 myTilte ，屏蔽自带提示 
+			        this.title = ""; 
+			        var tooltipHtml = "<div id='tooltip'>" + this.myTitle + "</div>"; //创建提示框 
+			        $("#body").append(tooltipHtml); //添加到页面中 
+			        $("#tooltip").css({ 
+			            "top": (e.pageY + y) + "px", 
+			            "left": (e.pageX + x) + "px" 
+			        }).show("fast"); //设置提示框的坐标，并显示 
+			    }, function () {  //鼠标移出事件 
+			        this.title = this.myTitle;  //重新设置title 
+			        $("#tooltip").remove();  //移除弹出框 
+			    }).mousemove(function (e) {   //跟随鼠标移动事件 
+			        $("#toolti").css({ "top": (e.pageY + y) + "px", 
+			            "left": (e.pageX + x) + "px" 
+			        }); 
+			    }); 
+			}); 
+        },
+    });
+    // 组件对外提供使用
+    module.exports = FixedHeader;
+}); 

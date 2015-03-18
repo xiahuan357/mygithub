@@ -1,0 +1,27 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "tophot1",
+            "active": true,
+            "index": "1",
+            "src": "/yntp/upload/image/carousel/car/u_20150119172102138443510.jpg",
+            "alt": "汽车租赁",
+            "caption": "汽车租赁"
+        },
+        {
+        	"id" : "tophot2",
+            "index": "2",
+            "src": "/yntp/upload/image/carousel/car/u_2015030304215694626410.jpg",
+            "alt": "汽车租赁",
+            "caption": "汽车租赁"
+        },
+        {
+        	"id" : "tophot3",
+            "index": "3",
+            "src": "/yntp/upload/image/carousel/car/u_20150303084657294264112.jpg",
+            "alt": "汽车租赁",
+            "caption": "汽车租赁"
+        }
+    ]
+}

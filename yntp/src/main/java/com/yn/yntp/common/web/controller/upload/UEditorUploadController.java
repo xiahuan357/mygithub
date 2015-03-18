@@ -31,7 +31,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
  * @version V1.0
  */
 @Controller
-public class UEditorUploadController  extends BaseImageUploadController {
+public class UEditorUploadController extends BaseImageUploadController {
   
   /**
    * ueditor 富文本编辑控件的图片上传

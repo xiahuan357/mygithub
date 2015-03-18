@@ -1,0 +1,30 @@
+package com.yn.yntp.module.ads.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.yn.yntp.common.web.controller.BaseCRUDController;
+import com.yn.yntp.module.ads.entity.AdsTextEntity;
+import com.yn.yntp.module.ads.service.AdsTextService;
+
+/**
+ * 
+ * 
+ * @Title: AdsTextController.java 
+ * @Package com.yn.yntp.module.ads.web 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author cuilz    
+ * @date 2014年12月10日 下午8:25:24 
+ * @version V1.0
+ */
+
+@Controller
+@RequestMapping("/admin/ads/adstext")
+public class AdsTextController extends BaseCRUDController<AdsTextEntity,Long>{
+
+  private AdsTextService getAdsService(){
+    return (AdsTextService)getBaseService();
+  }
+  
+}

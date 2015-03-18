@@ -1,0 +1,185 @@
+package com.yn.yntp.common.web.controller.upload;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yn.yntp.common.entity.response.ServiceResponse;
+import com.yn.yntp.common.tool.FileOperate;
+
+/**
+ * 
+ * @Title: BaseImageUploadController.java 
+ * @Package com.yn.yntp.common.web.controller.upload 
+ * @Description: TODO(用一句话描述该文件做什么) 
+ *
+ * @author liucc    
+ * @date 2015年1月17日 下午5:47:35 
+ * @version V1.0 
+ */
+
+public class BaseImageUploadController {
+
+  @Autowired
+  protected FileOperate fileOpt;
+
+  // 项目根路径
+  protected final String projectBase = "/yntp/";
+
+  // 图片存放路径
+  protected final String uploadPath = "upload/image/";
+
+  // 记录上传的文件
+  protected Map<String, List<String>> uploadedImageFileMap = new HashMap<String, List<String>>();
+
+  /**
+   * 获得图片Key
+   * 
+   * @return
+   */
+  @RequestMapping(value = "imageupload/imagekey", method = RequestMethod.GET)
+  @ResponseBody
+  public Object getFileKey() {
+    ServiceResponse<String> ret = new ServiceResponse<String>();
+    // 创建文件唯一名称
+    String uuid = UUID.randomUUID().toString();
+    ret.setData(uuid);
+    return ret;
+  }
+  
+  /**
+   * 每次编辑或是新建前，需要将记录上传的文件清除
+   * 
+   * @param imagekey
+   */
+  @RequestMapping(value = "imageupload/clearimagemap", method = RequestMethod.POST)
+  @ResponseBody
+  public void clearImageMap(@RequestParam("imagekey") String imagekey,
+      HttpServletRequest request) {
+    uploadedImageFileMap.remove(imagekey);
+  }
+
+  /**
+   * 新建取消后，需要将上传的图片删除
+   * 
+   * @param imagekey
+   */
+  @RequestMapping(value = "imageupload/create/cancel", method = RequestMethod.POST)
+  @ResponseBody
+  public void createCancelDeleteImage(
+      @RequestParam("imagekey") String imagekey, HttpServletRequest request) {
+    ServletContext sc = request.getSession().getServletContext();
+    String serverBase = sc.getRealPath("/");
+
+    clearFolderImage(serverBase, imagekey);
+  }
+
+  /**
+   * 编辑取消后，需要将上传的图片删除
+   * 
+   * @param imagekey
+   */
+  @RequestMapping(value = "imageupload/update/cancel", method = RequestMethod.POST)
+  @ResponseBody
+  public void updateCancelDeleteImage(
+      @RequestParam("imagekey") String imagekey, HttpServletRequest request) {
+    ServletContext sc = request.getSession().getServletContext();
+    String serverBase = sc.getRealPath("/");
+
+    List<String> uploadedFileList = uploadedImageFileMap.get(imagekey);
+    if (uploadedFileList == null || uploadedFileList.size() == 0)
+      return;
+
+    String targetFolderPath = serverBase + uploadPath + imagekey;
+
+    for (String image : uploadedFileList) {
+      String imageName = image.substring(image.lastIndexOf("/") + 1);
+
+      String deleteImagePath = targetFolderPath + "/" + imageName;
+      File crtFile = new File(deleteImagePath);
+      File parentDir = crtFile.getParentFile();
+      fileOpt.delFile(deleteImagePath);
+      // 如果父亲文件夹空了，删除之
+      if (parentDir != null && parentDir.list().length == 0) {
+        parentDir.delete();
+      }
+    }
+  }
+
+  /**
+   * 根据时间戳获得文件名
+   * 
+   * @param orgFileName
+   * @return
+   */
+  public String getNewFileName(String orgFileName) {
+    Date crtDate = new Date();
+    // 检查文件后缀格式
+    String fileEnd = orgFileName.substring(orgFileName.lastIndexOf(".") + 1).toLowerCase();
+    return crtDate.getTime() + "." + fileEnd;
+  }
+
+  /**
+   * 删除多余的图片
+   * 
+   * @param serverBase
+   * @param avilabelImageList 被使用的文件
+   * @param imageKey
+   */
+  public void clearUnUsedImage(String serverBase,
+      List<String> avilabelImageList, String imageKey) {
+    // 获得图片地址，据对路径
+    String targetFolderPath = serverBase + uploadPath + imageKey;
+    File imageFoder = new File(targetFolderPath);
+
+    List<String> avilabelImageNameList = new ArrayList<String>();
+    for (String image : avilabelImageList) {
+      int lastSpitIndex = image.lastIndexOf("/");
+      avilabelImageNameList.add(image.substring(lastSpitIndex + 1));
+    }
+
+    // 获得文件夹下面的所有文件
+    String[] imageList = imageFoder.list();
+    if (imageList == null || imageList.length == 0)
+      return;
+
+    // 如果文件夹下面的文件没有被使用，则需要删除
+    for (String exsitImage : imageList) {
+      if (!avilabelImageNameList.contains(exsitImage)) {
+        // 游离文件，删除
+        String deleteImagePath = targetFolderPath + "/" + exsitImage;
+        File crtFile = new File(deleteImagePath);
+        File parentDir = crtFile.getParentFile();
+        fileOpt.delFile(deleteImagePath);
+        // 如果父亲文件夹空了，删除之
+        if (parentDir != null && parentDir.list().length == 0) {
+          parentDir.delete();
+        }
+      }
+    }
+  }
+
+  /**
+   * 删除文件后，需要将关联的图片全部删掉，并删除文件
+   * 
+   * @param imageKey
+   */
+  public void clearFolderImage(String serverBase, String imageKey) {
+    String folderPath = serverBase + uploadPath + imageKey;
+    fileOpt.delFolder(folderPath);
+  }
+  
+}

@@ -1,0 +1,7 @@
+由本人独立制作的一个较简单的新闻发布系统，共使用5个角色，分别是浏览者，记者，编辑，总编辑，管理员
+Java语言，采用struts2，spring框架，新闻相关数据全采用xml作为数据库，其他用户相关信息采用MySql数据库。
+
+项目github地址：https://github.com/xiahuan357/mygithub/tree/master/News
+
+
+

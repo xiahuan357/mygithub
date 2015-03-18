@@ -1,0 +1,234 @@
+package com.yn.yntp.module.tourismline.entity;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yn.yntp.common.entity.BaseImageEntity;
+import com.yn.yntp.module.sys.user.entity.UserEntity;
+
+/**
+ * 
+ * @Title: TourismEntity.java 
+ * @Package com.yn.yntp.module.tourism.entity 
+ * @Description: 线路实体
+ *
+ * @author liucc    
+ * @date 2014年11月22日 下午3:40:15 
+ * @version V1.0 
+ */
+
+@Entity
+@Table(name = "biz_tourismline")
+public class TourismlineEntity extends BaseImageEntity<Long>{
+
+  // 标题
+  private String name;
+  // 价格
+  private Double price;
+  // 线路类型
+  private Long type_id;
+  // 线路主题集合，每个id以,分割
+  private String theme_ids;
+  // 线路性质
+  private Long property_id;
+  // 开始城市id，省市县以-分割
+  private String start_city_id;
+  // target_city_id，省市县以-分割
+  private String target_city_id;
+  
+  // 开始日期
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date start_datetime;
+  // end_datetime
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date end_datetime;
+  
+  // 线路简述
+  private String tl_abstract;
+  // 线路描述
+  private String tl_description;
+  // 购买须知
+  private String tl_buynotes;
+  // 费用说明
+  private String tl_feeillustration;
+  // 交通指南
+  private String tl_trafficguide;
+  
+  // 出发地点
+  private String setout_position;
+  // 出发时间
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date setout_datetime;
+  // 返回地点
+  private String return_position;
+  // 返回时间
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date return_datetime;
+  
+  // 框架自动查询出用户
+  @ManyToOne(optional = true)
+  @Fetch(FetchMode.SELECT)
+  @JoinColumn(name = "business_id")
+  private UserEntity userEntity;
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Double getPrice() {
+    return this.price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
+  }
+
+  public Long getType_id() {
+    return this.type_id;
+  }
+
+  public void setType_id(Long type_id) {
+    this.type_id = type_id;
+  }
+
+  public String getTheme_ids() {
+    return this.theme_ids;
+  }
+
+  public void setTheme_ids(String theme_ids) {
+    this.theme_ids = theme_ids;
+  }
+
+  public Long getProperty_id() {
+    return this.property_id;
+  }
+
+  public void setProperty_id(Long property_id) {
+    this.property_id = property_id;
+  }
+
+  public String getStart_city_id() {
+    return this.start_city_id;
+  }
+
+  public void setStart_city_id(String start_city_id) {
+    this.start_city_id = start_city_id;
+  }
+
+  public String getTarget_city_id() {
+    return this.target_city_id;
+  }
+
+  public void setTarget_city_id(String target_city_id) {
+    this.target_city_id = target_city_id;
+  }
+
+  public Date getStart_datetime() {
+    return this.start_datetime;
+  }
+
+  public void setStart_datetime(Date start_datetime) {
+    this.start_datetime = start_datetime;
+  }
+
+  public Date getEnd_datetime() {
+    return this.end_datetime;
+  }
+
+  public void setEnd_datetime(Date end_datetime) {
+    this.end_datetime = end_datetime;
+  }
+
+  public String getTl_abstract() {
+    return this.tl_abstract;
+  }
+
+  public void setTl_abstract(String tl_abstract) {
+    this.tl_abstract = tl_abstract;
+  }
+
+  public String getTl_description() {
+    return this.tl_description;
+  }
+
+  public void setTl_description(String tl_description) {
+    this.tl_description = tl_description;
+  }
+
+  public String getTl_buynotes() {
+    return this.tl_buynotes;
+  }
+
+  public void setTl_buynotes(String tl_buynotes) {
+    this.tl_buynotes = tl_buynotes;
+  }
+
+  public String getTl_feeillustration() {
+    return this.tl_feeillustration;
+  }
+
+  public void setTl_feeillustration(String tl_feeillustration) {
+    this.tl_feeillustration = tl_feeillustration;
+  }
+
+  public String getTl_trafficguide() {
+    return this.tl_trafficguide;
+  }
+
+  public void setTl_trafficguide(String tl_trafficguide) {
+    this.tl_trafficguide = tl_trafficguide;
+  }
+
+  public String getSetout_position() {
+    return this.setout_position;
+  }
+
+  public void setSetout_position(String setout_position) {
+    this.setout_position = setout_position;
+  }
+
+  public Date getSetout_datetime() {
+    return this.setout_datetime;
+  }
+
+  public void setSetout_datetime(Date setout_datetime) {
+    this.setout_datetime = setout_datetime;
+  }
+
+  public String getReturn_position() {
+    return this.return_position;
+  }
+
+  public void setReturn_position(String return_position) {
+    this.return_position = return_position;
+  }
+
+  public Date getReturn_datetime() {
+    return this.return_datetime;
+  }
+
+  public void setReturn_datetime(Date return_datetime) {
+    this.return_datetime = return_datetime;
+  }
+
+  public UserEntity getUserEntity() {
+    return this.userEntity;
+  }
+
+  public void setUserEntity(UserEntity userEntity) {
+    this.userEntity = userEntity;
+  }
+  
+}

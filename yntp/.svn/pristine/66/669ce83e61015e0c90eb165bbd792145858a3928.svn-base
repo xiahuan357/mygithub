@@ -1,0 +1,166 @@
+/**
+ * 填写基本信息
+ */
+define(function(require, exports, module) {
+
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	require("bootbox.css");
+
+	var bootbox = require('bootbox');
+	var theme = require('bootstrap_theme');
+	var store = require('store');
+	var loader = require('loader');
+	
+	var basearchiveUtil = require('basearchive-util');
+	var form = require('basearchive-form');
+	
+	var MODULENAME = "baseinfo";
+	
+	var COMPONENTID_FORM = "validationform" + "_" + MODULENAME;
+	
+	var form_param = {
+		// Form信息
+		form_attr : {
+			formitem : {
+				title : "基本信息",
+				spansize : 'span12',
+				type : basearchiveUtil.FORMOPT_CREATE, // create 创建 ; update 更新
+				formid : COMPONENTID_FORM,
+				isShowButtons : false,
+				boxContentStyle : "box-content  "
+			},
+			items : [  {
+				isText : true,
+				label : "用户名",
+				id : 'text_username',
+				name : 'text_username',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入用户名",
+				validations : {
+					required : true,
+					minlength : 5,
+					maxlength : 20,
+				},
+			}, {
+				isText : true,
+				label : "密码",
+				id : 'text_password',
+				name : 'text_password',
+				type : "password",
+				style : "width:50%",
+				placeholder : "请输入密码",
+				validations : {
+					required : true,
+					minlength : 5,
+					maxlength : 20,
+				},
+			}, {
+				isText : true,
+				label : "确认密码",
+				id : 'text_repassword',
+				name : 'text_repassword',
+				type : "password",
+				style : "width:50%",
+				placeholder : "请输入确认密码",
+				validations : {
+					required : true,
+					minlength : 5,
+					maxlength : 20,
+					equalto : "text_password"
+				},
+			}, {
+				isText : true,
+				label : "Email",
+				id : 'text_email',
+				name : 'text_email',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入Email",
+				validations : {
+					required : true,
+					email : true
+				},
+			}, {
+				isText : true,
+				label : "手机",
+				id : 'text_mobile_phone_number',
+				name : 'text_mobile_phone_number',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入手机",
+				validations : {
+					required : true,
+				},
+			}]
+		}
+	};
+	
+	//------------<组件开始
+	var com_username = $('#text_username');
+	var com_password = $('#text_password');
+	var com_repassword = $('#text_repassword');
+	var com_email = $('#text_email');
+	var com_mobile_phone_number = $('#text_mobile_phone_number');
+	//------------组件开始>
+	
+	function getUIComponent(){
+		com_username = $('#text_username');
+		com_password = $('#text_password');
+		com_repassword = $('#text_repassword');
+		com_email = $('#text_email');
+		com_mobile_phone_number = $('#text_mobile_phone_number');
+	}
+	
+	// 初始化Form数据，新建和编辑时
+	function initFormValue(data){
+		if (com_username != 'undefined' && com_username != null)
+			com_username.attr("value", "");
+		if (com_password != 'undefined' && com_password != null)
+			com_password.attr("value", "");
+		if (com_repassword != 'undefined' && com_repassword != null)
+			com_repassword.attr("value", "");
+		if (com_email != 'undefined' && com_email != null)
+			com_email.attr("value", "");
+		if (com_mobile_phone_number != 'undefined' && com_mobile_phone_number != null)
+			com_mobile_phone_number.attr("value", "");
+	}
+	
+	exports.getValidateFormId = function(){
+		return COMPONENTID_FORM;
+	}
+	
+	exports.getFormData = function(){
+		var vusername = com_username.attr("value");
+		var vpassword = com_password.attr("value");
+		var vrepassword = com_repassword.attr("value");
+		var vemail = com_email.attr("value");
+		var vmobile_phone_number = com_mobile_phone_number.attr("value");
+		
+		//------------------------
+		var userEntity = {
+			username : vusername,
+			password : vpassword,
+			email : vemail,
+			mobile_phone_number : vmobile_phone_number
+		};
+		return userEntity;
+	}
+	
+	exports.init = function(param){
+		$(document).ready(function() {
+			
+			// 当前操作：新建，编辑
+			var storeRowData = store.get("currentSelectRowData" + MODULENAME);
+			
+			form_param.form_attr.formitem.targetdiv = param.attrs.divWrapperId;
+			form.init(form_param);
+			getUIComponent();
+			initFormValue(storeRowData);
+			
+			//加载验证，验证表单
+			theme.setValidateForm($("#"+COMPONENTID_FORM), $.noop());
+		});
+	};
+});

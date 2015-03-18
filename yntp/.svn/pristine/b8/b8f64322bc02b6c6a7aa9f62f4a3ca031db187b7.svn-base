@@ -1,0 +1,234 @@
+/**
+ * 线路基本信息界面
+ */
+define(function(require, exports, module) {
+
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	var theme = require('bootstrap_theme');
+	
+	var basearchiveUtil = require('basearchive-util');
+	var form = require('basearchive-form');
+	var cityselector_city = require('cityselector_city');
+	
+	var MODULENAME = "tourismline_baseinfo";
+	
+	var COMPONENTID_FORM = "validationform" + "_" + MODULENAME;
+	
+	var form_param = {
+		// Form信息
+		form_attr : {
+			formitem : {
+				title : "基本信息",
+				spansize : 'span12',
+				type : basearchiveUtil.FORMOPT_CREATE, // create 创建 ; update 更新
+				formid : COMPONENTID_FORM,
+				isShowButtons : false,
+				boxContentStyle : "box-content  "
+			},
+			items : [  {
+				isText : true,
+				label : "线路名称",
+				id : 'text_name',	
+				name : 'text_name',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入线路名称",
+				validations : {
+					required : true,
+					maxlength : 255,
+				},
+			}, {
+				isText : true,
+				label : "价格",
+				id : 'text_price',	
+				name : 'text_price',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入价格",
+				validations : {
+					required : true,
+					number : true,
+					min : 0,
+				},
+			}, {
+				isSelect : true,
+				id : 'text_type',
+				name : "text_type",
+				label : "线路类型",
+				type : "select",
+				style : "width:50%",
+			},{
+				isSelect : true,
+				id : 'text_property',
+				name : "text_property",
+				label : "线路性质",
+				type : "select",
+				style : "width:50%",
+			},{
+				isCheckBox : true,
+				label : "线路主题",
+				id : 'text_theme',
+				name : 'text_theme',
+				style : "width:50%",
+				options : [ {
+					name : 1,
+					text : "商家用户",
+				}, {
+					name : 2,
+					text : "普通用户",
+				} ]
+			},{
+				isDiv : true,
+				id : 'text_region',
+				name : 'text_region',
+				style : "width:50%",
+				label : '景点地区',
+			} ,{
+				isTextarea : true,
+				label : "摘要",
+				id : 'textarea_abstract',
+				name : "textarea_abstract",
+				rows : 10,
+				type : "textarea",
+				style : "width:50%",
+				placeholder : "摘要",
+				validations : {
+					required : true,
+					maxlength : 500
+				}
+			}]
+		}
+	};
+	
+	//------------<组件开始
+	var com_name = $('#text_name');
+	var com_price = $('#text_price');
+	var com_type = $('#text_type');
+	var com_property = $('#text_property');
+	var com_abstract = $('#textarea_abstract');
+	//------------组件开始>
+	
+	function getUIComponent(){
+		 com_name = $('#text_name');
+		 com_price = $('#text_price');
+		 com_type = $('#text_type');
+		 com_property = $('#text_property');
+		 com_abstract = $('#textarea_abstract');
+	}
+	
+	// 初始化Form数据，新建和编辑时
+	function initFormValue(){
+		if (com_name != 'undefined' && com_name != null)
+			com_name.attr("value", "");
+		if (com_price != 'undefined' && com_price != null)
+			com_price.attr("value", "");
+		if (com_abstract != 'undefined' && com_abstract != null)
+			com_abstract.attr("value", "");
+		
+		initTypeSelect();
+		initPropertySelect();
+		
+        var com_region = new cityselector_city({
+        	attrs :{
+        		provincewidth : "width:150px",
+        		citywidth : "width:150px",
+			},
+			renderTo:"text_region"
+        });
+	}
+	
+	/**
+	 * 初始化线路类型
+	 */
+	function initTypeSelect() {
+		var newsTypeQueryUrl = GLOBAL.BASE + "admin/tourismline/tourismlinetype/getselectmodel";
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : newsTypeQueryUrl,
+			success : function(data) {
+				if(data && data.flag == "000000"){
+					// 解析data
+					com_type.select2({
+						placeholder : "线路类型",
+						allowClear : false,
+						multiple : false,
+						data : data.data
+					});
+				} else{
+					bootbox.alertTimeout('初始化线路类型数据失败！');
+				}
+			},
+			error : function(data) {
+				bootbox.alertTimeout('初始化线路类型数据失败！');
+			}
+		});
+	}
+	
+	/**
+	 * 初始化线路性质
+	 */
+	function initPropertySelect() {
+		var newsTypeQueryUrl = GLOBAL.BASE + "admin/tourismline/tourismlinetype/getselectmodel";
+		$.ajax({
+			async : false,
+			dataType : 'json',
+			contentType : "application/json;charset=UTF-8",
+			type : "GET",
+			url : newsTypeQueryUrl,
+			success : function(data) {
+				if(data && data.flag == "000000"){
+					// 解析data
+					com_property.select2({
+						placeholder : "线路性质",
+						allowClear : false,
+						multiple : false,
+						data : data.data
+					});
+				} else{
+					bootbox.alertTimeout('初始化线路性质数据失败！');
+				}
+			},
+			error : function(data) {
+				bootbox.alertTimeout('初始化线路性质数据失败！');
+			}
+		});
+	}
+	
+	exports.getValidateFormId = function(){
+		return COMPONENTID_FORM;
+	}
+	
+	exports.getFormData = function(){
+		var vusername = com_username.attr("value");
+		var vpassword = com_password.attr("value");
+		var vrepassword = com_repassword.attr("value");
+		var vemail = com_email.attr("value");
+		var vmobile_phone_number = com_mobile_phone_number.attr("value");
+		
+		//------------------------
+		var userEntity = {
+			username : vusername,
+			password : vpassword,
+			email : vemail,
+			mobile_phone_number : vmobile_phone_number
+		};
+		return userEntity;
+	}
+	
+	exports.init = function(param){
+		$(document).ready(function() {
+			
+			form_param.form_attr.formitem.targetdiv = param.attrs.divWrapperId;
+			form.init(form_param);
+			getUIComponent();
+			initFormValue();
+			
+			//加载验证，验证表单
+			theme.setValidateForm($("#"+COMPONENTID_FORM), $.noop());
+		});
+	};
+});

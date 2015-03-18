@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta content='Flat administration template for Twitter Bootstrap.'
+	name='description'>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>云南旅游平台邮箱修改</title>
+<script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+	data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+<!--[if lt IE 9]>
+    	<script src="js/tool/html5/html5.js" type="text/javascript"></script>
+    <![endif]-->
+<link rel="stylesheet" type="text/css"
+	href="/yntp/css/tool/login/login.css" />
+</head>
+<body class='wysihtml5-supported contrast-sea-blue'>
+	<header>
+		<div class="navbar navbar-fixed-top ">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav pull-right">
+					</ul>
+					<a class="brand" href="" id="indexlink"><span class="second">云南旅游平台</span></a>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="container">
+		<div class="container-fluid"
+			style="margin-top: 50px; margin-bottom: 100px;">
+			<div class="row-fluid span12 " style="margin-left: 0px;">
+				<h1>账户邮箱修改</h1>
+			</div>
+			<div class="row-fluid span12" style="margin-left: 0px">
+				<h3 id='activeresultdiv'></h3>
+			</div>
+		</div>
+	</div>
+
+	<div id="footer" class="container">
+		<nav class="navbar navbar-default navbar-fixed-bottom">
+			<div class="navbar-inner navbar-content-center">
+				<div class="container">
+					<div style="text-align: center;">
+						<p>云南旅游平台. 版权所有.</p>
+						<p>Copyright © 2011-2014</p>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</div>
+
+	<script type="text/javascript">
+		seajs.use(['emailmod','$'], function(Active,$) {
+			Active.init({
+				locationsearch : location.search,
+			})
+			$("#indexlink").attr("href",GLOBAL.URL.INDEX);
+		});
+	</script>
+</body>
+</html>

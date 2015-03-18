@@ -1,0 +1,27 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"id" : "firstImg",
+            "active": true,
+            "index": "1",
+            "src": "/yntp/upload/image/carousel/f20141229085921138507.jpg",
+            "alt": "中华恐龙谷",
+            "caption": "中华恐龙谷"
+        },
+        {
+        	"id" : "secondImg",
+            "index": "2",
+            "src": "/yntp/upload/image/carousel/f20141229085908139525.jpg",
+            "alt": "江玉温泉",
+            "caption": "江玉温泉"
+        },
+        {
+        	"id" : "thirdImg",
+            "index": "3",
+            "src": "/yntp/upload/image/carousel/f20141229085931124910.jpg",
+            "alt": "最美九寨沟",
+            "caption": "最美九寨沟"
+        }
+    ]
+}

@@ -1,0 +1,190 @@
+/**
+ * 管理员-form-新建
+ */
+define(function(require, exports, module) {
+
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	require("bootbox.css");
+
+	var bootbox = require('bootbox');
+	var theme = require('bootstrap_theme');
+	var store = require('store');
+	var loader = require('loader');
+	
+	var basearchiveUtil = require('basearchive-util');
+	var form = require('basearchive-form');
+	
+	var FORMOPTURL_INSERT= GLOBAL.BASE + "admin/sys/user/admin/create";
+	
+	var TARGETDIV_FORM = "basearchive_form";
+	var MODULENAME = "admin";
+	
+	var COMPONENTID_FORM = "validationform" + "_" + MODULENAME;
+	
+	var tableUrl = GLOBAL.HTML_HOME + "admin/sys/admin/sys_admin_table.html";
+	
+	var form_param = {
+		// Form信息
+		form_attr : {
+			formitem : {
+				title : "管理员信息",
+				spansize : 'span12',
+				type : basearchiveUtil.FORMOPT_CREATE, // create 创建 ; update 更新
+				formid : COMPONENTID_FORM,
+				targetdiv : TARGETDIV_FORM,
+			},
+			items : [ {
+				isHidden : true,
+				id : 'hidden_id',
+				name : 'hidden_id',
+				value : ''
+			}, {
+				isText : true,
+				label : "用户名",
+				id : 'text_username',
+				name : 'text_username',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入用户名",
+				validations : {
+					required : true,
+					minlength : 5,
+					maxlength : 20,
+				},
+			}, {
+				isText : true,
+				label : "密码",
+				id : 'text_password',
+				name : 'text_password',
+				type : "password",
+				style : "width:50%",
+				placeholder : "请输入密码",
+				validations : {
+					required : true,
+					minlength : 5,
+					maxlength : 20,
+				},
+			}, {
+				isText : true,
+				label : "确认密码",
+				id : 'text_repassword',
+				name : 'text_repassword',
+				type : "password",
+				style : "width:50%",
+				placeholder : "请输入确认密码",
+				validations : {
+					required : true,
+					minlength : 5,
+					maxlength : 20,
+					equalto : "text_password"
+				},
+			}, {
+				isText : true,
+				label : "Email",
+				id : 'text_email',
+				name : 'text_email',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入Email",
+				validations : {
+					required : true,
+					email : true
+				},
+			}, {
+				isText : true,
+				label : "手机",
+				id : 'text_mobile_phone_number',
+				name : 'text_mobile_phone_number',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入手机",
+				validations : {
+					required : true,
+				},
+			}]
+		}
+	};
+	// 保存
+	var fnsubmithandler = function(){
+		
+		var vid = $('#hidden_id').attr("value");
+		var vusername = $('#text_username').attr("value");
+		var vpassword = $('#text_password').attr("value");
+		var vrepassword = $('#text_repassword').attr("value");
+		var vemail = $('#text_email').attr("value");
+		var vmobile_phone_number = $('#text_mobile_phone_number').attr("value");
+		
+		//------------------------
+		var data = {
+			username : vusername,
+			password : vpassword,
+			email : vemail,
+			mobile_phone_number : vmobile_phone_number
+		};
+
+		var requestURL = requestURL = FORMOPTURL_INSERT;
+		var saveResult = form.doSaveAction(requestURL,data,basearchiveUtil.FORMOPT_CREATE);
+		
+		if (saveResult) {
+			// 清除本地store的数据
+			var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+			basearchiveUtil.clearStoreCache(cacheKeyList);
+			
+			basearchiveUtil.jumpToHtml(tableUrl);
+		} else{
+			return false;
+		}
+	};
+	
+	// 初始化Form数据，新建和编辑时
+	function initFormValue(data){
+		var hidden_id = $('#hidden_id');
+		var text_username = $('#text_username');
+		var text_password = $('#text_password');
+		var text_repassword = $('#text_repassword');
+		var text_email = $('#text_email');
+		var text_mobile_phone_number = $('#text_mobile_phone_number');
+		
+		if (hidden_id != 'undefined' && hidden_id != null)
+			hidden_id.attr("value", "");
+		if (text_username != 'undefined' && text_username != null)
+			text_username.attr("value", "");
+		if (text_password != 'undefined' && text_password != null)
+			text_password.attr("value", "");
+		if (text_repassword != 'undefined' && text_repassword != null)
+			text_repassword.attr("value", "");
+		if (text_email != 'undefined' && text_email != null)
+			text_email.attr("value", "");
+		if (text_mobile_phone_number != 'undefined' && text_mobile_phone_number != null)
+			text_mobile_phone_number.attr("value", "");
+	}
+	
+	exports.init = function(){
+		$(document).ready(function() {
+			
+			// 当前操作：新建，编辑
+			var storeRowData = store.get("currentSelectRowData" + MODULENAME);
+			
+			form.init(form_param);
+			
+			initFormValue(storeRowData);
+			
+			// 取消方法
+			$('#btn_mct_cancel').die().on('click', function() {
+				bootbox.confirm("确认取消？", function(YesOrNo){
+					if(YesOrNo){
+						// 清除本地store的数据
+						var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+						basearchiveUtil.clearStoreCache(cacheKeyList);
+						
+						basearchiveUtil.jumpToHtml(tableUrl);
+					}
+				});
+			});
+
+			//加载验证，验证表单
+			theme.setValidateForm($("#"+COMPONENTID_FORM), fnsubmithandler);
+		});
+	};
+});

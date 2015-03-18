@@ -1,0 +1,265 @@
+/**
+ * 文字广告信息-form
+ */
+define(function(require, exports, module) {
+
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	require("bootbox.css");
+	
+
+	var bootbox = require('bootbox');
+	var theme = require('bootstrap_theme');
+	var store = require('store');
+	var loader = require('loader');
+	
+	var basearchiveUtil = require('basearchive-util');
+	var form = require('basearchive-form');
+	
+	var FORMOPTURL_INSERT= GLOBAL.BASE + "admin/ads/adstext/create";
+	var FORMOPTURL_UPDATE= GLOBAL.BASE + "admin/ads/adstext/update";
+	
+	var TARGETDIV_FORM = "basearchive_form";
+	var MODULENAME = "ads_text";
+	
+	var COMPONENTID_FORM = "validationform" + "_" + MODULENAME;
+	
+	var tableUrl = GLOBAL.HTML_HOME + "admin/sys/ads/sys_ads_text_table.html";
+	
+	var defaultDateValue = new Date().format("yyyy-MM-dd");
+	
+	var form_param = {
+		// Form信息
+		form_attr : {
+			formitem : {
+				title : "文字广告信息",
+				spansize : 'span12',
+				type : basearchiveUtil.FORMOPT_CREATE, // create 创建 ; update 更新
+				formid : COMPONENTID_FORM,
+				targetdiv : TARGETDIV_FORM,
+			},
+			items : [ 
+		   {
+				isHidden : true,
+				id : 'hidden_id',
+				name : 'hidden_id',
+				value : ''
+			},{
+				isText : true,
+				label : "广告内容",
+				id : 'ads_name',
+				name : 'ads_name',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入广告内容",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+			   },
+			}, {
+				isText : true,
+				label : "广告链接",
+				id : 'ads_url',
+				name : 'ads_url',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入广告链接",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+			   },
+			}, {
+				isText : true,
+				label : "广告描述",
+				id : 'ads_describe',
+				name : 'ads_describe',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入广告描述",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+			   },
+			}, {
+				isText : true,
+				label : "位置说明",
+				id : 'ads_position',
+				name : 'ads_position',
+				type : "text",
+				style : "width:50%",
+				placeholder : "请输入位置说明",
+				validations : {
+					required : true,
+					minlength : 1,
+					maxlength : 255,
+			   },
+			}, {
+				isDaterange : true,
+				label : "起始时间",
+				id : 'ads_daterange',
+				name : 'ads_daterange',
+				style : "width:50%",
+				format : "YYYY-MM-DD",
+				placeholder : "请选择起始时间",
+			}
+			]
+		}
+	};
+	
+	// 保存
+	var fnsubmithandler = function(){
+		var optType = store.get("currentOptType" + MODULENAME);
+		var vname = $('#ads_name').attr("value");
+		var vurl = $('#ads_url').attr("value");
+		var vdescribe = $('#ads_describe').attr("value");
+		var vposition = $('#ads_position').attr("value");
+		var vid = $('#hidden_id').attr("value");
+		//starttime&&endtime
+		var text_receipt_date = $('#ads_daterange').prev().val();
+        var daterange = text_receipt_date.split("/");
+        var vstarttime = daterange[0];
+        var vendtime = daterange[1];
+        
+		//------------------------
+		var data = {
+			name : vname,
+			url : vurl,
+			describe : vdescribe,
+			position_id : 0,
+			starttime : "2014-12-13 12:17:14",
+			endtime : "2014-12-13 12:17:14",
+		};
+
+		var requestURL = "";
+		
+		if (optType == basearchiveUtil.FORMOPT_UPDATE) {
+			data.id=vid;
+			requestURL = FORMOPTURL_UPDATE + "/" + vid;
+		} else {
+			requestURL = FORMOPTURL_INSERT;
+		}
+		var saveResult = form.doSaveAction(requestURL,data,optType);
+		
+		if (saveResult) {
+			// 清除本地store的数据
+			var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+			basearchiveUtil.clearStoreCache(cacheKeyList);
+			
+			basearchiveUtil.jumpToHtml(tableUrl);
+		} else{
+			return false;
+		}
+	};
+	
+	// 初始化Form数据，新建和编辑时
+	function initFormValue(optType,data){
+		var hidden_id = $('#hidden_id');
+		var ads_name = $('#ads_name');
+		var ads_url = $('#ads_url');
+		var ads_describe = $('#ads_describe');
+		var ads_position = $('#ads_position');
+		var ads_starttime = $('#ads_starttime');
+		var ads_endtime = $('#ads_endtime');
+		
+		if (optType == basearchiveUtil.FORMOPT_CREATE) {
+			if (hidden_id != 'undefined' && hidden_id != null)
+				hidden_id.attr("value", "");
+			if (ads_name != 'undefined' && ads_name != null)
+				ads_name.attr("value", "");
+			if (ads_url != 'undefined' && ads_url != null)
+				ads_url.attr("value", "");
+			if (ads_position != 'undefined' && ads_position != null)
+				ads_position.attr("value", "");
+			if (ads_describe != 'undefined' && ads_describe != null)
+				ads_describe.attr("value", "");
+			if (ads_starttime != 'undefined' && ads_starttime != null)
+				ads_starttime.attr("value", "");
+			if (ads_endtime != 'undefined' && ads_endtime != null)
+				ads_endtime.attr("value", "");
+			
+		} else if (optType == basearchiveUtil.FORMOPT_UPDATE) {
+			// 重新从数据库中读取数据
+			var queryUrl = GLOBAL.BASE +  "admin/ads/adstext/search?q=id=" + data.id;
+			var lastdata = null;
+			$.ajax({
+				async : false,
+				type : "GET",
+				dataType : 'json',
+				contentType : "application/json;charset=UTF-8",
+				url : queryUrl,
+				success : function(resultdata) {
+					if('000000' != resultdata.flag){
+						bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+						lastdata = null; 	// 查询出错
+					} else {
+						var receiptList = resultdata.data;
+						if(receiptList != null && receiptList.length > 0){
+							lastdata = receiptList[0];
+						} else{
+							bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+							lastdata = null; // 没有此条数据						
+						}
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					bootbox.alertTimeout('查询数据出现错误，请重试！');
+				}
+			});
+			
+			if(null == lastdata){
+				// 清除本地store的数据
+				var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+				basearchiveUtil.clearStoreCache(cacheKeyList);
+				
+				basearchiveUtil.jumpToHtml(tableUrl);
+			}
+			
+			if (hidden_id != 'undefined' && hidden_id != null)
+				hidden_id.attr('value', lastdata.id);
+			if (ads_time != 'undefined' && ads_time != null)
+				ads_time.attr("value", lastdata.name);
+			if (ads_url != 'undefined' && ads_url != null)
+				ads_url.attr("value", lastdata.url);
+			if (ads_describe != 'undefined' && ads_describe != null)
+				ads_describe.attr("value", lastdata.describe);
+			if (das_position != 'undefined' && das_position != null)
+				das_position.attr("value", lastdata.position);
+			if (ads_starttime != 'undefined' && ads_starttime != null)
+				ads_starttime.attr("value", lastdata.starttime);
+			if (ads_endtime != 'undefined' && ads_endtime != null)
+				ads_endtime.attr("value", lastdata.endtime);
+		}
+	}
+	
+	exports.init = function(){
+		$(document).ready(function() {
+			// 当前操作：新建，编辑
+			var optType = store.get("currentOptType" + MODULENAME);
+			var storeRowData = store.get("currentSelectRowData" + MODULENAME);
+			
+			form.init(form_param);
+			
+            
+			initFormValue(optType,storeRowData);
+			
+			// 取消方法
+			$('#btn_mct_cancel').die().on('click', function() {
+				bootbox.confirm("确认取消？", function(YesOrNo){
+					if(YesOrNo){
+						// 清除本地store的数据
+						var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+						basearchiveUtil.clearStoreCache(cacheKeyList);
+						
+						basearchiveUtil.jumpToHtml(tableUrl);
+					}
+				});
+			});
+
+			//加载验证，验证表单
+			theme.setValidateForm($("#"+COMPONENTID_FORM), fnsubmithandler);
+		});
+	};
+});

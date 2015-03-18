@@ -1,0 +1,143 @@
+@CHARSET "UTF-8";
+/*=====image library 图片库=====*/
+.picture .bb {
+	height: 57px;
+	width: 57px;
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	background: url(/yntp/img/admin/business/cover.png) no-repeat 0 0;
+}
+
+.picture .li-selected {
+	border: 1px solid #F90;
+}
+/*=====image library =====*/
+
+/*=====slidenav 首页导航=====*/
+#slidenav {
+	border: 1px solid #dddddd;
+	position: relative;
+	z-index: 1;
+	background: #F1F1F1;
+}
+
+#slidenav .mainCate {
+	position: relative;
+	padding: 10px 20px;
+	zoom: 1;
+}
+
+#slidenav .evenLeval {
+	background: #fff;
+}
+
+#slidenav h3 {
+	height: 28px;
+	line-height: 28px;
+	font-size: 16px;
+	overflow: hidden;
+}
+
+#slidenav h3 span {
+	width: 18px;
+	height: 15px;
+	line-height: 32px;
+	font-weight: 200;
+	font-size: 12px;
+	float: right;
+}
+
+#slidenav p {
+	height: 20px;
+	line-height: 20px;
+}
+
+#slidenav p a {
+	margin-right: 10px;
+	color: #666;
+}
+
+#slidenav .subCate {
+	display: none;
+	background: url(../../../img/front/slidenav_div_bg.jpg) 0 0 repeat-y #fff;
+	position: absolute;
+	left: 370px;
+	top: 0;
+	width: 750px;
+	padding: 0 0 20px 20px;
+	color: #333;
+}
+
+#slidenav .subCate h4 {
+	height: 26px;
+	line-height: 26px;
+	margin: 0 0 10px 0;
+	border-bottom: 1px solid #ccc;
+	font-size: 16px;
+	color: #333;
+}
+
+#slidenav .subCate ul {
+	width: 230px;
+	float: left;
+	overflow: hidden;
+	padding-top: 20px;
+}
+
+#slidenav .subCate li {
+	width: 230px;
+	float: left;
+	display: inline;
+}
+
+#slidenav .subCate li a {
+	display: block;
+	float: left;
+	padding: 0 5px;
+	line-height: 25px;
+	color: #666;
+	word-break: keep-all;
+	white-space: nowrap;
+}
+
+#slidenav .subCate #sub-ul-1 {
+	width: 95%;
+}
+
+#slidenav .on {
+	background: #0163ac;
+	color: #fff;
+}
+
+#slidenav .on h3 a, #slidenav .on p a {
+	color: #fff;
+}
+
+#slidenav .on .subCate {
+	display: block !important;
+}
+
+#mainCate-4 .subCate {
+	top: -100px
+}
+
+#mainCate-5 .subCate {
+	top: -164px;
+}
+
+#mainCate-6 .subCate {
+	top: auto;
+	bottom: 0;
+}
+
+.slidenav-statistic {
+	padding: 5px 10px;
+	position: relative;
+}
+
+.slidenav-statistic [class*="icon-"].align-left {
+	position: absolute;
+	left: 20px;
+}
+/*=====slidenav=====*/

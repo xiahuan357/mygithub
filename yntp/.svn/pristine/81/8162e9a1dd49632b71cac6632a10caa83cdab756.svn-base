@@ -1,0 +1,25 @@
+package com.yn.yntp.module.equipment.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.yn.yntp.common.web.controller.BaseCRUDController;
+import com.yn.yntp.module.equipment.entity.EquipmentTypeEntity;
+
+/**
+ * 
+ * @Title: EquipmentController.java 
+ * @Package com.yn.yntp.module.equipment.web 
+ * @Description: 设备类型信息维护，登录用户使用
+ *
+ * @author liucc    
+ * @date 2014年11月22日 下午3:40:39 
+ * @version V1.0 
+ */
+
+@Controller
+@RequestMapping("/admin/equipment/equipmenttype")
+public class EquipmentTypeController extends BaseCRUDController<EquipmentTypeEntity,Long>{
+
+  
+}

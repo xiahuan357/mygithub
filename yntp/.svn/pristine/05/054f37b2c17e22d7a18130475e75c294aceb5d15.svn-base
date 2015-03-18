@@ -1,0 +1,50 @@
+{
+    "id": "indexCarousel",
+    "items": [
+        {
+        	"imageid" : "firstImg",
+            "active": true,
+            "index": "1",
+            "href":"#",
+            "src": "/yntp/upload/image/carousel/food/278b3252124b3142460babd250cf231b.jpg",
+            "alt": "汽车租赁",
+            "caption": "汽车租赁",
+            "bigtitle" : "Y",
+            "uptitle" : "南洋风味肉骨茶的做法",
+            "downtitle" : "DO YOU WANT TEST YUNNAN FOOD",
+        },
+        {
+        	"imageid" : "secondImg",
+            "index": "2",
+            "href":"#",
+            "src": "/yntp/upload/image/carousel/food/645b584cd11ccc7f2d94a504b9d05eef.jpg",
+            "alt": "汽车租赁",
+            "caption": "汽车租赁",
+            "bigtitle" : "N",
+            "uptitle" : "红烧冬瓜",
+            "downtitle" : "FOOD IS MOST DELICIOUS",
+        },
+        {
+        	"imageid" : "thirdImg",
+            "index": "3",
+            "href":"#",
+            "src": "/yntp/upload/image/carousel/food/47039d54c44ba54ad5b14d7182309121.jpg",
+            "alt": "汽车租赁",
+            "caption": "汽车租赁",
+            "bigtitle" : "M",
+            "uptitle" : "香拌菠菜",
+            "downtitle" : "YUN NAN HAVE THE MOST DELICIOUS FOOD",
+        },
+        {
+        	"imageid" : "thirdImg",
+            "index": "4",
+            "href":"#",
+            "src": "/yntp/upload/image/carousel/food/e9ee57cd40993aabfd676c06556eecb8.jpg",
+            "alt": "汽车租赁",
+            "caption": "汽车租赁",
+            "bigtitle" : "S",
+            "uptitle" : "酸辣蕨根粉",
+            "downtitle" : "DELICIOUS FOOD IN YUNNAN",
+        }
+    ]
+}

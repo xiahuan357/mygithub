@@ -48,8 +48,8 @@ public class NewsController extends BaseCRUDWithImageController<NewsEntity, Long
   @ResponseBody
   public Object createWithImage(Model model, 
       @Validated @RequestBody  NewsImageEntity resource,BindingResult result,
-    // 数据加工
       HttpServletRequest request) {
+    // 数据加工
     UserEntity userEntity = (UserEntity) request.getSession().getAttribute(Constants.CURRENT_USER);
     NewsEntity currentEntity = resource.getCurrentEntity();
     currentEntity.setPublishedUserEntity(userEntity);

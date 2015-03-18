@@ -1,0 +1,20 @@
+package com.yn.yntp.common.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.MappedSuperclass;
+
+/**
+ * 
+ * @Title: OrderBaseEntity.java 
+ * @Package com.yn.yntp.common.entity 
+ * @Description: 订单基类 
+ *
+ * @author liucc    
+ * @date 2015年1月2日 上午10:05:21 
+ * @version V1.0 
+ */
+@MappedSuperclass
+public class BaseOrderEntity<ID extends Serializable> extends BaseEntity<ID> {
+
+}

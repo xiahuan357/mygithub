@@ -1,0 +1,38 @@
+[
+   {"id" : "menu-ancientcity", "icon" : "icon-building  ", "name" : "魅力古城", "children" : [
+      { "url" : "#", "icon" : "icon-building", "name" : "大理古城" },
+      { "url" : "#", "icon" : "icon-building", "name" : "丽江古城" },
+   ]},
+   {"id" : "menu-custom", "icon" : "icon-leaf ", "name" : "民俗风情", "children" : [
+      { "url" : "#", "icon" : "icon-leaf", "name" : "传统节日" },
+      { "url" : "#", "icon" : "icon-leaf", "name" : "生活习俗" },
+      { "url" : "#", "icon" : "icon-leaf", "name" : "民俗文化" },
+   ]},
+   {"id" : "menu-hotspring", "icon" : "icon-lemon ", "name" : "养生温泉", "children" : [
+      { "url" : "#", "icon" : "icon-lemon", "name" : "安宁温泉" }, 
+      { "url" : "#", "icon" : "icon-lemon", "name" : "腾冲温泉" }, 
+      { "url" : "#", "icon" : "icon-lemon", "name" : "大理温泉" }, 
+      { "url" : "#", "icon" : "icon-lemon", "name" : "高原温泉" }, 
+   ]},
+   {"id" : "menu-snowmountain", "icon" : "icon-moon ", "name" : "雪山神韵", "children" : [
+      { "url" : "#", "icon" : "icon-moon", "name" : "梅里雪山" },
+      { "url" : "#", "icon" : "icon-moon", "name" : "玉龙雪山" },
+      { "url" : "#", "icon" : "icon-moon", "name" : "哈巴雪山" },
+      { "url" : "#", "icon" : "icon-moon", "name" : "石卡雪山" },
+   ]},
+   {"id" : "menu-lakes", "icon" : "icon-anchor ", "name" : "空灵湖泊", "children" : [
+      { "url" : "#", "icon" : "icon-laker", "name" : "滇池" },
+      { "url" : "#", "icon" : "icon-laker", "name" : "洱海" },
+      { "url" : "#", "icon" : "icon-laker", "name" : "泸沽湖" },
+      { "url" : "#", "icon" : "icon-laker", "name" : "抚仙湖" }, 
+   ]} ,
+   {"id" : "menu-Tibet", "icon" : "icon-smile ", "name" : "朝圣西藏", "children" : [
+      { "url" : "#", "icon" : "icon-smile", "name" : "布达拉宫" },
+      { "url" : "#", "icon" : "icon-smile", "name" : "大昭寺" },
+      { "url" : "#", "icon" : "icon-smile", "name" : "小昭寺" },
+   ]},
+   {"id" : "menu-food", "icon" : "icon-food ", "name" : "诱惑美食", "children" : [
+      { "url" : "#", "icon" : "icon-food", "name" : "风味小吃" },
+      { "url" : "#", "icon" : "icon-food", "name" : "民族特产" },
+   ]},
+]

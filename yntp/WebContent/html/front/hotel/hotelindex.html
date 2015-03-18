@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta content='Flat administration template for Twitter Bootstrap.'
+	name='description'>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="shortcut icon" href="/yntp/images/portal/logo/logo.png" />
+<title>云南旅游平台</title>
+<script type="text/javascript" src="/yntp/js/core/seajs2/dist/sea.js"
+	data-config="/yntp/js/global.js" data-main="/yntp/js/main.js"></script>
+
+<!--[if lt IE 9]>
+        <script src="js/tool/html5/html5.js" type="text/javascript"></script>
+        <![endif]-->
+</head>
+<body class="wysihtml5-supported ">
+	<!-- 头部固定区域 -->
+	<div id="top-header"></div>
+	<div style="">
+		<!-- 头部中间搜索区域 -->
+		<div id="center-header"></div>
+
+		<!-- 头部导航区域 -->
+		<div id="navicat-header" style="min-width: 1200px"></div>
+	</div>
+	<div class="container" style="margin-top: 10px; width: 1170px">
+		<!--搜索区域 和 图片轮播   -->
+		<div class="row-fluid">
+			<div class="span12" id="carouselWrapperDiv"></div>
+		</div>
+
+
+		<div class="row-fluid">
+		
+			<div class="span9">
+				<!--推荐酒店   -->
+				<div class="row-fluid">
+					<div class="span12 box box-nomargin" id="recommendHotelWrapperDiv"></div>
+				</div>
+				
+				<!--推荐酒店品牌   -->
+				<div class="row-fluid">
+					<div class="span12 box box-nomargin" id="hotelBrandWrapperDiv"></div>
+				</div>
+			</div>
+
+			<!--广告图片   -->
+			<div class="span3 box box-nomargin" id="hotelAds1WrapperDiv"></div>
+		</div>
+
+		<!--酒店类型   -->
+		<div class="row-fluid">
+			<div class='span12 box box-nomargin' id="hotelTypeWrapperDiv">
+			</div>
+		</div>
+
+	</div>
+
+	<hr style="margin: 20px 0; border: 0">
+	<div id="footer" class="container" style="padding-top: 50px;"></div>
+
+	<script type="text/javascript">
+            seajs.use('hotelindex', function(Index)
+            {
+                Index.init(
+                {
+                	topheaderId : "top-header",
+                	centerheaderId : "center-header",  
+                	navicatheaderId : "navicat-header",
+                	
+                	carouselId : "carouselWrapperDiv",
+                    
+                	recommendHotelWrapperDiv : "recommendHotelWrapperDiv",
+                	hotelAds1WrapperDiv : "hotelAds1WrapperDiv",
+                	
+                	hotelBrandWrapperDiv : "hotelBrandWrapperDiv",
+                	
+                	hotelTypeWrapperDiv : "hotelTypeWrapperDiv",
+                	
+                    footerId : "footer",
+                });
+            });
+    </script>
+</body>
+</html>

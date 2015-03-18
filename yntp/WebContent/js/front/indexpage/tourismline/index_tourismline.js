@@ -85,7 +85,7 @@ define(function(require, exports, module) {
 						var curTabPaneId = $(this).attr('href');
 						if(curTabPaneId){
 							curTabPaneId = TourismlineTabbed.getTabLabelIndexByTabId(curTabPaneId);
-							curTabPaneId = curTabPaneId.substring(MODULE.length);
+							curTabPaneId = curTabPaneId.substring(MODULE.length  );
 							initTourismlineList(curTabPaneId);
 						}
 					});

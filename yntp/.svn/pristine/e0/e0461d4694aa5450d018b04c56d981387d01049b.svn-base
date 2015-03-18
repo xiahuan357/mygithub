@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+.picture .bb {
+	height: 57px;
+	width: 57px;
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	background: url(/yntp/img/admin/business/cover.png) no-repeat 0 0;
+}
+
+.picture .li-selected {
+	border: 1px solid #F90;
+}

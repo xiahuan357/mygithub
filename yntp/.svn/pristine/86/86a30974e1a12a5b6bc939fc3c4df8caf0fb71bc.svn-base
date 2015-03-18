@@ -1,0 +1,331 @@
+/**
+ * 模态对话框：Table组件,选择客户
+ * @author: 
+ * @date: 2014-6-26
+ */
+define(function(require, exports, module) {
+	var $ = require("$");
+	require("bootstrap_commonrequire");
+	require('select2.css');
+	require('select2');
+	
+	var form = require('basearchive-form');
+	var basearchiveUtil = require('basearchive-util');
+	var loader = require('loader');
+	var store = require('store');
+	var Dialogform = require('modaldialog');
+	var dialogId = 'dialog_modal';
+	var dialogDivId = 'dialogDiv';
+	var MODULENAME = "scenic_ticket";
+	
+	exports.init = function(param) {
+		var Component = new Dialogform({
+			attrs : {
+				id : dialogId,
+				title : '选择客户',
+				isOverrideDefaultPositionCss:true,
+				customPositionCss:"width:900px;margin-left:-500px;margin-top:-150px",
+				items : [ {
+					isDiv : true,
+					id : dialogDivId,
+				} ]
+			},
+			renderTo : param.attrs.divWrapperId,
+			afterRender : function() {		
+				// 当前操作：新建，编辑
+				var optType = store.get("currentOptType" + MODULENAME);
+				var storeRowData = store.get("currentSelectRowData" + MODULENAME);
+				var scenicId=store.get("scenicid")
+				var FORMOPTURL_INSERT= GLOBAL.BASE + "/admin/scenic/scenicticket/create";
+				var FORMOPTURL_UPDATE= GLOBAL.BASE + "/admin/scenic/scenicticket/update";
+				
+				var TARGETDIV_FORM = "basearchive_form";
+				
+				var COMPONENTID_FORM = "validationform" + "_" + MODULENAME;
+				var tableUrl = GLOBAL.HTML_HOME + "admin/customer/business/scenic/biz_scenic_table.html";
+				var tabbed_textarea;
+				var form_param = {
+					// Form信息
+					form_attr : {
+						formitem : {
+							isShowButtons:false,
+							spansize : 'span12',
+							type : basearchiveUtil.FORMOPT_CREATE, // create 创建 ; update 更新
+							formid : COMPONENTID_FORM,
+							targetdiv : dialogDivId,
+						},
+						items : [ {
+							isHidden : true,
+							id : 'hidden_id',
+							name : 'hidden_id',
+							value : ''
+						}, {
+							isText : true,
+							label : "景区门票名称",
+							id : 'text_name',
+							name : 'text_name',
+							type : "text",
+							style : "width:50%",
+							placeholder : "请输入景区名称",
+							validations : {
+								required : true,
+								minlength : 1,
+								maxlength : 255,
+							},
+						},{
+							isSelect : true,
+							label : "门票类型",
+							id : 'select_type',
+							name : 'select_type',
+							style : "width:50%",
+							type : "select",
+							
+						},{
+							isText : true,
+							label : "景区门票价格",
+							id : 'text_price',
+							name : 'text_price',
+							type : "text",
+							style : "width:50%",
+							placeholder : "请输入景区门票价格/元",
+							validations : {
+								number:true,
+								required : true,
+								minlength : 1,
+								maxlength : 255,
+							}
+						},
+						{
+							isDaterange : true,
+							label : "起始时间",
+							id : 'date_range',
+							name : 'date_range',
+							style : "width:50%",
+							format : "YYYY-MM-DD",
+							placeholder : "请选择起始时间",
+						},
+						{
+							isDiv : true,
+							id : 'text_abstract',
+							name : 'text_abstract',
+							style : "width:50%",
+							label : '门票说明',
+						}
+						
+						]
+					}
+				};
+				//初始化门票类型
+				function initScenicTickettypeSelect() {
+					var scenicTickettypeQueryUrl = GLOBAL.BASE + "admin/scenic/scenicticket/getscenictickettype";
+					$.ajax({
+						async : false,
+						dataType : 'json',
+						contentType : "application/json;charset=UTF-8",
+						type : "GET",
+						url : scenicTickettypeQueryUrl,
+						success : function(data) {
+							if(data && data.flag == "000000"){
+								// 解析data
+								$("#select_type").select2({
+									placeholder : "景区级别",
+									allowClear : false,
+									multiple : false,
+									data : data.data
+								});
+							} else{
+								bootbox.alertTimeout('初始化门票类型数据失败！');
+							}
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							bootbox.alertTimeout('初始化门票类型数据失败！');
+						}
+					});
+					
+				}	
+				// 保存
+				var fnsubmithandler = function(){
+					var optType = store.get("currentOptType" + MODULENAME);
+					var vname = $('#text_name').attr("value");
+					var vprice = $('#text_price').attr("value");
+					var vid = $('#hidden_id').attr("value");
+					var vselect_type = $('#select_type').attr("value");
+				    var vabstract = tabbed_textarea.getText();
+				    
+					//------------------------
+					var data = {
+						name : vname,
+						ticket_abstract:vabstract,
+						type_id:vselect_type,
+						price:vprice,
+						scenic_id:scenicId,
+					};
+
+					var requestURL = "";
+					
+					if (optType == basearchiveUtil.FORMOPT_UPDATE) {
+						data.id=vid;
+						requestURL = FORMOPTURL_UPDATE + "/" + vid;
+					} else {
+						requestURL = FORMOPTURL_INSERT;
+					}
+					var saveResult = form.doSaveAction(requestURL,data,optType);
+					
+					if (saveResult) {
+						// 清除本地store的数据
+						var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+						basearchiveUtil.clearStoreCache(cacheKeyList);
+						
+						basearchiveUtil.jumpToHtml(tableUrl);
+					} else{
+						return false;
+					}
+				};
+				
+				// 初始化Form数据，新建和编辑时
+				function initFormValue(optType,data){
+					var hidden_id = $('#hidden_id');
+					var text_name = $('#text_name');
+					var select_type = $('#select_type');
+					var text_price = $('#text_price');
+					
+					if (optType == basearchiveUtil.FORMOPT_CREATE) {
+						if (hidden_id != 'undefined' && hidden_id != null)
+							hidden_id.attr("value", "");
+						if (text_name != 'undefined' && text_name != null)
+							text_name.attr("value", "");
+						if (select_type != 'undefined' && select_type != null)
+							select_type.attr("value", "");
+						if (text_price != 'undefined' && text_price != null)
+							text_price.attr("value", "");
+						if (select_type != 'undefined' && select_type != null)
+							select_type.attr("value", "");
+						initScenicTickettypeSelect();
+						tabbed_textarea.setText("");
+					} else if (optType == basearchiveUtil.FORMOPT_UPDATE) {
+						// 重新从数据库中读取数据
+						var queryUrl = GLOBAL.BASE +  "admin/scenic/scenicticket/search?q=id=" + data.id;
+						var lastdata = null;
+						$.ajax({
+							async : false,
+							type : "GET",
+							dataType : 'json',
+							contentType : "application/json;charset=UTF-8",
+							url : queryUrl,
+							success : function(resultdata) {
+								if('000000' != resultdata.flag){
+									bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+									lastdata = null; 	// 查询出错
+								} else {
+									var receiptList = resultdata.data;
+									if(receiptList != null && receiptList.length > 0){
+										lastdata = receiptList[0];
+									} else{
+										bootbox.alertTimeout('查询数据出现错误，请刷新重试！');
+										lastdata = null; // 没有此条数据						
+									}
+								}
+							},
+							error : function(XMLHttpRequest, textStatus, errorThrown) {
+								bootbox.alertTimeout('查询数据出现错误，请重试！');
+							}
+						});
+						if(null == lastdata){
+							// 清除本地store的数据
+							var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+							basearchiveUtil.clearStoreCache(cacheKeyList);
+							
+							basearchiveUtil.jumpToHtml(tableUrl);
+						}
+						
+						if (hidden_id != 'undefined' && hidden_id != null)
+							hidden_id.attr('value', lastdata.id);
+						if (text_name != 'undefined' && text_name != null)
+							text_name.attr("value", lastdata.name);
+						if (text_price != 'undefined' && text_price != null)
+							text_price.attr("value", lastdata.price);
+						if (select_type != 'undefined' && select_type != null)
+							initScenicTickettypeSelect() ;
+							select_type.attr("value", lastdata.type_id);
+						tabbed_textarea.setText(lastdata.ticket_abstract);
+					}
+				}
+				
+				form.init(form_param);
+				var TextArea =require("textarea");
+				tabbed_textarea = new TextArea({
+			    	attrs:{
+			    		id:"textarea_abstract",
+			    	},
+					renderTo : "text_abstract"
+				});
+				
+				initFormValue(optType,storeRowData);
+				var resulthandler = function(){
+					if(!validateForm())
+						return;
+					
+					// 执行保存操作，返回保存操作的数据
+					var saveResult = fnsubmithandler();
+					if(saveResult){
+						$('#' + dialogId).modal('hide');
+					}
+				};
+				
+				var doSaveAction = function(requestURL,data,optType){
+					var ajaxType = "POST";
+					if (optType == commonUtil.FORMOPT_UPDATE) {
+						ajaxType = "PUT";
+					} else{
+						ajaxType = "POST";
+					}
+					
+					var saveResult = false;
+					$.ajax({
+						"async" : false,
+						"type" : ajaxType,
+						"dataType" : 'json',
+						"contentType" : "application/json;charset=UTF-8",
+						"url" : requestURL,
+						"data" : JSON.stringify(data), 
+						"success" : function(resultdata) {
+							bootbox.alertTimeout("操作成功！");
+							saveResult = true;
+						},
+						"error" : function(XMLHttpRequest, textStatus, errorThrown) {
+							bootbox.alertTimeout("操作失败！");
+							saveResult = false;
+						}
+					});
+					return saveResult;
+				};
+				
+				// 取消方法
+				$('#btndialogcancel').die().on('click', function() {
+						bootbox.confirm("确认取消？", function(YesOrNo) {
+							if (YesOrNo) {
+								// 清除本地store的数据
+								var cacheKeyList = ["currentSelectRowData" + MODULENAME,"currentOptType" + MODULENAME];
+								basearchiveUtil.clearStoreCache(cacheKeyList);
+								$('#' + dialogId).modal('hide');
+							} 
+						});
+					});
+				//保存方法
+				$('#btndialogsave').die().on('click', function() {
+					resulthandler();
+//					$('#' + dialogId).modal('hide');
+				});
+			
+				exports.show = function(data) {
+					$('#' + dialogId).modal('show');
+				};
+				
+				var validateForm = function(){
+					return form.formValidation(form_param);
+				}
+			},
+		});
+	};
+	
+});

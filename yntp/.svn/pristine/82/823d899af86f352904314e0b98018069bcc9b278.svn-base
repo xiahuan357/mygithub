@@ -1,0 +1,22 @@
+package com.yn.yntp.common.constant;
+
+/**
+ * 
+ * @Title: UriMappingConstants.java 
+ * @Package com.yn.yntp.common.constant 
+ * @Description: 资源地址映射常量
+ *
+ * @author liucc    
+ * @date 2014年11月21日 下午9:42:11 
+ * @version V1.0
+ */
+public final class UriMappingConstants {
+	
+	
+	//public static final String NOPERM = "noperm";
+	
+    
+    private UriMappingConstants() {
+        throw new AssertionError();
+    }
+}

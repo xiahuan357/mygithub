@@ -1,0 +1,65 @@
+package com.yn.yntp.module.scenic.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yn.yntp.common.persistence.service.BaseServiceImpl;
+import com.yn.yntp.common.web.vo.SelectOptionVO;
+import com.yn.yntp.module.scenic.dao.ScenicDAO;
+import com.yn.yntp.module.scenic.dao.ScenicTypeDAO;
+import com.yn.yntp.module.scenic.entity.ScenicEntity;
+import com.yn.yntp.module.scenic.entity.ScenicTypeEntity;
+
+/**
+ * 
+ * @Title: ScenicService.java
+ * @Package com.yn.yntp.module.scenic.service
+ * @Description: TODO(用一句话描述该文件做什么)
+ *
+ * @author liucc
+ * @date 2014年11月22日 下午3:40:26
+ * @version V1.0
+ */
+
+@Service
+@Transactional
+public class ScenicService extends BaseServiceImpl<ScenicEntity, Long> {
+
+	private ScenicDAO getScenicDAO() {
+		return (ScenicDAO) baseDao;
+	}
+
+	public List<SelectOptionVO> queryScenicType() {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new com.yn.yntp.common.web.vo.SelectOptionVO(T1.id,T1.name) from ScenicTypeEntity T1");
+
+		Query query = baseDao.getSession().createQuery(hql.toString());
+
+		List<SelectOptionVO> list = query.list();
+		return list;
+	}
+	public List<SelectOptionVO> queryScenicLevel() {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new com.yn.yntp.common.web.vo.SelectOptionVO(T1.id,T1.name) from ScenicLevelEntity T1");
+
+		Query query = baseDao.getSession().createQuery(hql.toString());
+
+		List<SelectOptionVO> list = query.list();
+		return list;
+	}
+	public List<SelectOptionVO> queryScenicRegion(String region_id) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new com.yn.yntp.common.web.vo.SelectOptionVO(T1.id,T1.name) from RegionEntity T1 where T1.parent_id="+region_id );
+
+		Query query = baseDao.getSession().createQuery(hql.toString());
+
+		List<SelectOptionVO> list = query.list();
+		return list;
+	}
+}
